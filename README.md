@@ -2,11 +2,15 @@
 
 This is the project description.
 
-## Getting started
+## Instructions to run
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+conda activate {env_name}
+git pull 
+pip install -r requirements
+python manage.py runserver
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+##Useful commands
+conda info --envs - returns environments 
 
 ## Add your files
 
