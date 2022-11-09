@@ -1,6 +1,6 @@
 # SH31 main
 
-This is the project description.
+Web app for Young Enterprise Scotland to help calculate their carbon footprint and help control their rocket composter.
 
 ## Instructions to run
 
