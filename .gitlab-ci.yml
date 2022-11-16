@@ -1,24 +1,24 @@
-default:
-  image: ubuntu:20.04
-  cache:
-    paths:
-      - ~/.cache/pip/
-  before_script:
-    - apt -y update
-    - apt -y install apt-utils
-    - apt -y install net-tools python3.8 python3-pip mysql-client libmysqlclient-dev
-    - apt -y upgrade
-    - pip3 install -r requirements.txt
+before_script:
+   - sudo apt-get update
+   - pip install -r requirements.txt
 
+stages:
+  - build
+  - static analysis
+  - test
 
-migrations:
-  stage: build
+#migrations:
+ # stage: build
+  #script:
+   # - python3 manage.py makemigrations
+    #- python3 manage.py makemigrations roottoplate
+    #- python3 manage.py migrate
+    #- python3 manage.py check
+
+flake8:
+  stage: static analysis
   script:
-    - python3 manage.py makemigrations
-    - python3 manage.py makemigrations roottoplate
-    - python3 manage.py migrate
-    - python3 manage.py check
-
+    - flake8 --max-line-length=120 roottoplate/*.py
 
 django-tests:
   stage: test
