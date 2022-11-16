@@ -7,6 +7,7 @@ class Input(models.Model):
     inputType = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
     inputAmount = models.IntegerField()
     date = models.DateTimeField()
+    #user?
 
 
 class DataEntry(models.Model):
