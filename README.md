@@ -3,14 +3,17 @@
 Web app for Young Enterprise Scotland to help calculate their carbon footprint and help control their rocket composter.
 
 ## Instructions to run
-
+```
 conda activate {env_name}
 git pull 
-pip install -r requirements
+pip install -r requirements.txt
 python manage.py runserver
 
+If you're missing pip just install it with: 
+conda install pip
+```
 ##Useful commands
-conda info --envs - returns environments 
+conda info --envs 
 
 ## Add your files
 
