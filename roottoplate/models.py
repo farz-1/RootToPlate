@@ -10,6 +10,14 @@ class Input(models.Model):
     #user?
 
 
+class Output(models.Model):
+    amount = models.DecimalField()
+    time = models.DateTimeField()
+    notes = models.CharField()
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    #probe?
+
+
 class DataEntry(models.Model):
     NOTES_MAX_LENGTH = 2048
     entryTime = models.DateTimeField()
