@@ -6,7 +6,8 @@ default:
 before_script:
     # pip is not in a discoverable folder so add the folder it's in to the list of executable folders :/
     - export PATH="/home/gitlab-runner/.local/bin:$PATH"
-    - pip install -r requirements.txt
+    - pip install django
+    - python3 -m pip install -r requirements.txt
 
 stages:
   - static analysis
