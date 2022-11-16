@@ -7,13 +7,13 @@ stages:
   - static analysis
   - test
 
-migrations:
-  stage: build
-  script:
-    - python3 manage.py makemigrations
+#migrations:
+ # stage: build
+  #script:
+   # - python3 manage.py makemigrations
     #- python3 manage.py makemigrations roottoplate
-    - python3 manage.py migrate
-    - python3 manage.py check
+    #- python3 manage.py migrate
+    #- python3 manage.py check
 
 flake8:
   stage: static analysis
