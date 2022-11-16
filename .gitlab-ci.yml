@@ -1,9 +1,8 @@
 before_script:
-   - apt-get update
+   - pip install --upgrade pip
    - pip install -r requirements.txt
 
 stages:
-  - build
   - static analysis
   - test
 
