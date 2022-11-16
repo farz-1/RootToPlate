@@ -1,5 +1,5 @@
 default:
-  tags: docker
+  tags: "docker"
 
 build-job:
   stage: build
