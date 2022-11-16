@@ -8,6 +8,7 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py
     - python3 get-pip.py
+    - export PATH="$HOME/gitlab-runner/.local/bin:$PATH"
     - pip --version
 
 test-job1:
