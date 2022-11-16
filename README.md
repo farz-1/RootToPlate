@@ -8,6 +8,9 @@ conda activate {env_name}
 git pull 
 pip install -r requirements.txt
 python manage.py runserver
+
+If you're missing pip just install it with: 
+conda install pip
 ```
 ##Useful commands
 conda info --envs 
