@@ -10,7 +10,7 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 ##Useful commands
-conda info --envs - returns environments 
+conda info --envs 
 
 ## Add your files
 
