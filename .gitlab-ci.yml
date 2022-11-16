@@ -18,7 +18,6 @@ stages:
 flake8:
   stage: static analysis
   script:
-    - pip in
     - flake8 --max-line-length=120 roottoplate/*.py
 
 django-tests:
