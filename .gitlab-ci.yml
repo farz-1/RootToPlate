@@ -6,7 +6,8 @@ build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
-    - apt-get install pip
+    - echo "$SHELL"
+    - echo $0
 
 test-job1:
   stage: test
