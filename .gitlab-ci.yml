@@ -62,8 +62,8 @@ stages:
   - build
   - test
 
-migrations:
-  stage: build
+#migrations:
+ # stage: build
   #script:
     #- python3 manage.py makemigrations
     # - python3 manage.py makemigrations myapp
