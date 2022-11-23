@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 40px;
+  background: linear-gradient(to left top, whitesmoke, gainsboro);
+}
+nav {
+  background-color: whitesmoke;
+  margin: 0;
+  overflow: hidden;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+nav ul li {
+  display: inline-block;
+  list-style-type: none;
+}
+nav ul li a {
+  color: cadetblue;
+  background-color: whitesmoke;
+  display: block;
+  line-height: 1em;
+  padding: 2em 1em;
+  text-decoration: none;
+}
+nav ul li:first-child {
+  margin-right: auto;
+}
+nav ul li a.logo {
+  background-color: gainsboro;
+}
+nav ul li a:hover {
+  background-color: mediumseagreen;
+}
+hr{
+  color:royalblue;
+}
