@@ -2,14 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Input(models.Model):
+class InputType(models.Model):
     NAME_MAX_LENGTH = 128
-    inputType = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
-    inputAmount = models.IntegerField()
-    date = models.DateTimeField()
+    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    factor = models.DecimalField(decimal_places=2, max_digits=5)
 
     def __str__(self):
-        return self.inputType
+        return self.name
 
 
 class DataEntry(models.Model):
@@ -19,12 +18,16 @@ class DataEntry(models.Model):
     entryTime = models.DateTimeField()
     temperature1 = models.DecimalField(decimal_places=2, max_digits=5)
     temperature2 = models.DecimalField(decimal_places=2, max_digits=5)
-    input = models.ForeignKey(Input, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
+    inputType = models.ForeignKey(InputType, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
+    inputAmount = models.IntegerField(null=True)
     notes = models.CharField(max_length=NOTES_MAX_LENGTH)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
+    class Meta:
+        verbose_name_plural = 'Data entries'
+
     def __str__(self):
-        return self.entryID
+        return str(self.entryID)
 
 
 class UserProfile(models.Model):
@@ -54,4 +57,16 @@ class RestaurantRequest(models.Model):
     collected = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.requestID
+        return str(self.requestID)
+
+
+class Output(models.Model):
+
+    outputID = models.IntegerField(unique=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=5)
+    time = models.DateTimeField()
+    notes = models.CharField
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return str(self.outputID)
