@@ -32,6 +32,7 @@
 
 variables:
   DJANGO_CONFIG: "test"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   #MYSQL_DATABASE: $MYSQL_DB
   #MYSQL_ROOT_PASSWORD: $MYSQL_PASS
   #MYSQL_USER: $MYSQL_USER
@@ -39,6 +40,8 @@ variables:
 
 default:
   image: ubuntu:20.04
+  tags: 
+    - docker
   #
   # Pick zero or more services to be used on all builds.
   # Only needed when using a docker container to run your tests in.
@@ -48,14 +51,17 @@ default:
   #
   # This folder is cached between builds
   # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
+  
   cache:
+    key: build-cache
     paths:
-      - ~/.cache/pip/
+      - .cache/pip/
+
   before_script:
-    - apt -y update
-    - apt -y install apt-utils
-    - apt -y install net-tools python3.8 python3-pip #mysql-client libmysqlclient-dev
-    - apt -y upgrade
+    - apt-get -y update
+    #- apt-get -y install apt-utils
+    - apt-get -y install python3.8 python3-pip #mysql-client libmysqlclient-dev
+    - apt-get -y upgrade
     - pip3 install -r requirements.txt
 
 stages:
@@ -63,12 +69,13 @@ stages:
   - test
 
 #migrations:
- # stage: build
-  #script:
-    #- python3 manage.py makemigrations
-    # - python3 manage.py makemigrations myapp
-    #- python3 manage.py migrate
-   # - python3 manage.py check
+#  stage: build
+#  script:
+#    - cd roottoplate
+#    - python3 manage.py makemigrations
+#    - python3 manage.py makemigrations composter
+#    - python3 manage.py migrate
+#    - python3 manage.py check
 
 
 django-tests:
@@ -77,4 +84,12 @@ django-tests:
     # The MYSQL user only gets permissions for MYSQL_DB, so Django can't create a test database.
     #- echo "GRANT ALL on *.* to '${MYSQL_USER}';"| mysql -u root --password="${MYSQL_ROOT_PASSWORD}" -h mysql
     # use python3 explicitly. see https://wiki.ubuntu.com/Python/3
+    - cd roottoplate
     - python3 manage.py test
+
+static-analysis:
+  stage: test
+  script:
+    - pip install flake8
+    - flake8 --max-line-length 120
+    - flake8 
