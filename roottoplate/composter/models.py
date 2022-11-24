@@ -19,9 +19,12 @@ class DataEntry(models.Model):
     temperature1 = models.DecimalField(decimal_places=2, max_digits=5)
     temperature2 = models.DecimalField(decimal_places=2, max_digits=5)
     inputType = models.ForeignKey(InputType, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
-    inputAmount = models.IntegerField()
+    inputAmount = models.IntegerField(null=True)
     notes = models.CharField(max_length=NOTES_MAX_LENGTH)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Data entries'
 
     def __str__(self):
         return self.entryID
