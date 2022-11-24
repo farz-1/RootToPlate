@@ -17,8 +17,8 @@ class DataEntry(models.Model):
     INPUT_NAME_MAX_LENGTH = 128
     entryID = models.IntegerField(unique=True)
     entryTime = models.DateTimeField()
-    temperature1 = models.DecimalField()
-    temperature2 = models.DecimalField()
+    temperature1 = models.DecimalField(decimal_places=2, max_digits=5)
+    temperature2 = models.DecimalField(decimal_places=2, max_digits=5)
     input = models.ForeignKey(Input, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
     notes = models.CharField(max_length=NOTES_MAX_LENGTH)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -44,7 +44,7 @@ class RestaurantRequest(models.Model):
 
     requestID = models.IntegerField(unique=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH)
-    address = models.CharField(max_legth=ADDRESS_MAX_LENGTH)
+    address = models.CharField(max_length=ADDRESS_MAX_LENGTH)
     dateRequested = models.DateTimeField()
     deadlineDate = models.DateTimeField()
     email = models.CharField(max_length=EMAIL_MAX_LENGTH)
