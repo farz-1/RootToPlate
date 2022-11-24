@@ -33,6 +33,3 @@ class RestaurantRequest(models.Model):
     notes = models.CharField()
     numberOfBags = models.IntegerField()
     collected = models.BooleanField(default=False)
-
-
-# Create your models here.
