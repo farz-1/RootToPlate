@@ -27,7 +27,7 @@ class DataEntry(models.Model):
         verbose_name_plural = 'Data entries'
 
     def __str__(self):
-        return self.entryID
+        return str(self.entryID)
 
 
 class UserProfile(models.Model):
@@ -57,7 +57,8 @@ class RestaurantRequest(models.Model):
     collected = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.requestID
+        return str(self.requestID)
+
 
 class Output(models.Model):
 
@@ -68,4 +69,4 @@ class Output(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.outputID
+        return str(self.outputID)
