@@ -58,3 +58,14 @@ class RestaurantRequest(models.Model):
 
     def __str__(self):
         return self.requestID
+
+class Output(models.Model):
+
+    outputID = models.IntegerFeld(unique=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=5)
+    time = models.DateTimeField()
+    notes = models.CharField
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.outputID
