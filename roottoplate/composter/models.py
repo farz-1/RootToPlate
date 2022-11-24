@@ -61,7 +61,7 @@ class RestaurantRequest(models.Model):
 
 class Output(models.Model):
 
-    outputID = models.IntegerFeld(unique=True)
+    outputID = models.IntegerField(unique=True)
     amount = models.DecimalField(decimal_places=2, max_digits=5)
     time = models.DateTimeField()
     notes = models.CharField
