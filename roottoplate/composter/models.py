@@ -2,11 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class ComposterInput(models.Model):
+class InputType(models.Model):
     NAME_MAX_LENGTH = 128
-    inputType = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
-    inputAmount = models.IntegerField()
-    date = models.DateTimeField()
+    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    factor = models.DecimalField(decimal_places=2, max_digits=5)
 
     def __str__(self):
         return self.inputType
@@ -19,7 +18,8 @@ class DataEntry(models.Model):
     entryTime = models.DateTimeField()
     temperature1 = models.DecimalField(decimal_places=2, max_digits=5)
     temperature2 = models.DecimalField(decimal_places=2, max_digits=5)
-    input = models.ForeignKey(ComposterInput, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
+    inputType = models.ForeignKey(InputType, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
+    inputAmount = models.IntegerField()
     notes = models.CharField(max_length=NOTES_MAX_LENGTH)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
