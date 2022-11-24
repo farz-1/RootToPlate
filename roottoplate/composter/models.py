@@ -8,31 +8,50 @@ class Input(models.Model):
     inputAmount = models.IntegerField()
     date = models.DateTimeField()
 
+    def __str__(self):
+        return self.inputType
+
 
 class DataEntry(models.Model):
     NOTES_MAX_LENGTH = 2048
+    INPUT_NAME_MAX_LENGTH = 128
+    entryID = models.IntegerField(unique=True)
     entryTime = models.DateTimeField()
     temperature1 = models.DecimalField()
     temperature2 = models.DecimalField()
+    input = models.ForeignKey(Input, max_length=INPUT_NAME_MAX_LENGTH, on_delete=models.SET_NULL, null=True)
     notes = models.CharField(max_length=NOTES_MAX_LENGTH)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return self.entryID
+
 
 class UserProfile(models.Model):
+    # user contains username, firstname, lastname, email, password
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     isAdmin = models.BooleanField()
 
+    def __str__(self):
+        return self.user.username
+
 
 class RestaurantRequest(models.Model):
-    name = models.CharField()
-    address = models.CharField()
+    NAME_MAX_LENGTH = 128
+    ADDRESS_MAX_LENGTH = 1024
+    EMAIL_MAX_LENGTH = 128
+    NOTES_MAX_LENGTH = 20048
+
+    requestID = models.IntegerField(unique=True)
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    address = models.CharField(max_legth=ADDRESS_MAX_LENGTH)
     dateRequested = models.DateTimeField()
     deadlineDate = models.DateTimeField()
-    email = models.CharField()
+    email = models.CharField(max_length=EMAIL_MAX_LENGTH)
     phoneNumber = models.IntegerField()
-    notes = models.CharField()
+    notes = models.CharField(max_length=NOTES_MAX_LENGTH)
     numberOfBags = models.IntegerField()
     collected = models.BooleanField(default=False)
 
-
-# Create your models here.
+    def __str__(self):
+        return self.requestID
