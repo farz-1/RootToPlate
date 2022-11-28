@@ -8,8 +8,20 @@
 
 p {
   line-height: 24px;
+  margin-right: 30px;
+  margin-left: 30px;
 }
 
+h3 {
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+h1 {
+  margin-right: 30px;
+  margin-left: 30px;
+  color: #EAC510;
+}
 
 .headpic{
   position:relative;
@@ -19,7 +31,7 @@ p {
 
 
 body {
-  /* background-image: url(../images/background.jpeg); */
+   background-image: url(../images/background.jpg);
   font-family: Arial, Helvetica, sans-serif;
   width: 1000px;
   height: 100%;
@@ -27,6 +39,9 @@ body {
   margin-right: auto;
 }
 
+.mbody {
+  background-color: white;
+}
 
 /*HEADER STYLES - create a custom .header class below with a margin of 0px as well as other styles you choose to make it look better */
 
@@ -82,10 +97,15 @@ hr.solid {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: red;
-  color: white;
+  color: black;
   text-align: center;
   padding: 10px;
+}
+
+.bottom-img {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 
 
@@ -99,8 +119,6 @@ hr.solid {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-}
-
 
 
 
