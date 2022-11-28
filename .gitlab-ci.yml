@@ -91,5 +91,5 @@ static-analysis:
   stage: test
   script:
     - pip install flake8
-    - flake8 --max-line-length 120
-    - flake8 
+    - flake8 --ignore=E501
+    - flake8 --max-line-length=130 --ignore=E501
