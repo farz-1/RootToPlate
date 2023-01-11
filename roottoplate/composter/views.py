@@ -9,7 +9,15 @@ from composter.models import UserProfile
 
 
 def index(request):
-    return render(request, "index.html")
+    return render(request, "composter/index.html")
+
+
+def about(request):
+    return render(request, "composter/about.html")
+
+
+def composter(request):
+    return render(request, "composter/composter.html")
 
 
 @csrf_protect
