@@ -1,0 +1,34 @@
+{% extends 'feed/base.html' %}
+{% load staticfiles %}
+
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:input_entry' %}">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div>
+        {{ entry_form.entryTime.errors }}
+        {{ entry_form.entryTime }}
+        <div>
+            {{ input_form1.inputType.errors }}
+            {{ input_form1.inputType }}
+            {{ input_form1.inputAmount.errors }}
+            {{ input_form1.inputAmount }}
+        </div>
+        <div>
+            {{ input_form2.inputType.errors }}
+            {{ input_form2.inputType }}
+            {{ input_form2.inputAmount.errors }}
+            {{ input_form2.inputAmount }}
+        </div>
+        <div>
+            {{ input_form3.inputType.errors }}
+            {{ input_form3.inputType }}
+            {{ input_form3.inputAmount.errors }}
+            {{ input_form3.inputAmount }}
+        </div>
+        {{ entry_form.notes.errors}}
+        {{ entry_form.notes }}
+    </div>
+    <input type="submit" name="submit" value="Post">
+</form>
