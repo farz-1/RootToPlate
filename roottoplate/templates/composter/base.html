@@ -41,13 +41,13 @@
                 <a class="nav-link" href="{% url 'composter:about' %}">About</a>
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'composter:logout' %}">Logout</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'composter:logout' %}">Logout</a>
+                </li>
             {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'composter:login' %}">Login</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'composter:login' %}">Login</a>
+                </li>
             {% endif %}
         </ul>
     </div>
