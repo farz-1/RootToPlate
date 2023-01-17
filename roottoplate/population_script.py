@@ -1,11 +1,11 @@
 import os
-import django
-from django.contrib.auth.models import User
-from composter.models import InputType, Input, InputEntry, TemperatureEntry, Output
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'roottoplate.settings')
+import django  # noqa: E402
 django.setup()
+from django.contrib.auth.models import User  # noqa: E402
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
+    RestaurantRequest, Output  # noqa:E402
 
 
 def populate():
@@ -152,6 +152,20 @@ def populate():
          'user': 'ag23'},
     ]
 
+    restaurant_requests = [
+        # restaurant requests, stored as list of dictionaries
+        {'id': '20002',
+         'name': 'Ka Pao',
+         'address': '26 Vinicombe Street',  # temp, using google data later?
+         'dateRequested': '2023-01-02 22:01:40',
+         'deadline': '2023-01-30 23:00:00',
+         'email': 'kapao@kapao.com',
+         'phone': 44800829839,
+         'notes': 'quick',
+         'bags': 2,
+         'collected': False},
+    ]
+
     for u in users:
         new_user = create_user(u)
         print("Created profile: " + str(new_user))
@@ -171,6 +185,9 @@ def populate():
     for i in inputs:
         create_input(i)
 
+    for r in restaurant_requests:
+        create_restaurant_request(r)
+
 
 def create_user(data):
     # creates user
@@ -187,9 +204,10 @@ def create_user(data):
 def create_input_types(data):
     # creates input type
     print("creating " + data['name'] + " input type...")
-    input_type = InputType.objects.get_or_create(name=data['name'],
-                                                 woodChipRatio=data['woodChipRatio'],
-                                                 CNRatio=data['CNRatio'])[0]
+    input_type = InputType.objects.\
+        get_or_create(name=data['name'],
+                      woodChipRatio=data['woodChipRatio'],
+                      CNRatio=data['CNRatio'])[0]
     return input_type
 
 
@@ -239,6 +257,23 @@ def create_output(data):
                                           notes=data['notes'],
                                           user=user)[0]
     return output
+
+
+def create_restaurant_request(data):
+    # creates restaurant request
+    print(f'creating restaurant request {str(data["id"])}...')
+    request = RestaurantRequest.objects.\
+        get_or_create(requestID=data['id'],
+                      name=data['name'],
+                      address=data['address'],
+                      dateRequested=data['dateRequested'],
+                      deadlineDate=data['deadline'],
+                      email=data['email'],
+                      phoneNumber=data['phone'],
+                      notes=data['notes'],
+                      numberOfBags=data['bags'],
+                      collected=data['collected'])
+    return request
 
 
 # Execution starts here
