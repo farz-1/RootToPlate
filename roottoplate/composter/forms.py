@@ -1,21 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from composter.models import InputType, InputEntry, Input, TemperatureEntry, UserProfile, RestaurantRequest, Output
+from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output
 import datetime
 
 
 class UserForm(UserCreationForm):
     # accessible by admin only
-    isAdmin = forms.BooleanField(required=True)
+    is_staff = forms.BooleanField(required=True)
 
     class Meta:
-        model = UserProfile
+        model = User
         fields = {'username',
                   'first_name', 'last_name',
                   'password1',
-                  'password2',
-                  'isAdmin'}
+                  'password2'}
 
 
 class UserLoginForm(forms.ModelForm):
