@@ -1,69 +1,35 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-
-<body>
-<div class="topnav">
-  <img src="images/image.jpg" alt="picture here" height="20%" width="20%" />
-  <a class="active" href="#home">Home</a>
-  <a href="#news">Composter</a>
-  <a href="#contact">Food Collection</a>
-  <a href="#about">About</a>
-  <a class="btn btn-primary" href="#">Log Out</a>
-</div>
-<hr class="solid">
-<div class="mbody">
-	<div class="midtop">
-	<h1>
-		About us
-	</h1>
-	</div>
-	<button type="button" class="btn btn-primary">Read More</button>
-	<button type="button" class="btn btn-primary">Donate</button>
-	<br>
-	<br>
-	<br>
-	<br>
-
-
-  <h3>
-  	Our Vision
-  </h3>
-  <p>
-	For Scotland to be a place where all young people are given the opportunity to have a rewarding future in work and life - no matter where they start their journey.
-  </p>
-  <h3>
-  	Our Mission
-  </h3>
-  <p>
-	To inspire and equip young people, irrespective of their background, to learn, develop and reach their full potential through enterprise and financial education.
-	<br>
-	We set high standards whilst being creative in our approach. Whilst continuing to grow our offering, we will ensure that all our activities are fit to meet our Mission ’whilst adhering to its guiding principle to do this through ’learning by doing.’
-  </p>
-  <h3>
-  	Our Digital Vision
-  </h3>
-  <p>
-	YES will enable and deliver on a clear digital transformation programme that will enable a clarity of communication, and programme offering via a future-proofed framework of blended learning that enables an appropriate and continually refreshed ongoing programme of enterprise learning to ensure equity of access.
-  <br>
-  <br>
-  <br>
-  </p>
-
-
-  <div id="bottom-img" class="bottom-img" >
-      <img src="images/logo.jpg"/ style="width:70px;height:70px;">
-  </div>
-  </div>
-
-
-  <div class="footer">
-    <small>
-      &copy; 2020 YOUNG ENTERPRISE
-    </small>
-  </div>
-
-</body>
-</html>
+{% extends 'composter/base.html' %}
+{% load static %}
+{% block content_block %}
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:input_entry' %}">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div>
+        {{ entry_form.entryTime.errors }}
+        {{ entry_form.entryTime }}
+        <div>
+            {{ input_form1.inputType.errors }}
+            {{ input_form1.inputType }}
+            {{ input_form1.inputAmount.errors }}
+            {{ input_form1.inputAmount }}
+        </div>
+        <div>
+            {{ input_form2.inputType.errors }}
+            {{ input_form2.inputType }}
+            {{ input_form2.inputAmount.errors }}
+            {{ input_form2.inputAmount }}
+        </div>
+        <div>
+            {{ input_form3.inputType.errors }}
+            {{ input_form3.inputType }}
+            {{ input_form3.inputAmount.errors }}
+            {{ input_form3.inputAmount }}
+        </div>
+        {{ entry_form.notes.errors}}
+        {{ entry_form.notes }}
+    </div>
+    <input type="submit" name="submit" value="Post">
+</form>
+{% endblock %}

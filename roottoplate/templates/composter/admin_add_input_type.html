@@ -1,0 +1,21 @@
+{% extends 'composter/base.html' %}
+{% load static %}
+
+{% block content_block %}
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:add_input_type' %}">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div>
+        {{ form.name.errors }}
+        {{ form.name }}
+        {{ form.woodChipRatio.errors }}
+        {{ form.woodChipRatio }}
+        {{ form.CNRatio.errors }}
+        {{ form.CNRatio }}
+    </div>
+
+    <input type="submit" name="submit" value="Post">
+</form>
+{% endblock %}

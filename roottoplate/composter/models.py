@@ -9,7 +9,8 @@ class InputType(models.Model):
     RATIO_DECIMAL_PLACES = 2
     RATIO_MAX_DIGITS = 5
 
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, validators=[MinLengthValidator(2)])
+    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, validators=[MinLengthValidator(2)],
+                            primary_key=True)
     woodChipRatio = models.DecimalField(decimal_places=RATIO_DECIMAL_PLACES, max_digits=RATIO_MAX_DIGITS,
                                         validators=[MinValueValidator(1)])
     CNRatio = models.DecimalField(decimal_places=RATIO_DECIMAL_PLACES, max_digits=RATIO_MAX_DIGITS,
@@ -22,7 +23,7 @@ class InputType(models.Model):
 class InputEntry(models.Model):
     NOTES_MAX_LENGTH = 2048
 
-    entryID = models.IntegerField(unique=True)
+    entryID = models.AutoField(primary_key=True)
     entryTime = models.DateTimeField()
     notes = models.CharField(max_length=NOTES_MAX_LENGTH, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -49,7 +50,7 @@ class TemperatureEntry(models.Model):
     TEMP_DECIMAL_PLACES = 2
     TEMP_MAX_DIGITS = 5
 
-    entryID = models.IntegerField(unique=True)
+    entryID = models.IntegerField(unique=True, primary_key=True)
     entryTime = models.DateTimeField()
     probe1 = models.DecimalField(decimal_places=TEMP_DECIMAL_PLACES, max_digits=TEMP_MAX_DIGITS,
                                  validators=[MinValueValidator(-40), MaxValueValidator(150)])
@@ -69,21 +70,13 @@ class TemperatureEntry(models.Model):
         return str(self.entryID)
 
 
-class UserProfile(User):
-    # user contains username, firstname, lastname, email, password
-    isAdmin = models.BooleanField()
-
-    def __str__(self):
-        return self.user.username
-
-
 class RestaurantRequest(models.Model):
     NAME_MAX_LENGTH = 128
     ADDRESS_MAX_LENGTH = 1024
     EMAIL_MAX_LENGTH = 128
     NOTES_MAX_LENGTH = 20048
 
-    requestID = models.IntegerField(unique=True)
+    requestID = models.IntegerField(unique=True, primary_key=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH)
     address = models.CharField(max_length=ADDRESS_MAX_LENGTH)
     dateRequested = models.DateTimeField()
@@ -103,7 +96,7 @@ class Output(models.Model):
     OUTPUT_DECIMAL_PLACES = 2
     OUTPUT_MAX_DIGITS = 5
 
-    outputID = models.IntegerField(unique=True)
+    outputID = models.IntegerField(unique=True, primary_key=True)
     amount = models.DecimalField(decimal_places=OUTPUT_DECIMAL_PLACES, max_digits=OUTPUT_MAX_DIGITS)
     time = models.DateTimeField()
     notes = models.CharField(max_length=NOTES_MAX_LENGTH, null=True, blank=True)
