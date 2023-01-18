@@ -11,22 +11,32 @@
         {{ hidden }}
     {% endfor %}
     <div>
+        <h5>Restaurant name</h5>
         {{ restaurant_form.name.errors }}
         {{ restaurant_form.name }}
+        <br>
+        <h5>Restaurant address</h5>
         {{ restaurant_form.address.errors }}
         {{ restaurant_form.address }}
+        <h5>Deadline Date</h5>
         {{ restaurant_form.deadlineDate.errors }}
         {{ restaurant_form.deadlineDate }}
+        <h5>Email Address</h5>
         {{ restaurant_form.email.errors }}
         {{ restaurant_form.email }}
+        <h5>Phone Number</h5>
         {{ restaurant_form.phoneNumber.errors }}
         {{ restaurant_form.phoneNumber }}
+        <h5>Number of bags</h5>
         {{ restaurant_form.numberOfBags.errors }}
         {{ restaurant_form.numberOfBags }}
+        <h5>Additional Notes</h5>
         {{ restaurant_form.notes.errors }}
         {{ restaurant_form.notes }}
+
+        <input type="submit" name="submit" value="Post">
     </div>
-    <input type="submit" name="submit" value="Post">
+
 </form>
     </div>
 {% endblock %}

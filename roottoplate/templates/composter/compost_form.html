@@ -1,12 +1,20 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
+<form action="/your-name/" method="post">
+    <label for="your_name">Your name: </label>
+    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+    <input type="submit" value="OK">
+</form>
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:input_entry' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
+
     <div>
+        <label>Entry time.err: </label>
+
         {{ entry_form.entryTime.errors }}
         {{ entry_form.entryTime }}
         <div>
