@@ -1,11 +1,6 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
-<form action="/your-name/" method="post">
-    <label for="your_name">Your name: </label>
-    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
-    <input type="submit" value="OK">
-</form>
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:input_entry' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
@@ -13,28 +8,34 @@
     {% endfor %}
 
     <div>
-        <label>Entry time.err: </label>
-
+        <label for="id_entryTime">Time: </label>
         {{ entry_form.entryTime.errors }}
         {{ entry_form.entryTime }}
         <div>
+            <label for="id_inputType">Input type 1: </label>
             {{ input_form1.inputType.errors }}
             {{ input_form1.inputType }}
+            <label for="id_inputAmount">Amount: </label>
             {{ input_form1.inputAmount.errors }}
             {{ input_form1.inputAmount }}
         </div>
         <div>
+            <label for="id_inputType">Input type 2: </label>
             {{ input_form2.inputType.errors }}
             {{ input_form2.inputType }}
+            <label for="id_inputAmount">Amount: </label>
             {{ input_form2.inputAmount.errors }}
             {{ input_form2.inputAmount }}
         </div>
         <div>
+            <label for="id_inputType">Input type 3: </label>
             {{ input_form3.inputType.errors }}
             {{ input_form3.inputType }}
+            <label for="id_inputAmount">Amount: </label>
             {{ input_form3.inputAmount.errors }}
             {{ input_form3.inputAmount }}
         </div>
+        <label for="id_notes">Notes: </label>
         {{ entry_form.notes.errors}}
         {{ entry_form.notes }}
     </div>
