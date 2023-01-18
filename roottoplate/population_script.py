@@ -1,11 +1,11 @@
 import os
-import django
-from django.contrib.auth.models import User
-from composter.models import InputType, Input, InputEntry, TemperatureEntry, Output
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'roottoplate.settings')
+import django  # noqa: E402
 django.setup()
+from django.contrib.auth.models import User  # noqa: E402
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
+    RestaurantRequest, Output  # noqa:E402
 
 
 def populate():
