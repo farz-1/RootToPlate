@@ -8,10 +8,13 @@
         {{ hidden }}
     {% endfor %}
     <div>
+        <label for="id_time">Time: </label>
         {{ output_form.time.errors }}
         {{ output_form.time }}
+        <label for="id_amount">Amount: </label>
         {{ output_form.amount.errors }}
         {{ output_form.amount }}
+        <label for="id_notes">Notes: </label>
         {{ output_form.notes.errors }}
         {{ output_form.notes }}
     </div>

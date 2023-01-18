@@ -8,16 +8,22 @@
         {{ hidden }}
     {% endfor %}
     <div>
+        <label for="id_entryTime">Time: </label>
         {{ temperature_form.entryTime.errors }}
         {{ temperature_form.entryTime }}
+        <label for="id_probe1">Temperature 1: </label>
         {{ temperature_form.probe1.errors }}
         {{ temperature_form.probe1 }}
+        <label for="id_probe2">Temperature 2: </label>
         {{ temperature_form.probe2.errors }}
         {{ temperature_form.probe2 }}
+        <label for="id_probe3">Temperature 3: </label>
         {{ temperature_form.probe3.errors }}
         {{ temperature_form.probe3 }}
+        <label for="id_probe4">Temperature 4: </label>
         {{ temperature_form.probe4.errors }}
         {{ temperature_form.probe4 }}
+        <label for="id_notes">Notes: </label>
         {{ temperature_form.notes.errors }}
         {{ temperature_form.notes }}
     </div>
