@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <title>Root2Plate</title>
 </head>
-<body>
+<body style="background-image: url('https://i.postimg.cc/c6yWxCvj/unt.jpg'); background-repeat: no-repeat ; background-size: 100% 100%;">
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light static-top py-lg-0">
     <a class="navbar-brand" href="{% url 'composter:index' %}"><img src="{% static 'images/image.png' %}"
                                                                     width="125" height="75" alt="Logo"></a>
@@ -53,10 +54,10 @@
 
 
 <br>
-<div class="col d-flex justify-content-center">
+<div class="col d-flex justify-content-center" >
     <div class="container">
         <div class="row">
-            <div class="card" style="width: 100rem;">
+            <div class="card" style="width: 100rem; ">
                 <div class="card-body">
                     {% block content_block %}
                     {% endblock %}
@@ -68,9 +69,9 @@
 
 
 </body>
-<div class="container my-4">
+<div class="container my-4" >
     <div class="navbar static-bottom">
-        <footer style="background-color: #335a61;">
+        <footer style="background-color: #FD8204;">
             <div class="container p-4">
                 <div class="row">
                     <div class="col-lg-6 col-md-10 mb-3">
@@ -105,6 +106,8 @@
                     <div class="col-lg-3 col-md-6 mb-4 ">
                         <h4 class="mb-1 text-light">Connect with Us</h4>
                         <table class="table" style="border-color: #666;">
+                            <caption></caption>
+                            <th></th>
                             <caption></caption>
 
 

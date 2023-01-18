@@ -3,14 +3,14 @@
 {% load static %}
 
 {% block content_block %}
-    <h1 class="card-title">Food collection</h1>
+    <h1 class="card-title container text-center">Food collection</h1>
     <div>
     <form method="post" enctype="multipart/form-data" action="{% url 'composter:restaurant_form' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
-    <div>
+    <div class ="box">
         <h5>Restaurant name</h5>
         {{ restaurant_form.name.errors }}
         {{ restaurant_form.name }}
