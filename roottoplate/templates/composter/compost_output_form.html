@@ -1,21 +1,26 @@
 {% extends 'composter/base.html' %}
 {% load static %}
-
+<title>Output Form</title>
 {% block content_block %}
+<h1 class="card-title container text-center">Output form</h1>
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:output_entry' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
     <div>
+        <h5>Time</h5>
         {{ output_form.time.errors }}
         {{ output_form.time }}
+        <h5>Ammount (buckets)</h5>
         {{ output_form.amount.errors }}
         {{ output_form.amount }}
+        <h5>Notes</h5>
         {{ output_form.notes.errors }}
         {{ output_form.notes }}
+        <input type="submit" name="submit" value="Post">
     </div>
 
-    <input type="submit" name="submit" value="Post">
+
 </form>
 {% endblock %}

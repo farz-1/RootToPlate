@@ -2,33 +2,27 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
-    <h1 id="headline">Countdown to next composter feed</h1>
+    <h1 class= "container text-center" id="headline">Countdown to next composter feed</h1>
     <script src="{%static 'javascript/composter.js' %}"></script>
-    <div class="container">
-        <!--
-        composter_output_form
-        composter_form
-        temperature_form
-        -->
-        <a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
-        <a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Composter Form</a>
-        <a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temp Form</a>
-
-
-        <canvas id="canvas" width="500" height="500"></canvas>
-        <div style="position: center; font-size: 20px;">
-            <ul>
-                <li><span id="days"></span>Days</li>
-                <li><span id="hours"></span>Hours</li>
-                <li><span id="minutes"></span>Minutes</li>
-                <li><span id="seconds"></span>Seconds</li>
-            </ul>
-        </div>
-        <div class="message">
-            <div id="content">
-                <!--this is to stop the count down-->
-            </div>
-        </div>
+<a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
+<a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
+<a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
+<div class="container text-center">
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="countdown">
+    <div style="position: center; font-size: 20px;">
+      <ul>
+        <li><span id="days"> </span> Days</li>
+        <li><span id="hours"></span> Hours</li>
+        <li><span id="minutes"></span> Minutes</li>
+        <li><span id="seconds"></span> Seconds</li>
+      </ul>
     </div>
-
-{% endblock %}
+  <div class="message">
+    <div id="content">
+        <!--this is to stop the count down-->
+    </div>
+  </div>
+  </div>
+</div>
+  {% endblock %}

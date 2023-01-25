@@ -8,10 +8,13 @@
         {{ hidden }}
     {% endfor %}
     <div>
+        <label for="id_name">Name: </label>
         {{ form.name.errors }}
         {{ form.name }}
+        <label for="id_woodChipRatio">Woodchip ratio: </label>
         {{ form.woodChipRatio.errors }}
         {{ form.woodChipRatio }}
+        <label for="id_CNRatio">Carbon Nitrogen ratio: </label>
         {{ form.CNRatio.errors }}
         {{ form.CNRatio }}
     </div>
