@@ -41,13 +41,13 @@ def user_login(request):
         return render(request, 'composter/login.html')
 
 
-@login_required
+@login_required(login_url='/composter/')
 def user_logout(request):
     logout(request)
     return redirect(reverse('index'))
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def input_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -82,7 +82,7 @@ def input_entry(request):
     return render(request, 'composter/compost_form.html', context)
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def temp_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -100,7 +100,7 @@ def temp_entry(request):
     return render(request, 'composter/temperature_form.html', {'temperature_form': temp_form})
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def output_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -134,7 +134,7 @@ def restaurant_request_form(request):
 
 
 # admin only views
-@login_required
+@login_required(login_url='/composter/login/')
 def add_user(request):
     user = User.objects.get(username=request.user.username)
     if not user.is_staff:
@@ -152,7 +152,7 @@ def add_user(request):
     return render(request, 'composter/admin_add_user.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def add_input_type(request):
     user = User.objects.get(username=request.user.username)
     if not user.is_staff:
@@ -170,7 +170,7 @@ def add_input_type(request):
     return render(request, 'composter/admin_add_input_type.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def change_password(request):
     user = User.objects.get(username=request.user.username)
     if not user.is_staff:
