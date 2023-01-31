@@ -4,8 +4,12 @@
 {% block content_block %}
     <h1 class= "container text-center" id="headline">Countdown to next composter feed</h1>
     <script src="{%static 'javascript/composter.js' %}"></script>
+<a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
+<a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
+<a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
 <div class="container text-center">
     <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="countdown">
     <div style="position: center; font-size: 20px;">
       <ul>
         <li><span id="days"> </span> Days</li>
@@ -20,4 +24,5 @@
     </div>
   </div>
   </div>
+</div>
   {% endblock %}

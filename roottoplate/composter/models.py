@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
-from datetime import date
 
 
 class InputType(models.Model):
@@ -40,7 +39,7 @@ class Input(models.Model):
     INPUT_MAX_DIGITS = 5
 
     inputEntry = models.ForeignKey(InputEntry, on_delete=models.CASCADE, null=True)
-    inputType = models.ForeignKey(InputType, on_delete=models.CASCADE)
+    inputType = models.ForeignKey(InputType, on_delete=models.CASCADE, null=True)
     inputAmount = models.DecimalField(decimal_places=INPUT_DECIMAL_PLACES, max_digits=INPUT_MAX_DIGITS,
                                       validators=[MinValueValidator(0)])
 
@@ -50,7 +49,7 @@ class TemperatureEntry(models.Model):
     TEMP_DECIMAL_PLACES = 2
     TEMP_MAX_DIGITS = 5
 
-    entryID = models.IntegerField(unique=True, primary_key=True)
+    entryID = models.AutoField(primary_key=True)
     entryTime = models.DateTimeField()
     probe1 = models.DecimalField(decimal_places=TEMP_DECIMAL_PLACES, max_digits=TEMP_MAX_DIGITS,
                                  validators=[MinValueValidator(-40), MaxValueValidator(150)])
@@ -76,11 +75,11 @@ class RestaurantRequest(models.Model):
     EMAIL_MAX_LENGTH = 128
     NOTES_MAX_LENGTH = 20048
 
-    requestID = models.IntegerField(unique=True, primary_key=True)
+    requestID = models.AutoField(primary_key=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH)
     address = models.CharField(max_length=ADDRESS_MAX_LENGTH)
     dateRequested = models.DateTimeField()
-    deadlineDate = models.DateTimeField(validators=[MinValueValidator(limit_value=date.today)])
+    deadlineDate = models.DateTimeField()
     email = models.CharField(max_length=EMAIL_MAX_LENGTH)
     phoneNumber = models.IntegerField()
     notes = models.CharField(max_length=NOTES_MAX_LENGTH, null=True, blank=True)
@@ -96,7 +95,7 @@ class Output(models.Model):
     OUTPUT_DECIMAL_PLACES = 2
     OUTPUT_MAX_DIGITS = 5
 
-    outputID = models.IntegerField(unique=True, primary_key=True)
+    outputID = models.AutoField(primary_key=True)
     amount = models.DecimalField(decimal_places=OUTPUT_DECIMAL_PLACES, max_digits=OUTPUT_MAX_DIGITS)
     time = models.DateTimeField()
     notes = models.CharField(max_length=NOTES_MAX_LENGTH, null=True, blank=True)

@@ -3,22 +3,21 @@
 {% load static %}
 {% block content_block %}
 
-<div class="card ">
-    <body>
     <section class="vh-90 gradient-custom">
         <div class="container    h-5">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card  text-white" style="border-radius: 1rem; background-color: #032F3C">
                         <div class="card-body p-5 text-center">
 
 
                                 <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                                <p class="text-white-50 mb-5">Please enter your login and password!</p>
+                                <p class="text-white-50 mb-5">Please enter your username and password!</p>
                                 <form action="" method="POST">
                                 {% csrf_token %}
                                 <div class="form-outline form-white mb-1 ">
-                                    <input  style="width: 440px;" type="text" name="username" id="typeEmailX" class="form-control form-control-lg" placeholder="XXXXX"/>
+                                    <input  style="width: 440px;" type="text" name="username" id="typeEmailX" class="form-control form-control-lg"
+                                            placeholder="name@example.com"/>
                                     <label class="form-label" for="typeEmailX">Username</label>
                                 <div class="form-outline form-white mb-1">
                                     <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg"/>
@@ -32,7 +31,6 @@
                                 <input class="btn btn-outline-light btn-lg px-5" type="submit" value="Log in">
                                 </form>
 
-
                             </div>
 
 
@@ -42,6 +40,5 @@
             </div>
         </div>
     </section>
-    </body>
-</div>
+
 {% endblock %}
