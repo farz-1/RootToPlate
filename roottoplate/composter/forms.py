@@ -29,7 +29,7 @@ class UserLoginForm(forms.ModelForm):
 class ChangePasswordForm(forms.ModelForm):
     # accessible by admin only
     username = forms.CharField()  # needs some validation
-    password = forms.PasswordInput()
+    password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
@@ -39,8 +39,8 @@ class ChangePasswordForm(forms.ModelForm):
 class InputTypeForm(forms.ModelForm):
     # accessible by admin only
     name = forms.CharField(required=True)
-    woodChipRatio = forms.DecimalField()
-    CNRatio = forms.DecimalField()
+    woodChipRatio = forms.DecimalField(required=False)
+    CNRatio = forms.DecimalField(required=False)
 
     class Meta:
         model = InputType
@@ -48,8 +48,8 @@ class InputTypeForm(forms.ModelForm):
 
 
 class InputEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=datetime.date.today(), required=True)  # filled with current time, can be amended
-    notes = forms.CharField()
+    entryTime = forms.DateTimeField(initial=datetime.datetime.now(), required=True)  # filled with current time, can be amended
+    notes = forms.CharField(required=False)
 
     class Meta:
         model = InputEntry
@@ -59,21 +59,24 @@ class InputEntryForm(forms.ModelForm):
 # the idea is that a variable number of this form
 # appears on the same page as the InputEntryForm and then is dealt with in the view
 class InputForm(forms.ModelForm):
-    inputType = forms.ModelChoiceField(queryset=InputType.objects.all(), required=True)
-    inputAmount = forms.DecimalField()
+    inputType = forms.ModelChoiceField(queryset=InputType.objects.all(), required=False)
+    inputAmount = forms.DecimalField(required=False)
 
     class Meta:
         model = Input
         fields = {'inputType', 'inputAmount'}
 
 
+InputFormSet = forms.modelformset_factory(Input, fields=('inputType', 'inputAmount'), extra=1)
+
+
 class TempEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=datetime.date.today(), required=True)  # filled with current time, can be amended
+    entryTime = forms.DateTimeField(initial=datetime.datetime.now(), required=True)  # filled with current time, can be amended
     probe1 = forms.DecimalField(required=True)
     probe2 = forms.DecimalField(required=True)
     probe3 = forms.DecimalField(required=True)
     probe4 = forms.DecimalField(required=True)
-    notes = forms.CharField()
+    notes = forms.CharField(required=False)
 
     class Meta:
         model = TemperatureEntry
@@ -83,12 +86,12 @@ class TempEntryForm(forms.ModelForm):
 class RestaurantForm(forms.ModelForm):
     name = forms.CharField(required=True)
     address = forms.CharField(required=True)
-    dateRequested = forms.DateTimeField(initial=datetime.date.today())
-    deadlineDate = forms.DateTimeField(initial=datetime.date.today() + datetime.timedelta(weeks=1), required=True)
+    dateRequested = forms.DateTimeField(initial=datetime.datetime.now(), required=False)
+    deadlineDate = forms.DateTimeField(initial=datetime.datetime.now() + datetime.timedelta(weeks=1), required=True)
     email = forms.CharField(required=True)
-    phoneNumber = forms.IntegerField()
-    notes = forms.CharField()
-    numberOfBags = forms.IntegerField()
+    phoneNumber = forms.IntegerField(required=False)
+    notes = forms.CharField(required=False)
+    numberOfBags = forms.IntegerField(required=False)
 
     class Meta:
         model = RestaurantRequest
@@ -97,8 +100,8 @@ class RestaurantForm(forms.ModelForm):
 
 class OutputForm(forms.ModelForm):
     amount = forms.DecimalField(required=True)
-    time = forms.DateTimeField(initial=datetime.date.today(), required=True)
-    notes = forms.CharField()
+    time = forms.DateTimeField(initial=datetime.datetime.now(), required=True)
+    notes = forms.CharField(required=False)
 
     class Meta:
         model = Output

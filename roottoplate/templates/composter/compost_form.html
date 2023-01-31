@@ -1,43 +1,55 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
-<form action="/your-name/" method="post">
-    <label for="your_name">Your name: </label>
-    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
-    <input type="submit" value="OK">
-</form>
-<form method="post" enctype="multipart/form-data" action="{% url 'composter:input_entry' %}">
+<form id="form-container" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-
     <div>
-        <label ">Entry time.err: </label>
-
+        <label for="id_entryTime">Time: </label>
         {{ entry_form.entryTime.errors }}
         {{ entry_form.entryTime }}
-        <div>
-            {{ input_form1.inputType.errors }}
-            {{ input_form1.inputType }}
-            {{ input_form1.inputAmount.errors }}
-            {{ input_form1.inputAmount }}
+        <div id="input-form-container">
+            {{ input_formset.management_form }}
+            {% for input in input_formset %}
+                <div class="input-form">
+                    <h6>Input type: </h6>
+                    {{ input.inputType.errors }}
+                    {{ input.inputType }}
+                    <h6>Input amount: </h6>
+                    {{ input.inputAmount.errors }}
+                    {{ input.inputAmount }}
+                </div>
+            {% endfor %}
+            <button id="add-form" type="button">Add another input</button>
         </div>
-        <div>
-            {{ input_form2.inputType.errors }}
-            {{ input_form2.inputType }}
-            {{ input_form2.inputAmount.errors }}
-            {{ input_form2.inputAmount }}
-        </div>
-        <div>
-            {{ input_form3.inputType.errors }}
-            {{ input_form3.inputType }}
-            {{ input_form3.inputAmount.errors }}
-            {{ input_form3.inputAmount }}
-        </div>
+
+        
+        
+        <label for="id_notes">Notes: </label>
         {{ entry_form.notes.errors}}
         {{ entry_form.notes }}
     </div>
-    <input type="submit" name="submit" value="Post">
+    <button type="submit">Submit input</button>
 </form>
+<script>
+    let inputForm = document.querySelectorAll(".input-form")
+    let container = document.querySelector("#input-form-container")
+    let addButton = document.querySelector("#add-form")
+    let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+
+    let formNum = inputForm.length-1
+    addButton.addEventListener('click', addForm)
+
+    function addForm(e){
+        e.preventDefault()
+
+        let newForm = inputForm[0].cloneNode(true)
+        let formRegex = RegExp(`form-(\\d){1}-`, 'g')
+
+        formNum++
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+        container.insertBefore(newForm, addButton)
+
+        totalForms.setAttribute('value', `${formNum+1}`)
+    }
+</script>
 {% endblock %}
