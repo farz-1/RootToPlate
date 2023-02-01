@@ -197,9 +197,9 @@ class LoggedInUserURLTesting(TestCase):
         self.assertTemplateUsed(response, 'composter/admin_add_user.html')
 
     def test_add_user_redirects_non_staff(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:add_user'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_add_type_page_at_correct_location(self):
         self.client.login(username='kw01', password='grass99')
@@ -216,6 +216,11 @@ class LoggedInUserURLTesting(TestCase):
         response = self.client.get(reverse('composter:add_input_type'))
         self.assertTemplateUsed(response, 'composter/admin_add_input_type.html')
 
+    def test_add_type_redirects_non_staff(self):
+        self.client.login(username='ab88', password='45dirt')
+        response = self.client.get(reverse('composter:add_input_type'))
+        self.assertEqual(response.status_code, 302)
+
     def test_change_password_at_correct_location(self):
         self.client.login(username='kw01', password='grass99')
         response = self.client.get('/composter/change-password/')
@@ -230,6 +235,11 @@ class LoggedInUserURLTesting(TestCase):
         self.client.login(username='kw01', password='grass99')
         response = self.client.get(reverse('composter:change_password'))
         self.assertTemplateUsed(response, 'composter/admin_change_password.html')
+
+    def test_change_password_redirects_non_staff(self):
+        self.client.login(username='ab88', password='45dirt')
+        response = self.client.get(reverse('composter:change_password'))
+        self.assertEqual(response.status_code, 302)
 
     def test_logout_working(self):
         self.client.login(username='kw01', password='grass99')
