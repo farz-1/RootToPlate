@@ -40,7 +40,7 @@ class InputTypeForm(forms.ModelForm):
     # accessible by admin only
     name = forms.CharField(required=True)
     woodChipRatio = forms.DecimalField(required=False)
-    CNRatio = forms.DecimalField(required=False)
+    CNRatio = forms.DecimalField(required=True)
 
     class Meta:
         model = InputType
@@ -59,15 +59,15 @@ class InputEntryForm(forms.ModelForm):
 # the idea is that a variable number of this form
 # appears on the same page as the InputEntryForm and then is dealt with in the view
 class InputForm(forms.ModelForm):
-    inputType = forms.ModelChoiceField(queryset=InputType.objects.all(), required=False)
-    inputAmount = forms.DecimalField(required=False)
+    inputType = forms.ModelChoiceField(queryset=InputType.objects.all(), required=True)
+    inputAmount = forms.DecimalField(required=True)
 
     class Meta:
         model = Input
         fields = {'inputType', 'inputAmount'}
 
 
-InputFormSet = forms.modelformset_factory(Input, fields=('inputType', 'inputAmount'), extra=1)
+InputFormSet = forms.formsets.formset_factory(InputForm, extra=1, max_num=5)
 
 
 class TempEntryForm(forms.ModelForm):
