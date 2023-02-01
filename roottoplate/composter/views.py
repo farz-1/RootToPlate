@@ -151,54 +151,33 @@ def restaurant_request_form(request):
 
 # admin only views
 @login_required
-def add_user(request):
+def simple_admin(request):
     user = User.objects.get(username=request.user.username)
+    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),' change_password_form': ChangePasswordForm()}
     if not user.is_staff:
         messages.error(request, "You are not authorised to access this.")
         return redirect('composter:index')
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            new_user = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + new_user)
-            return redirect('composter:add_user')
-    else:
-        form = UserForm()
-    return render(request, 'composter/admin_add_user.html', {'form': form})
-
-
-@login_required
-def add_input_type(request):
-    user = User.objects.get(username=request.user.username)
-    if not user.is_staff:
-        messages.error(request, "You are not authorised to access this.")
-        return redirect('composter:index')
-    if request.method == 'POST':
-        form = InputTypeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('composter:add_imput_type')
-        else:
-            print(form.errors)
-    else:
-        form = InputTypeForm()
-    return render(request, 'composter/admin_add_input_type.html', {'form': form})
-
-
-@login_required
-def change_password(request):
-    user = User.objects.get(username=request.user.username)
-    if not user.is_staff:
-        messages.error(request, "You are not authorised to access this.")
-        return redirect('composter:index')
-    if request.method == 'POST':
-        form = ChangePasswordForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('composter:manage_users')
-        else:
-            print(form.errors)
-    else:
-        form = ChangePasswordForm()
-    return render(request, 'composter/admin_change_password.html', {'form': form})
+    if request.method== 'POST':
+        # deal with each form and add success message if successful
+        if 'add_user' in request.POST:
+            user_form = UserForm(request.POST)
+            if user_form.is_valid():
+                user_form.save()
+                context['success_message'] = f"New user {user_form.username} added."
+            else:
+                context['user_form'] = user_form
+        if 'change_password' in request.POST:
+            change_password_form = ChangePasswordForm(request.POST)
+            if change_password_form.is_valid():
+                change_password_form.save()
+                context['success_message'] = f"Password for user {change_password_form.username} changed."
+            else:
+                context['change_password_form'] = change_password_form
+        if 'add_input_type' in request.POST:
+            input_type_form = InputTypeForm(request.POST)
+            if input_type_form.is_valid():
+                input_type_form.save()
+                context['success_message'] = f"Input type {input_type_form.name} added successfully"
+            else:
+                context['input_type_form'] = input_type_form
+    return render(request, 'composter/admin_simple.html', context)
