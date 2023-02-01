@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <title>Food Collection</title>
 {% extends 'composter/base.html' %}
 {% load static %}
 
 {% block content_block %}
 <h1 class="card-title container text-center">Food Collection Form</h1>
-<divstyle="justify-content: center">
+<div class="justify-content: center">
     <form method="post" enctype="multipart/form-data" action="{% url 'composter:restaurant_form' %}">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
