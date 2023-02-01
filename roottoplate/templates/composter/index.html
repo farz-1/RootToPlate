@@ -4,94 +4,57 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <h1 class="container text-center">Young Enterprise Scotland</h1>
     <br>
+    <canvas id="myChart2" class="container" style="width:50%;max-width:600px"></canvas>
     <br>
-    <canvas id="inputTypeChart" class="container" style="width:50%;max-width:600px"></canvas>
+    <canvas id="myChart" class="container" style="width:50%;max-width:600px"></canvas>
     <br>
-    <canvas id="tempChart" class="container" style="width:50%;max-width:600px"></canvas>
 
 
     <script>
+        var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var yValues = [55, 49, 44, 24, 15];
+        var barColors = ["red", "green", "blue", "orange", "brown"];
 
-        new Chart("inputTypeChart", {
-            type: "doughnut",
+        new Chart("myChart", {
+            type: "bar",
             data: {
-                labels: {{ typeNames|safe }},
+                labels: xValues,
                 datasets: [{
-                    backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
-                    data: {{ typeCounts|safe }}
+                    backgroundColor: barColors,
+                    data: yValues
                 }]
             },
             options: {
-                legend: {display: true},
+                legend: {display: false},
                 title: {
                     display: true,
-                    text: "Input types"
+                    text: "World Wine Production 2018"
                 }
             }
         });
+        var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+        var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
-        const data = {
-            labels: {{ tempTimes|safe }},
-            datasets: [
-                {
-                label: "Temperature 1",
-                data: [{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}],
-                borderColor: "#B8BF0D",
-                fill: false
-                },
-                {
-                label: "Temperature 2",
-                data: [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}],
-                borderColor: "#E60088",
-                fill: false
-                },
-                {
-                label: "Temperature 3",
-                data: [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}],
-                borderColor: "#87319A",
-                fill: false
-                },
-                {
-                label: "Temperature 4",
-                data: [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}],
-                borderColor: "#E01F1D",
-                fill: false
-                }
-            ]
-        };
-        new Chart("tempChart", {
+        new Chart("myChart2", {
             type: "line",
-            data: data,
+            data: {
+                labels: xValues,
+                datasets: [{
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: yValues
+                }]
+            },
             options: {
-                responsive: true,
-                interaction: {
-                    mode: "nearest",
-                    axis: "x",
-                    intersect: false
-                },
-                title: {
-                    display: true,
-                    text: "Composter temperatures"
-                },
+                legend: {display: false},
                 scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Day"
-                        }
-                    },
-                    y: {
-                        stacked: true,
-                        title: {
-                            display: true,
-                            text: "Temperature"
-                        }
-                    }
+                    yAxes: [{ticks: {min: 6, max: 16}}],
                 }
             }
         });
     </script>
-
-
+    
 
 {% endblock %}

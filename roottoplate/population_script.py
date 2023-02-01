@@ -197,6 +197,8 @@ def create_user(data):
     user.first_name = data['firstName']
     user.last_name = data['lastName']
     user.is_staff = data['isAdmin']
+    if data['isAdmin']:
+        user.is_superuser = True
     user.save()
     return user
 
