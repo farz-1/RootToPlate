@@ -1,10 +1,14 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.conf import settings
+from django.contrib.auth.models import User
+import os
+import warnings
 
 
 class SimpleAnonymousComposterURLTesting(TestCase):
     """
-    Do the URLs work as intended for an anonymous user?
+    Checks the URLS for anonymous users
     """
     def test_index_page_at_correct_location(self):
         response = self.client.get('/')
@@ -84,17 +88,20 @@ class SimpleAnonymousComposterURLTesting(TestCase):
 
 
 class LoggedInUserURLTesting(TestCase):
+    """
+    URL testing for logged in users
+    """
     def setUp(self):
-        try:
-            import population_script
-        except ImportError:
-            raise ImportError("Population script could not be imported.")
-
-        if 'populate' not in dir(population_script):
-            raise NameError("population_script.py does not "
-                            "contain the populate() function.")
-
-        population_script.populate()
+        user = User.objects.create_user(username='kw01',
+                                        password='grass99')
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        user2 = User.objects.create_user(username='ab88',
+                                         password='45dirt')
+        user2.is_staff = False
+        user2.is_superuser = False
+        user2.save()
 
     def test_index_page_at_correct_location(self):
         self.client.login(username='kw01', password='grass99')
@@ -245,6 +252,36 @@ class LoggedInUserURLTesting(TestCase):
         self.client.login(username='kw01', password='grass99')
         response = self.client.get('/composter/logout/')
         self.assertEqual(response.status_code, 302)
-        # should not redirect login page
+        # should not redirect
         response = self.client.get('/composter/login/')
         self.assertEqual(response.status_code, 200)
+
+
+class DatabaseConfigurationTests(TestCase):
+    """
+    Checks the database is correctly configured
+    """
+    def setUp(self):
+        pass
+
+    def test_databases_variable_exists(self):
+        self.assertTrue(settings.DATABASES)
+        self.assertTrue('default' in settings.DATABASES)
+
+    def test_gitignore_contains_database(self):
+        base_dir = os.popen('git rev-parse --show-toplevel').read().strip()
+
+        if base_dir.startswith('fatal'):
+            warnings.warn("No github repo used")
+        else:
+            gitignore = os.path.join(base_dir, '.gitignore')
+
+            if os.path.exists(gitignore):
+                f = open(gitignore, 'r')
+
+                for line in f:
+                    line = line.strip()
+
+                    if line.startswith('db.sqlite3'):
+                        success = True
+            self.assertTrue(success)
