@@ -7,8 +7,7 @@ import datetime
 
 class UserForm(UserCreationForm):
     # accessible by admin only
-    is_staff = forms.BooleanField(required=True)
-
+    add_user = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     class Meta:
         model = User
         fields = {'username',
@@ -30,6 +29,7 @@ class ChangePasswordForm(forms.ModelForm):
     # accessible by admin only
     username = forms.CharField()  # needs some validation
     password = forms.CharField(widget=forms.PasswordInput())
+    change_password = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
     class Meta:
         model = User
@@ -41,6 +41,8 @@ class InputTypeForm(forms.ModelForm):
     name = forms.CharField(required=True)
     woodChipRatio = forms.DecimalField(required=False)
     CNRatio = forms.DecimalField(required=True)
+    add_input_type = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
 
     class Meta:
         model = InputType
