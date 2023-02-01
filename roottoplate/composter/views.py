@@ -71,7 +71,7 @@ class InputFormView(TemplateView):
 
     @method_decorator(login_required)
     def get(self, *args, **kwargs):
-        context = {'input_formset': InputFormSet(queryset=Input.objects.none()), 'entry_form': InputEntryForm()}
+        context = {'input_formset': InputFormSet, 'entry_form': InputEntryForm()}
         return self.render_to_response(context)
 
     @method_decorator(login_required)
