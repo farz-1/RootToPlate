@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <meta charset="utf-8">
 {% load static %}
@@ -13,13 +14,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <title>Root2Plate</title>
 </head>
-<body>
+<body style="background: linear-gradient(0deg, #335a61 50% , white 80%)" width="100px" ;>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light static-top py-lg-0">
-    <a class="navbar-brand" href="index.html"><img src="{% static 'images/image.png' %}" width="125" height="75"
-                                                   alt=""></a>
+    <a class="navbar-brand" href="{% url 'composter:index' %}"><img src="{% static 'images/image.png' %}" width="170"
+                                                                    height="100"
+                                                                    alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -39,7 +42,7 @@
                 <a class="nav-link" href="{% url 'composter:restaurant_form' %}">Food Collection</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'composter:about' %}">About</a>
+                <a class="nav-link" href="{% url 'composter:about' %}">About Us</a>
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
@@ -71,76 +74,82 @@
 
 
 </body>
-<div class="container my-4">
-    <div class="navbar static-bottom">
-        <footer style="background-color: #335a61;">
-            <div class="container p-4">
-                <div class="row">
-                    <div class="col-lg-6 col-md-10 mb-3">
-                        <h4 style="font-weight: bold" class="mb-2 text-light">Young Enterprise Scotland</h4>
-                        <p style="color: #ffffff;">
-                            Our Vision is for Scotland to be a place where all young people are given the opportunity to
-                            have a rewarding future in work and life - no matter where they start their journey.
-                            Our Mission is to inspire and equip young people, irrespective of their background, to
-                            learn,
-                            develop and reach their full potential through enterprise and financial education.
-                            In everything that we do, we will work with the following values: Integrity, Enthusiasm,
-                            Creativity & Collaboration.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <h4 class="mb-3 text-light">Contact Us</h4>
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-1">
-                                <a href="https://yes.org.uk/index.php">Website</a>
-                            </li>
-                            <li class="mb-1">
-                                <a href="tel:4401414067722">Phone Number</a>
-                            </li>
-                            <li class="mb-1">
-                                <a href="https://goo.gl/maps/NjoHSJU2hwDTLgJu6">Map</a>
-                            </li>
-                            <li>
-                                <a href="mailto:admin@yes.org.uk">Mail</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4 ">
-                        <h4 class="mb-1 text-light">Connect with Us</h4>
-                        <table class="table" style="border-color: #666;">
-                            <caption></caption>
-
-                            <th></th>
-
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <a href="https://www.facebook.com/YoungEnterpriseScotland/">
-                                        <em class="bi bi-facebook text-light"></em>Facebook</a></td>
-
-                            </tr>
-                            <tr>
-                                <td><a href="https://www.instagram.com/yescotland/">
-                                    <em class="bi bi-instagram text-light"></em>Instagram</a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://twitter.com/YE_Scotland">
-                                    <em class="bi bi-twitter text-light"></em>Twitter</a></td>
-
-                            </tr>
-                            <tr>
-
-                                <td><a href="https://www.linkedin.com/company/young-enterprise-scotland">
-                                    <em class="bi bi-linkedin text-light"></em>LinkedIn</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+<br>
+<footer style="background-color: #335a61;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-10 mb-3">
+                <div class="container-fluid">
+                    <h4 style="font-weight: bold" class="mb-2 text-light">Young Enterprise Scotland</h4>
+                    <p style="color: #818a91; font-size:90%">
+                        Our Vision is for Scotland to be a place where all young people are given the opportunity to
+                        have a rewarding future in work and life - no matter where they start their journey.
+                        <br>
+                        <br>
+                        Our Mission is to inspire and equip young people, irrespective of their background, to
+                        learn,
+                        develop and reach their full potential through enterprise and financial education.
+                        <br>
+                        <br>
+                        In everything that we do, we will work with the following values: Integrity, Enthusiasm,
+                        Creativity & Collaboration.
+                    </p>
                 </div>
             </div>
-        </footer>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="container-fluid">
 
+                    <h4 class="mb-3 text-light">Contact Us</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1">
+                            <a href="https://yes.org.uk/index.php">Website</a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="tel:4401414067722">Phone Number</a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="https://goo.gl/maps/NjoHSJU2hwDTLgJu6">Map</a>
+                        </li>
+                        <li>
+                            <a href="mailto:admin@yes.org.uk">Mail</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 ">
+                <div class="container-fluid ">
+                    <h4 class="mb-1 text-light">Connect with Us</h4>
+                    <table class="table" style="border-color: white;">
+                        <caption></caption>
+
+                        <th></th>
+
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="https://www.facebook.com/YoungEnterpriseScotland/">
+                                    <em class="bi bi-facebook text-light"><br></em>Facebook</a></td>
+                        </tr>
+                        <tr>
+
+                            <td><a href="https://www.instagram.com/yescotland/">
+                                <em class="bi bi-instagram text-light"><br></em>Instagram</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://twitter.com/YE_Scotland">
+                                <em class="bi bi-twitter text-light"><br></em>Twitter</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.linkedin.com/company/young-enterprise-scotland">
+                                <em class="bi bi-linkedin text-light"><br></em>LinkedIn</a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</footer>
 
 </html>
