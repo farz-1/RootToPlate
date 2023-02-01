@@ -6,13 +6,24 @@
     <h1 class="container text-center">Young Enterprise Scotland</h1>
     <br>
     <br>
-    <canvas id="inputTypeChart" class="container" style="width:50%;max-width:600px"></canvas>
-    <br>
-    <canvas id="tempChart" class="container" style="width:50%;max-width:600px"></canvas>
-
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="inputTypeChart" class="container" style="width:50%;max-width:600px"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="tempChart" class="container" style="width:50%;max-width:600px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
@@ -35,28 +46,29 @@
             labels: {{ tempTimes|safe }},
             datasets: [
                 {
-                label: "Temperature 1",
-                data: [{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}],
-                borderColor: "#B8BF0D",
-                fill: false
+                    label: "Temperature 1",
+                    data: [{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}],
+                    borderColor: "#B8BF0D",
+                    fill: false,
+
                 },
                 {
-                label: "Temperature 2",
-                data: [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}],
-                borderColor: "#E60088",
-                fill: false
+                    label: "Temperature 2",
+                    data: [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}],
+                    borderColor: "#E60088",
+                    fill: false
                 },
                 {
-                label: "Temperature 3",
-                data: [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}],
-                borderColor: "#87319A",
-                fill: false
+                    label: "Temperature 3",
+                    data: [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}],
+                    borderColor: "#87319A",
+                    fill: false
                 },
                 {
-                label: "Temperature 4",
-                data: [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}],
-                borderColor: "#E01F1D",
-                fill: false
+                    label: "Temperature 4",
+                    data: [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}],
+                    borderColor: "#E01F1D",
+                    fill: false
                 }
             ]
         };
