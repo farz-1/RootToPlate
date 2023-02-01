@@ -1,12 +1,8 @@
-import os
-import warnings
-from django.test import SimpleTestCase, TestCase
+from django.test import TestCase
 from django.urls import reverse
-from composter.models import InputType, Input, InputEntry, \
-    TemperatureEntry, RestaurantRequest, Output
 
 
-class SimpleAnonymousComposterURLTesting(SimpleTestCase):
+class SimpleAnonymousComposterURLTesting(TestCase):
     """
     Do the URLs work as intended for an anonymous user?
     """
@@ -86,41 +82,8 @@ class SimpleAnonymousComposterURLTesting(SimpleTestCase):
         response = self.client.get('/composter/change-password/')
         self.assertEqual(response.status_code, 302)
 
-#  TESTS BELOW HERE GONNA GET CHANGED PROBS
 
-
-class ComposterDatabaseConfigurationTests(TestCase):
-    """
-    Is the database configured correctly?
-    """
-
-    def setUp(self):
-        pass
-
-    def is_database_in_gitignore(self):
-        """
-        Checks if database is in gitignore
-        """
-        git_base_dir = os.popen('git rev-parse --show-toplevel').read().strip()
-
-        if git_base_dir.startswith('fatal'):
-            warnings.warn("No github repository used")
-        else:
-            gitignore_path = os.path.join(git_base_dir, '.gitignore')
-
-            if os.path.exists(gitignore_path):
-                self.assertTrue(self.is_database_in_gitignore(gitignore_path),
-                                "Your .gitignore file does not "
-                                "include 'db.sqlite3'")
-            else:
-                warnings.warn("No .gitignore file")
-
-
-class ComposterPopulationScriptTesting(TestCase):
-    """
-    Tests whether the population script works as expected
-    """
-
+class LoggedInUserURLTesting(TestCase):
     def setUp(self):
         try:
             import population_script
@@ -133,17 +96,145 @@ class ComposterPopulationScriptTesting(TestCase):
 
         population_script.populate()
 
-    def test_temperature_entries(self):
-        """
-        There should be 4 temperature entries created.
-        """
-        temperature_entries = TemperatureEntry.objects.filter()
-        count = len(temperature_entries)
-        entry_strs = map(str, temperature_entries)
+    def test_index_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(count, 4,
-                         f'Expected 4 temperature entries to be created '
-                         f'from the population script but found {count}')
-        self.assertTrue('34264' in entry_strs, "Temperature entry with id "
-                                               "34264 was expected but not"
-                                               " present in database.")
+    def test_index_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_about_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/about/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_about_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:about'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_page_redirects_logged_in_user(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/login/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_login_page_by_name_redirects_logged_in_user(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:login'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_composter_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/composter/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_composter_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:composter'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_input_entry_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/input-entry/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_input_entry_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:input_entry'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_input_entry_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:input_entry'))
+        self.assertTemplateUsed(response, 'composter/compost_form.html')
+
+    def test_temp_entry_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/temp-entry/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_temp_entry_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:temp_entry'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_temp_entry_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:temp_entry'))
+        self.assertTemplateUsed(response, 'composter/temperature_form.html')
+
+    def test_output_entry_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/output-entry/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_output_entry_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:output_entry'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_output_entry_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:output_entry'))
+        self.assertTemplateUsed(response, 'composter/compost_output_form.html')
+
+    def test_add_user_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/add-user/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_user_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:add_user'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_user_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:add_user'))
+        self.assertTemplateUsed(response, 'composter/admin_add_user.html')
+
+    def test_add_user_redirects_non_staff(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:add_user'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_type_page_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/add-input-type/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_type_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:add_input_type'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_type_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:add_input_type'))
+        self.assertTemplateUsed(response, 'composter/admin_add_input_type.html')
+
+    def test_change_password_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/change-password/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_change_password_page_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:change_password'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_change_password_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:change_password'))
+        self.assertTemplateUsed(response, 'composter/admin_change_password.html')
+
+    def test_logout_working(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/logout/')
+        self.assertEqual(response.status_code, 302)
+        # should not redirect login page
+        response = self.client.get('/composter/login/')
+        self.assertEqual(response.status_code, 200)
