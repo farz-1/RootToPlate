@@ -38,8 +38,8 @@ class Input(models.Model):
     INPUT_DECIMAL_PLACES = 2
     INPUT_MAX_DIGITS = 5
 
-    inputEntry = models.ForeignKey(InputEntry, on_delete=models.CASCADE, null=True)
-    inputType = models.ForeignKey(InputType, on_delete=models.CASCADE, null=True)
+    inputEntry = models.ForeignKey(InputEntry, on_delete=models.CASCADE)
+    inputType = models.ForeignKey(InputType, on_delete=models.CASCADE)
     inputAmount = models.DecimalField(decimal_places=INPUT_DECIMAL_PLACES, max_digits=INPUT_MAX_DIGITS,
                                       validators=[MinValueValidator(0)])
 
