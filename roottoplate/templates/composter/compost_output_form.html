@@ -5,24 +5,25 @@
 <title>Output Form</title>
 {% block content_block %}
 <h1 class="card-title container text-center">Output form</h1>
-<form method="post" enctype="multipart/form-data" action="{% url 'composter:output_entry' %}">
+<form method="post" class="container justify-content-center"
+      enctype="multipart/form-data" action="{% url 'composter:output_entry' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
-    <div>
-        <h5>Time</h5>
-        {{ output_form.time.errors|as_crispy_field}}
+    <div class="card w-50">
+
+        {{ output_form.time.errors}}
         {{ output_form.time|as_crispy_field}}
-        <h5>Ammount (buckets)</h5>
+
         {{ output_form.amount.errors }}
-        {{ output_form.amount }}
-        <h5>Notes</h5>
+        {{ output_form.amount|as_crispy_field }}
+
         {{ output_form.notes.errors }}
-        {{ output_form.notes }}
-        <input type="submit" name="submit" value="Post">
+        {{ output_form.notes|as_crispy_field }}
+        <br>
+        <button type="submit" value="Post" class="btn btn-success">Submit data</button>
+        <!--old button<input type="submit" name="submit" value="Post"> -->
     </div>
-
-
 </form>
 {% endblock %}
