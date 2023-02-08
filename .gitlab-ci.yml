@@ -46,7 +46,7 @@ static-analysis:
 
 
 heroku_deploy:
-  stage: production
+  stage: build
   script:
     - gem install dpl
     - dpl --provider=heroku --app=$roottoplate --api-key=$73562996-0279-4eba-8859-3c9b0460e28a
