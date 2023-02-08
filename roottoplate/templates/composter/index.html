@@ -6,6 +6,8 @@
     <h1 class="container text-center">Young Enterprise Scotland</h1>
     <br>
     <br>
+    <canvas id="Carbonneutral" class="card" style="width: 50%;max-width: 700px;"></canvas>
+    <br>
     <div class="row">
         <div class="col-sm-6">
             <div class="card">
@@ -24,6 +26,23 @@
     </div>
 
     <script>
+    new Chart("Carbonneutral", {
+    type: 'horizontalBar',
+    data: {
+                labels: {{ typeNames|safe }},
+                datasets: [{
+                    backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
+                    data: {{ typeCounts|safe }}
+                }]
+            },
+    options: {
+                legend: {display: true},
+                title: {
+                    display: true,
+                    text: "Input types"
+                }
+            }
+});
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
