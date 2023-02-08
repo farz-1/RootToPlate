@@ -21,6 +21,7 @@ default:
 stages:
   - build
   - test
+  - deploy
 
 migrations:
   stage: build
