@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output
+from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output, EnergyUsage
 import datetime
 
 
@@ -114,3 +114,14 @@ class OutputForm(forms.ModelForm):
     class Meta:
         model = Output
         fields = {'amount', 'time', 'notes'}
+
+
+class EnergyForm(forms.ModelForm):
+    date = forms.DateField(initial=datetime.date.today,
+                           widget=forms.widgets.DateInput(attrs={'type': 'datetime-local'}), required=True)
+    gas = forms.IntegerField(required=True)
+    electricity = forms.IntegerField(required=True)
+
+    class Meta:
+        model = EnergyUsage
+        fields = {'date', 'gas', 'electricity'}
