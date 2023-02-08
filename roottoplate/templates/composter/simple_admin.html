@@ -1,0 +1,72 @@
+{% extends 'composter/base.html' %}
+{% load static %}
+
+{% block content_block %}
+{% if success_message %}
+<h3>{{ success_message }}</h3> 
+{% endif %}
+<h2>Add User</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+    {% csrf_token %}
+    {% for hidden in user_form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <div>
+        <label for="id_username">Username: </label>
+        {{ user_form.username.errors }}
+        {{ user_form.username }}
+        <label for="id_first_name">First name: </label>
+        {{ user_form.first_name.errors }}
+        {{ user_form.first_name }}
+        <label for="id_last_name">Last name: </label>
+        {{ user_form.last_name.errors }}
+        {{ user_form.last_name }}
+        <label for="id_password1">Password: </label>
+        {{ user_form.password1.errors }}
+        {{ user_form.password1 }}
+        <label for="id_password2">Password: </label>
+        {{ user_form.password2.errors }}
+        {{ user_form.password2 }}
+        <label for="id_isAdmin">This user has staff permissions: </label> </label>
+        {{ user_form.is_staff }}
+    </div>
+
+    <input type="submit" name="submit" value="Add user">
+</form>
+<hr>
+<h2>Add Input Type</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+    {% csrf_token %}
+    {% for hidden in input_type_form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <div>
+        <label for="id_name">Name: </label>
+        {{ input_type_form.name.errors }}
+        {{ input_type_form.name }}
+        <label for="id_CNRatio">Carbon Nitrogen ratio: </label>
+        {{ input_type_form.CNRatio.errors }}
+        {{ input_type_form.CNRatio }}
+    </div>
+
+    <input type="submit" name="submit" value="Add input type">
+</form>
+<hr>
+<h2>Change Password</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+    {% csrf_token %}
+    {% for hidden in change_password_form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <div>
+        <label for="id_username">Username: </label>
+        {{ change_password_form.username.errors }}
+        {{ change_password_form.username }}
+        <label for="id_password">New password: </label>
+        {{ change_password_form.password.errors }}
+        {{ change_password_form.password }}
+    </div>
+
+    <input type="submit" name="submit" value="Change password">
+</form>
+{% endblock %}
