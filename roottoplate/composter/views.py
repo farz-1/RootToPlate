@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
-from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm
+from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm, EnergyForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
 from composter.models import InputType, Input, TemperatureEntry
 import datetime
@@ -157,7 +157,7 @@ def restaurant_request_form(request):
 def simple_admin(request):
     user = User.objects.get(username=request.user.username)
     context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),
-               'change_password_form': ChangePasswordForm()}
+               'change_password_form': ChangePasswordForm(), 'energy_form': EnergyForm()}
     if not user.is_staff:
         messages.error(request, "You are not authorised to access this.")
         return redirect('composter:index')
@@ -186,4 +186,12 @@ def simple_admin(request):
                 context['success_message'] = f"Input type {input_type_form.data['name']} added successfully"
             else:
                 context['input_type_form'] = input_type_form
+        elif 'add_meter_reading' in request.POST:
+            energy_form = EnergyForm(request.POST)
+            if energy_form.is_valid():
+                energy_form.save()
+                context['success_message'] = f"Meter readings taken."
+            else:
+                context['energy_form'] = energy_form
+
     return render(request, 'composter/simple_admin.html', context)
