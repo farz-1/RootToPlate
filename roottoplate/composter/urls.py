@@ -1,6 +1,7 @@
 from django.urls import path
 
 from composter import views
+from django.views.generic import RedirectView
 
 app_name = 'composter'
 urlpatterns = [
@@ -16,4 +17,6 @@ urlpatterns = [
 
     # admin only urls
     path('simple-admin/', views.simple_admin, name='simple_admin'),
+    path('favicon.ico', RedirectView.as_view(url='{% static "images/gcc.ico" %}')),
+
 ]
