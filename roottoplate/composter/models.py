@@ -103,3 +103,10 @@ class Output(models.Model):
 
     def __str__(self):
         return str(self.outputID)
+
+class EnergyUsage(models.Model):
+    entryID = models.AutoField(primary_key=True)
+    date = models.DateField()
+    gas = models.IntegerField()
+    electricity = models.IntegerField()
+    
