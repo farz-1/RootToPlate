@@ -44,6 +44,9 @@ def composter(request):
 
 @csrf_protect
 def user_login(request):
+    if request.user.is_authenticated:
+        messages.error(request, "You are already logged in.")
+        return redirect(reverse('index'))
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -60,7 +63,7 @@ def user_login(request):
         return render(request, 'composter/login.html')
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def user_logout(request):
     logout(request)
     return redirect(reverse('index'))
@@ -69,12 +72,12 @@ def user_logout(request):
 class InputFormView(TemplateView):
     template_name = "composter/compost_form.html"
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='/composter/login/'))
     def get(self, *args, **kwargs):
         context = {'input_formset': InputFormSet, 'entry_form': InputEntryForm()}
         return self.render_to_response(context)
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='/composter/login/'))
     def post(self, request, *args, **kwargs):
         user = User.objects.get(username=self.request.user.username)
 
@@ -98,7 +101,7 @@ class InputFormView(TemplateView):
         return render(request, self.template_name, context)
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def temp_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -116,7 +119,7 @@ def temp_entry(request):
     return render(request, 'composter/temperature_form.html', {'temperature_form': temp_form})
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def output_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -150,10 +153,10 @@ def restaurant_request_form(request):
 
 
 # admin only views
-@login_required
+@login_required(login_url='/composter/')
 def simple_admin(request):
     user = User.objects.get(username=request.user.username)
-    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),' change_password_form': ChangePasswordForm()}
+    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),'change_password_form': ChangePasswordForm()}
     if not user.is_staff:
         messages.error(request, "You are not authorised to access this.")
         return redirect('composter:index')
@@ -163,21 +166,23 @@ def simple_admin(request):
             user_form = UserForm(request.POST)
             if user_form.is_valid():
                 user_form.save()
-                context['success_message'] = f"New user {user_form.username} added."
+                context['success_message'] = f"New user {user_form.data['username']} added."
             else:
                 context['user_form'] = user_form
-        if 'change_password' in request.POST:
+        elif 'change_password' in request.POST:
             change_password_form = ChangePasswordForm(request.POST)
-            if change_password_form.is_valid():
-                change_password_form.save()
-                context['success_message'] = f"Password for user {change_password_form.username} changed."
+            if change_password_form.data['username'] is not None and change_password_form.data['password'] is not None:
+                changed_user = User.objects.get(username=change_password_form.data['username'])
+                changed_user.set_password(change_password_form.data['password'])
+                changed_user.save()
+                context['success_message'] = f"Password for user {change_password_form.data['username']} changed."
             else:
                 context['change_password_form'] = change_password_form
-        if 'add_input_type' in request.POST:
+        elif 'add_input_type' in request.POST:
             input_type_form = InputTypeForm(request.POST)
             if input_type_form.is_valid():
                 input_type_form.save()
-                context['success_message'] = f"Input type {input_type_form.name} added successfully"
+                context['success_message'] = f"Input type {input_type_form.data['name']} added successfully"
             else:
                 context['input_type_form'] = input_type_form
-    return render(request, 'composter/admin_simple.html', context)
+    return render(request, 'composter/simple_admin.html', context)
