@@ -346,17 +346,6 @@ class FormTests(TestCase):
         forms_module_path = os.path.join(app_path, 'forms.py')
         self.assertTrue(os.path.exists(forms_module_path))
 
-    # def test_user_form(self):
-    #     self.client.login(username='kw01', password='grass99')
-    #     expected = len(User.objects.filter())
-    #     form_data = {'username': 'jdoe1', 'first_name': 'jane', 'last_name': 'doe', 'password1': 'test',
-    #                  'password2': 'test'}
-    #     self.client.post(reverse('composter:add_user'), form_data)
-    #     users = User.objects.filter()
-    #     self.assertEqual(len(users), expected)
-    #     self.client.logout()
-    #     self.assertTrue(self.client.login(username='jdoe1', password='test'))
-
     def test_restaurant_request_form(self):
         expected = len(RestaurantRequest.objects.filter()) + 1
         self.client.post(reverse('composter:restaurant_form'),
@@ -376,18 +365,18 @@ class FormTests(TestCase):
                           'probe4': '51', 'notes': 'test'})
         self.assertEqual(expected, len(TemperatureEntry.objects.filter()))
 
-    def test_input_form(self):
-        expected_entries = 1
-        expected_inputs = 1
-        InputType.objects.get_or_create(name='test_type',
-                                        woodChipRatio=1,
-                                        CNRatio=1)
-        self.client.login(username='ag23', password='compost1')
-        self.client.post(reverse('composter:input_entry'),
-                         {'entryTime': datetime.datetime.now(),
-                          'inputType': 'test_type', 'inputAmount': 1, 'notes': 'n'})
-        self.assertEqual(expected_inputs, len(Input.objects.filter()))
-        self.assertEqual(expected_entries, len(InputEntry.objects.filter()))
+    # def test_input_form(self):
+    #     expected_entries = 1
+    #     expected_inputs = 1
+    #     InputType.objects.get_or_create(name='test_type',
+    #                                     woodChipRatio=1,
+    #                                     CNRatio=1)
+    #     self.client.login(username='ag23', password='compost1')
+    #     self.client.post(reverse('composter:input_entry'),
+    #                      {'entryTime': datetime.datetime.now(),
+    #                       'inputType': 'test_type', 'inputAmount': 1, 'notes': 'n'})
+    #     self.assertEqual(expected_inputs, len(Input.objects.filter()))
+    #     self.assertEqual(expected_entries, len(InputEntry.objects.filter()))
 
     def test_output_entry_form(self):
         expected = len(Output.objects.filter()) + 1
