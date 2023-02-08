@@ -1,11 +1,8 @@
 from django import forms
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output
 import datetime
-
-date_requested = timezone.make_aware(datetime.datetime.now(), timezone.utc)
 
 
 class UserForm(UserCreationForm):
@@ -54,7 +51,7 @@ class InputTypeForm(forms.ModelForm):
 
 
 class InputEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=date_requested,
+    entryTime = forms.DateTimeField(initial=datetime.datetime.today,
                                     widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     notes = forms.CharField(required=False)
 
@@ -79,7 +76,7 @@ InputFormSet = forms.formsets.formset_factory(InputForm, extra=1, max_num=5)
 
 
 class TempEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=date_requested,
+    entryTime = forms.DateTimeField(initial=datetime.datetime.today,
                                     widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     probe1 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     probe2 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
@@ -110,7 +107,7 @@ class RestaurantForm(forms.ModelForm):
 
 class OutputForm(forms.ModelForm):
     amount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    time = forms.DateTimeField(initial=date_requested,
+    time = forms.DateTimeField(initial=datetime.datetime.today,
                                widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     notes = forms.CharField(required=False)
 
