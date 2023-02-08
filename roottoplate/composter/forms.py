@@ -107,8 +107,8 @@ class RestaurantForm(forms.ModelForm):
 
 class OutputForm(forms.ModelForm):
     amount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    time = forms.DateTimeField(required=True, initial=datetime.datetime.today,
-                               widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}))
+    time = forms.DateTimeField(initial=datetime.datetime.today,
+                               widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     notes = forms.CharField(required=False)
 
     class Meta:
