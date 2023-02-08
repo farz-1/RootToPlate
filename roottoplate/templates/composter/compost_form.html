@@ -1,34 +1,42 @@
+<!DOCTYPE html>
 {% extends 'composter/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
+<title>Composter Input Form</title>
 {% block content_block %}
-<form id="form-container" method="post" enctype="multipart/form-data">
+    <h1 class="container text-center">Composter Input Form</h1>
+<form id="form-container" class="container justify-content-center"
+      method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div>
-        <label for="id_entryTime">Time: </label>
+    <div class="card w-50">
         {{ entry_form.entryTime.errors }}
-        {{ entry_form.entryTime }}
+        {{ entry_form.entryTime|as_crispy_field }}
         <div id="input-form-container">
             {{ input_formset.management_form }}
             {% for input in input_formset %}
                 <div class="input-form">
-                    <h6>Input type: </h6>
+
                     {{ input.inputType.errors }}
-                    {{ input.inputType }}
-                    <h6>Input amount: </h6>
+                    {{ input.inputType|as_crispy_field }}
+
                     {{ input.inputAmount.errors }}
-                    {{ input.inputAmount }}
+                    {{ input.inputAmount|as_crispy_field }}
                 </div>
             {% endfor %}
-            <button id="add-form" type="button">Add another input</button>
+            <button type="button" id="add-form" class="btn btn-primary">Add another input</button>
+            <button type="button" id="#" class="btn btn-danger">Remove input</button>
+            <!--<button id="add-form" type="button">Add another input</button>-->
         </div>
 
 
 
-        <label for="id_notes">Notes: </label>
+
         {{ entry_form.notes.errors}}
-        {{ entry_form.notes }}
+        {{ entry_form.notes|as_crispy_field }}
+    <!--<button type="submit">Submit input</button>-->
+    <button type="submit" value="Post" class="btn btn-success">Submit input</button>
     </div>
-    <button type="submit">Submit input</button>
+
 </form>
 <script>
     let inputForm = document.querySelectorAll(".input-form")

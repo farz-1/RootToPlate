@@ -1,7 +1,7 @@
 function degToRad(degree) {
-    var factor = Math.PI / 180;
+    let factor = Math.PI / 180;
     return degree * factor;
-    var canvas = document.getElementById("canvas");
+    let canvas = document.getElementById("canvas");
     canvas.width = innerWidth;
     canvas.height = innerHeight;
 
@@ -13,7 +13,7 @@ function degToRad(degree) {
         hour = minute * 60,
         day = hour * 24;
     //**********THIS IS THE TIME DISPLAYED ON THE CLOCK********************************
-    var testTime = 5 * second;
+    let testTime = 5 * second;
     //*********************************************************************************
 
     let countDown = new Date().getTime() + (testTime),
@@ -33,7 +33,7 @@ function degToRad(degree) {
                 ));
 
 
-            var ctx1 = canvas.getContext("2d");
+            let ctx1 = canvas.getContext("2d");
             //Arch porperties
             ctx1.strokeStyle = 'darkgreen';
             ctx1.shadowColor = 'darkgreen';

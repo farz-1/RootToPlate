@@ -29,6 +29,8 @@ migrations:
     - python3 manage.py makemigrations
     - python3 manage.py makemigrations composter
     - python3 manage.py migrate
+    - python3 population_script.py
+    - python3 manage.py migrate
     - python3 manage.py check
 
 
@@ -42,11 +44,13 @@ static-analysis:
   stage: test
   script:
     - python -m pip install flake8
-    - flake8 --extend-exclude=venv/ --max-line-length 160
+    - flake8 --extend-exclude=venv/ --max-line-length 130
 
 
 heroku_deploy:
   stage: build
   script:
+    - apt-get update -yq
+    - apt-get install -y ruby ruby-dev rubygems-integration
     - gem install dpl
-    - dpl --provider=heroku --app=$roottoplate --api-key=$73562996-0279-4eba-8859-3c9b0460e28a
+    - dpl --provider=heroku --app=roottoplate --api-key=73562996-0279-4eba-8859-3c9b0460e28a

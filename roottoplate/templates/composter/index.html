@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <title>Root2Plate</title>
 {% extends 'composter/base.html' %}
 {% block content_block %}
@@ -5,13 +6,43 @@
     <h1 class="container text-center">Young Enterprise Scotland</h1>
     <br>
     <br>
-    <canvas id="inputTypeChart" class="container" style="width:50%;max-width:600px"></canvas>
+    <canvas id="Carbonneutral" class="card" style="width: 100% ;height: auto"></canvas>
     <br>
-    <canvas id="tempChart" class="container" style="width:50%;max-width:600px"></canvas>
-
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="inputTypeChart" class="container" style="width:50%;height: auto"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="tempChart" class="container" style="width:50%;height: auto"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-
+    new Chart("Carbonneutral", {
+    type: 'horizontalBar',
+    data: {
+                labels: {{ typeNames|safe }},
+                datasets: [{
+                    backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
+                    data: {{ typeCounts|safe }}
+                }]
+            },
+    options: {
+                legend: {display: true},
+                title: {
+                    display: true,
+                    text: "Input types"
+                }
+            }
+});
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
@@ -34,28 +65,29 @@
             labels: {{ tempTimes|safe }},
             datasets: [
                 {
-                label: "Temperature 1",
-                data: [{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}],
-                borderColor: "#B8BF0D",
-                fill: false
+                    label: "Temperature 1",
+                    data: [{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}],
+                    borderColor: "#B8BF0D",
+                    fill: false,
+
                 },
                 {
-                label: "Temperature 2",
-                data: [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}],
-                borderColor: "#E60088",
-                fill: false
+                    label: "Temperature 2",
+                    data: [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}],
+                    borderColor: "#E60088",
+                    fill: false
                 },
                 {
-                label: "Temperature 3",
-                data: [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}],
-                borderColor: "#87319A",
-                fill: false
+                    label: "Temperature 3",
+                    data: [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}],
+                    borderColor: "#87319A",
+                    fill: false
                 },
                 {
-                label: "Temperature 4",
-                data: [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}],
-                borderColor: "#E01F1D",
-                fill: false
+                    label: "Temperature 4",
+                    data: [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}],
+                    borderColor: "#E01F1D",
+                    fill: false
                 }
             ]
         };

@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <title>Composter</title>
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
 <h1 class="container text-center" id="headline">Countdown to next composter feed</h1>
 <script src="{%static 'javascript/composter.js' %}"></script>
-
+<div class="card w-80 text-center">
 <div class="container text-center">
     <canvas id="canvas" width="500" height="500"></canvas>
     <div id="countdown">
@@ -28,5 +29,6 @@
     <a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
     <a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
     {% endif %}
+</div>
 </div>
 {% endblock %}

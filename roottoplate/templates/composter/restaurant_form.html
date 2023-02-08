@@ -1,42 +1,43 @@
-<title>Food Collection</title>
+<!DOCTYPE html>
 {% extends 'composter/base.html' %}
 {% load static %}
-
+{% load crispy_forms_tags %}
+<title>Food Collection</title>
 {% block content_block %}
-<h1 class="card-title container text-center">Food Collection Form</h1>
-<divstyle="justify-content: center">
-    <form method="post" enctype="multipart/form-data" action="{% url 'composter:restaurant_form' %}">
+<h1 class="container text-center">Food Collection Form</h1>
+    <form method="post" class="container justify-content-center"
+          enctype="multipart/form-data" action="{% url 'composter:restaurant_form' %}">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
         {{ hidden }}
         {% endfor %}
-        <div >
+        <div class="card w-50">
             <br>
-            <p>Restaurant name</p>
+
             {{ restaurant_form.name.errors }}
-            {{ restaurant_form.name }}
-            <p>Restaurant address</p>
+            {{ restaurant_form.name|as_crispy_field }}
+
             {{ restaurant_form.address.errors }}
-            {{ restaurant_form.address }}
-            <p>Deadline Date</p>
+            {{ restaurant_form.address|as_crispy_field }}
+
             {{ restaurant_form.deadlineDate.errors }}
-            {{ restaurant_form.deadlineDate }}
-            <p>Email Address</p>
+            {{ restaurant_form.deadlineDate|as_crispy_field }}
             {{ restaurant_form.email.errors }}
-            {{ restaurant_form.email }}
-            <p>Phone Number</p>
+            {{ restaurant_form.email|as_crispy_field }}
+
             {{ restaurant_form.phoneNumber.errors }}
-            {{ restaurant_form.phoneNumber }}
-            <p>Number of bags</p>
+            {{ restaurant_form.phoneNumber|as_crispy_field }}
+
             {{ restaurant_form.numberOfBags.errors }}
-            {{ restaurant_form.numberOfBags }}
-            <p>Additional Notes</p>
+            {{ restaurant_form.numberOfBags|as_crispy_field }}
+
             {{ restaurant_form.notes.errors }}
-            {{ restaurant_form.notes }}
+            {{ restaurant_form.notes|as_crispy_field }}
             <br>
-            <input type="submit" name="submit" value="Post">
+            <button type="submit" value="Post" class="btn btn-success">Submit data</button>
+            <!--<input type="submit" name="submit" value="Post">-->
         </div>
 
     </form>
-</div>
+
 {% endblock %}

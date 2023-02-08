@@ -1,6 +1,7 @@
 from django.urls import path
 
 from composter import views
+from django.views.generic import RedirectView
 
 app_name = 'composter'
 urlpatterns = [
@@ -15,7 +16,7 @@ urlpatterns = [
     path('restaurants/', views.restaurant_request_form, name='restaurant_form'),
 
     # admin only urls
-    path('add-user/', views.add_user, name='add_user'),
-    path('add-input-type/', views.add_input_type, name='add_input_type'),
-    path('change-password/', views.change_password, name='change_password')
+    path('simple-admin/', views.simple_admin, name='simple_admin'),
+    path('favicon.ico', RedirectView.as_view(url='{% static "images/gcc.ico" %}')),
+
 ]
