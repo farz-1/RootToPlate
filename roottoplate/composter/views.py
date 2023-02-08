@@ -166,14 +166,16 @@ def simple_admin(request):
                 context['success_message'] = f"New user {user_form.data['username']} added."
             else:
                 context['user_form'] = user_form
-        if 'change_password' in request.POST:
+        elif 'change_password' in request.POST:
             change_password_form = ChangePasswordForm(request.POST)
-            if change_password_form.is_valid():
-                change_password_form.save()
+            if change_password_form.data['username'] is not None and change_password_form.data['password'] is not None:
+                changed_user = User.objects.get(username=change_password_form.data['username'])
+                changed_user.set_password(change_password_form.data['password'])
+                changed_user.save()
                 context['success_message'] = f"Password for user {change_password_form.data['username']} changed."
             else:
                 context['change_password_form'] = change_password_form
-        if 'add_input_type' in request.POST:
+        elif 'add_input_type' in request.POST:
             input_type_form = InputTypeForm(request.POST)
             if input_type_form.is_valid():
                 input_type_form.save()

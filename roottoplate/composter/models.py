@@ -11,7 +11,7 @@ class InputType(models.Model):
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, validators=[MinLengthValidator(2)],
                             primary_key=True)
     woodChipRatio = models.DecimalField(decimal_places=RATIO_DECIMAL_PLACES, max_digits=RATIO_MAX_DIGITS,
-                                        validators=[MinValueValidator(1)])
+                                        validators=[MinValueValidator(1)], null=True)
     CNRatio = models.DecimalField(decimal_places=RATIO_DECIMAL_PLACES, max_digits=RATIO_MAX_DIGITS,
                                   validators=[MinValueValidator(1)])
 

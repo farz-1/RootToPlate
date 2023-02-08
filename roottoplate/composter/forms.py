@@ -28,8 +28,8 @@ class UserLoginForm(forms.ModelForm):
 
 class ChangePasswordForm(forms.ModelForm):
     # accessible by admin only
-    username = forms.CharField()  # needs some validation
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(required=True)  # needs some validation
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
     change_password = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
     class Meta:
