@@ -38,9 +38,9 @@ class ChangePasswordForm(forms.ModelForm):
 
 class InputTypeForm(forms.ModelForm):
     # accessible by admin only
-    name = forms.CharField(required=True)
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
     woodChipRatio = forms.DecimalField(required=False)
-    CNRatio = forms.DecimalField(required=True)
+    CNRatio = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
     add_input_type = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
 
@@ -50,7 +50,7 @@ class InputTypeForm(forms.ModelForm):
 
 
 class InputEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=datetime.datetime.now(), required=True)  # filled with current time, can be amended
+    entryTime = forms.DateTimeField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),initial=datetime.datetime.now(), required=True)  # filled with current time, can be amended
     notes = forms.CharField(required=False)
 
     class Meta:
@@ -61,8 +61,8 @@ class InputEntryForm(forms.ModelForm):
 # the idea is that a variable number of this form
 # appears on the same page as the InputEntryForm and then is dealt with in the view
 class InputForm(forms.ModelForm):
-    inputType = forms.ModelChoiceField(queryset=InputType.objects.all(), required=True)
-    inputAmount = forms.DecimalField(required=True)
+    inputType = forms.ModelChoiceField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),queryset=InputType.objects.all(), required=True)
+    inputAmount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
 
     class Meta:
         model = Input
@@ -73,11 +73,11 @@ InputFormSet = forms.formsets.formset_factory(InputForm, extra=1, max_num=5)
 
 
 class TempEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=datetime.datetime.now(), required=True)  # filled with current time, can be amended
-    probe1 = forms.DecimalField(required=True)
-    probe2 = forms.DecimalField(required=True)
-    probe3 = forms.DecimalField(required=True)
-    probe4 = forms.DecimalField(required=True)
+    entryTime = forms.DateTimeField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),initial=datetime.datetime.now(), required=True)  # filled with current time, can be amended
+    probe1 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
+    probe2 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
+    probe3 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
+    probe4 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
     notes = forms.CharField(required=False)
 
     class Meta:
@@ -86,11 +86,11 @@ class TempEntryForm(forms.ModelForm):
 
 
 class RestaurantForm(forms.ModelForm):
-    name = forms.CharField(required=True)
-    address = forms.CharField(required=True)
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
     dateRequested = forms.DateTimeField(initial=datetime.datetime.now(), required=False)
-    deadlineDate = forms.DateTimeField(initial=datetime.datetime.now() + datetime.timedelta(weeks=1), required=True)
-    email = forms.CharField(required=True)
+    deadlineDate = forms.DateTimeField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),initial=datetime.datetime.now() + datetime.timedelta(weeks=1), required=True)
+    email = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
     phoneNumber = forms.IntegerField(required=False)
     notes = forms.CharField(required=False)
     numberOfBags = forms.IntegerField(required=False)
@@ -101,8 +101,8 @@ class RestaurantForm(forms.ModelForm):
 
 
 class OutputForm(forms.ModelForm):
-    amount = forms.DecimalField(required=True)
-    time = forms.DateTimeField(initial=datetime.datetime.now(), required=True)
+    amount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),required=True)
+    time = forms.DateTimeField(widget=forms.TextInput(attrs={'placeholder':'Required Field'}),initial=datetime.datetime.now(), required=True)
     notes = forms.CharField(required=False)
 
     class Meta:
