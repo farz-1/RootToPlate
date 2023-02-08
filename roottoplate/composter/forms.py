@@ -13,7 +13,8 @@ class UserForm(UserCreationForm):
         fields = {'username',
                   'first_name', 'last_name',
                   'password1',
-                  'password2'}
+                  'password2',
+                  'is_staff'}
 
 
 class UserLoginForm(forms.ModelForm):

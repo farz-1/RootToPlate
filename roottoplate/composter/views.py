@@ -153,7 +153,7 @@ def restaurant_request_form(request):
 @login_required
 def simple_admin(request):
     user = User.objects.get(username=request.user.username)
-    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),' change_password_form': ChangePasswordForm()}
+    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),'change_password_form': ChangePasswordForm()}
     if not user.is_staff:
         messages.error(request, "You are not authorised to access this.")
         return redirect('composter:index')
@@ -163,21 +163,21 @@ def simple_admin(request):
             user_form = UserForm(request.POST)
             if user_form.is_valid():
                 user_form.save()
-                context['success_message'] = f"New user {user_form.username} added."
+                context['success_message'] = f"New user {user_form.data['username']} added."
             else:
                 context['user_form'] = user_form
         if 'change_password' in request.POST:
             change_password_form = ChangePasswordForm(request.POST)
             if change_password_form.is_valid():
                 change_password_form.save()
-                context['success_message'] = f"Password for user {change_password_form.username} changed."
+                context['success_message'] = f"Password for user {change_password_form.data['username']} changed."
             else:
                 context['change_password_form'] = change_password_form
         if 'add_input_type' in request.POST:
             input_type_form = InputTypeForm(request.POST)
             if input_type_form.is_valid():
                 input_type_form.save()
-                context['success_message'] = f"Input type {input_type_form.name} added successfully"
+                context['success_message'] = f"Input type {input_type_form.data['name']} added successfully"
             else:
                 context['input_type_form'] = input_type_form
-    return render(request, 'composter/admin_simple.html', context)
+    return render(request, 'composter/simple_admin.html', context)
