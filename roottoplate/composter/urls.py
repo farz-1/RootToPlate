@@ -1,7 +1,6 @@
 from django.urls import path
 
 from composter import views
-from django.views.generic import RedirectView
 
 app_name = 'composter'
 urlpatterns = [
