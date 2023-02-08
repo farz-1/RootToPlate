@@ -16,4 +16,6 @@ urlpatterns = [
 
     # admin only urls
     path('simple-admin/', views.simple_admin, name='simple_admin'),
+    path('favicon.ico', RedirectView.as_view(url='{% static "images/gcc.ico" %}')),
+
 ]
