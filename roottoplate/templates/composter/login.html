@@ -13,16 +13,20 @@
                             <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
                             <p class="text-white-50 mb-5">Please enter your username and password!</p>
                             <form action="" class="container justify-content-center" style="width: 100%"
-                                  method="POST" >
+                                  method="POST">
                                 {% csrf_token %}
                                 <div class="form-outline form-white mb-1 ">
-                                    <input style="width:100%" type="text" name="username" id="typeEmailX"
-                                           class="form-control form-control-lg"
-                                           placeholder="Username"/>
+                                    <label for="typeEmailX">
+                                        <input style="width:100%" type="text" name="username" id="typeEmailX"
+                                               class="form-control form-control-lg"
+                                               placeholder="Username"/>
+                                    </label>
                                     <br>
                                     <div class="form-outline form-white mb-1">
-                                        <input style="width:100%" type="password" name="password" id="typePasswordX"
-                                               class="form-control form-control-lg" placeholder="Password"/>
+                                        <label for="typePasswordX">
+                                            <input style="width:100%" type="password" name="password" id="typePasswordX"
+                                                   class="form-control form-control-lg" placeholder="Password">
+                                        </label>
                                     </div>
                                     <br>
                                     {% for message in messages %}

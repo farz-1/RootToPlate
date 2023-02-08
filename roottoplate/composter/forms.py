@@ -77,7 +77,7 @@ InputFormSet = forms.formsets.formset_factory(InputForm, extra=1, max_num=5)
 
 class TempEntryForm(forms.ModelForm):
     entryTime = forms.DateTimeField(initial=datetime.datetime.today,
-                                widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
+                                    widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     probe1 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     probe2 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     probe3 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
