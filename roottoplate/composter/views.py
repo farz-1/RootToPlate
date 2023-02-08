@@ -44,6 +44,9 @@ def composter(request):
 
 @csrf_protect
 def user_login(request):
+    if request.user.is_authenticated:
+        messages.error(request, "You are already logged in.")
+        return redirect(reverse('index'))
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -60,7 +63,7 @@ def user_login(request):
         return render(request, 'composter/login.html')
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def user_logout(request):
     logout(request)
     return redirect(reverse('index'))
@@ -69,12 +72,12 @@ def user_logout(request):
 class InputFormView(TemplateView):
     template_name = "composter/compost_form.html"
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='/composter/login/'))
     def get(self, *args, **kwargs):
         context = {'input_formset': InputFormSet, 'entry_form': InputEntryForm()}
         return self.render_to_response(context)
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='/composter/login/'))
     def post(self, request, *args, **kwargs):
         user = User.objects.get(username=self.request.user.username)
 
@@ -98,7 +101,7 @@ class InputFormView(TemplateView):
         return render(request, self.template_name, context)
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def temp_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -116,7 +119,7 @@ def temp_entry(request):
     return render(request, 'composter/temperature_form.html', {'temperature_form': temp_form})
 
 
-@login_required
+@login_required(login_url='/composter/login/')
 def output_entry(request):
     user = User.objects.get(username=request.user.username)
     if request.method == 'POST':
@@ -150,7 +153,7 @@ def restaurant_request_form(request):
 
 
 # admin only views
-@login_required
+@login_required(login_url='/composter/')
 def simple_admin(request):
     user = User.objects.get(username=request.user.username)
     context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),'change_password_form': ChangePasswordForm()}
