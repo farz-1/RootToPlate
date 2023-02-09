@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
 from composter.models import InputType, Input, TemperatureEntry
-import datetime
+from django.utils import timezone
 
 
 def index(request):
@@ -141,7 +141,7 @@ def restaurant_request_form(request):
         restaurant_form = RestaurantForm(request.POST)
         if restaurant_form.is_valid():
             restaurant_req = restaurant_form.save(commit=False)
-            restaurant_req.dateRequested = datetime.datetime.now()
+            restaurant_req.dateRequested = timezone.now()
             restaurant_req.save()
             return redirect(reverse('composter:index'))
         else:

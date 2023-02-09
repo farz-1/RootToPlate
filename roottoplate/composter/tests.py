@@ -8,7 +8,7 @@ import os
 import warnings
 import io
 import sys
-import datetime
+from django.utils import timezone
 
 
 class AnonymousURLTesting(TestCase):
@@ -349,8 +349,8 @@ class FormTests(TestCase):
     def test_restaurant_request_form(self):
         expected = len(RestaurantRequest.objects.filter()) + 1
         self.client.post(reverse('composter:restaurant_form'),
-                         {'name': 'test', 'address': 'test', 'dateRequested': datetime.datetime.now(),
-                          'deadlineDate': datetime.datetime.now() + (datetime.timedelta(weeks=1)),
+                         {'name': 'test', 'address': 'test',
+                          'deadlineDate': timezone.now() + (timezone.timedelta(weeks=1)),
                           'email': 'test@test.com', 'phoneNumber': '21234569812', 'numberOfBags': 2,
                           'notes': 'test'})
         restaurant = RestaurantRequest.objects.filter(name='test')
@@ -361,7 +361,7 @@ class FormTests(TestCase):
         expected = len(TemperatureEntry.objects.filter()) + 1
         self.client.login(username='ag23', password='compost1')  # non-admin
         self.client.post(reverse('composter:temp_entry'),
-                         {'entryTime': datetime.datetime.now(), 'probe1': '54', 'probe2': '53', 'probe3': '51',
+                         {'entryTime': timezone.now(), 'probe1': '54', 'probe2': '53', 'probe3': '51',
                           'probe4': '51', 'notes': 'test'})
         self.assertEqual(expected, len(TemperatureEntry.objects.filter()))
 
@@ -373,7 +373,7 @@ class FormTests(TestCase):
     #                                     CNRatio=1)
     #     self.client.login(username='ag23', password='compost1')
     #     self.client.post(reverse('composter:input_entry'),
-    #                      {'entryTime': datetime.datetime.now(),
+    #                      {'entryTime': timezone.now(),
     #                       'inputType': 'test_type', 'inputAmount': 1, 'notes': 'n'})
     #     self.assertEqual(expected_inputs, len(Input.objects.filter()))
     #     self.assertEqual(expected_entries, len(InputEntry.objects.filter()))
@@ -382,7 +382,7 @@ class FormTests(TestCase):
         expected = len(Output.objects.filter()) + 1
         self.client.login(username='ag23', password='compost1')
         self.client.post(reverse('composter:output_entry'),
-                         {'time': datetime.datetime.now(), 'amount': 3, 'notes': 't'})
+                         {'time': timezone.now(), 'amount': 3, 'notes': 't'})
         self.assertTrue(expected, len(Output.objects.filter()))
 
 
