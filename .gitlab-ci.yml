@@ -23,39 +23,11 @@ stages:
   - test
   - deploy
 
-migrations:
-  stage: build
-  script:
-    - cd roottoplate
-    - python3 manage.py makemigrations
-    - python3 manage.py makemigrations composter
-    - python3 manage.py migrate
-    - python3 population_script.py
-    - python3 manage.py migrate
-    - python3 manage.py check
-
-
-django-tests:
-  stage: test
-  script:
-    - cd roottoplate
-    - python3 manage.py test
-
-static-analysis:
-  stage: test
-  script:
-    - python -m pip install flake8
-    - flake8 --extend-exclude=venv/ --max-line-length 130
-
-
-pages:
+heroku_deploy:
   stage: deploy
   script:
-  - mkdir .public
-  - cp -r * .public
-  - mv .public public
-  artifacts:
-    paths:
-    - public
-  only:
-  - main
+    - apt-get update -yq
+    - apt-get install -y ruby ruby-dev rubygems-integration
+    - gem install dpl
+    - dpl --provider=heroku --app=roottoplate --api-key=73562996-0279-4eba-8859-3c9b0460e28a
+
