@@ -42,7 +42,8 @@ class InputTypeForm(forms.ModelForm):
     # accessible by admin only
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     woodChipRatio = forms.DecimalField(required=False)
-    CNRatio = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True, label='Carbon : Nitrogen ratio')
+    CNRatio = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}),
+                                 required=True, label='Carbon : Nitrogen ratio')
     add_input_type = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
     class Meta:
@@ -65,7 +66,8 @@ class InputEntryForm(forms.ModelForm):
 class InputForm(forms.ModelForm):
     inputType = forms.ModelChoiceField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}),
                                        queryset=InputType.objects.all(), required=True, label='Input type')
-    inputAmount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True, label='Input amount')
+    inputAmount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}),
+                                     required=True, label='Input amount')
 
     class Meta:
         model = Input
@@ -92,7 +94,7 @@ class TempEntryForm(forms.ModelForm):
 class RestaurantForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    dateRequested = forms.DateTimeField(initial=datetime.datetime.now(), required=False)
+    dateRequested = forms.DateTimeField(initial=datetime.datetime.now, required=False)
     deadlineDate = forms.DateTimeField(widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}),
                                        initial=datetime.datetime.now() + datetime.timedelta(weeks=1), required=True,
                                        label='Last date to be picked up')
