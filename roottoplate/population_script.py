@@ -281,8 +281,10 @@ def create_restaurant_request(data):
                       collected=data['collected'])
     return request
 
+
 def date(date):
     return timezone.make_aware(datetime.strptime(date, DATE_FORMAT))
+
 
 # Execution starts here
 if __name__ == '__main__':
