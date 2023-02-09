@@ -71,6 +71,7 @@ class OutputAdmin(admin.ModelAdmin):
 class RestaurantAdmin(admin.ModelAdmin):
     list_display = ('name', 'dateRequested', 'deadlineDate', 'collected')
 
+
 class EnergyAdmin(admin.ModelAdmin):
     list_display = ('date', 'gas', 'electricity')
 

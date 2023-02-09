@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output, EnergyUsage
 from datetime import date, datetime, timedelta
 
+
 class DateSelectorWidget(forms.MultiWidget):
     def __init__(self, attrs=None):
         days = [(day, day) for day in range(1, 32)]
@@ -101,7 +102,7 @@ InputFormSet = forms.formsets.formset_factory(InputForm, extra=1, max_num=5)
 
 class TempEntryForm(forms.ModelForm):
     entryTime = forms.DateTimeField(initial=datetime.today,
-                                widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
+                                    widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     probe1 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     probe2 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     probe3 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)

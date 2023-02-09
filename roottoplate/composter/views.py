@@ -190,7 +190,7 @@ def simple_admin(request):
             energy_form = EnergyForm(request.POST)
             if energy_form.is_valid():
                 energy_form.save()
-                context['success_message'] = f"Meter readings taken."
+                context['success_message'] = "Meter readings taken."
             else:
                 context['energy_form'] = energy_form
 
