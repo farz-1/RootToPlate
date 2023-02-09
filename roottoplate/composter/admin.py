@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest, Output
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest, Output, EnergyUsage
 
 
 class InputInline(admin.TabularInline):
@@ -71,6 +71,9 @@ class OutputAdmin(admin.ModelAdmin):
 class RestaurantAdmin(admin.ModelAdmin):
     list_display = ('name', 'dateRequested', 'deadlineDate', 'collected')
 
+class EnergyAdmin(admin.ModelAdmin):
+    list_display = ('date', 'gas', 'electricity')
+
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
@@ -79,3 +82,4 @@ admin.site.register(InputEntry, InputEntryAdmin)
 admin.site.register(TemperatureEntry, TemperatureEntryAdmin)
 admin.site.register(RestaurantRequest, RestaurantAdmin)
 admin.site.register(Output, OutputAdmin)
+admin.site.register(EnergyUsage, EnergyAdmin)
