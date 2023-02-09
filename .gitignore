@@ -128,7 +128,7 @@ dmypy.json
 .pyre/
 
 # Migrations
-migrations/
+
 
 # Python cache files
 *.pyc
