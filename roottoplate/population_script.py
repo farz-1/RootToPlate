@@ -6,6 +6,10 @@ django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
     RestaurantRequest, Output  # noqa:E402
+from datetime import datetime  # noqa:E402
+from django.utils import timezone  # noqa:E402
+
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 def populate():
@@ -218,7 +222,7 @@ def create_input_entry(data):
     print("creating input entry " + str(data['id']) + "...")
     user = User.objects.get(username=data['user'])
     input_entry = InputEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=data['entryTime'],
+                                                   entryTime=date(data['entryTime']),
                                                    notes=data['notes'],
                                                    user=user)
     return input_entry
@@ -239,7 +243,7 @@ def create_temperature_entry(data):
     print("creating temperature entry " + str(data['id']) + "...")
     user = User.objects.get(username=data['user'])
     entry = TemperatureEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=data['entryTime'],
+                                                   entryTime=date(data['entryTime']),
                                                    probe1=data['probe1'],
                                                    probe2=data['probe2'],
                                                    probe3=data['probe3'],
@@ -255,7 +259,7 @@ def create_output(data):
     user = User.objects.get(username=data['user'])
     output = Output.objects.get_or_create(outputID=data['id'],
                                           amount=data['amount'],
-                                          time=data['time'],
+                                          time=date(data['time']),
                                           notes=data['notes'],
                                           user=user)[0]
     return output
@@ -268,8 +272,8 @@ def create_restaurant_request(data):
         get_or_create(requestID=data['id'],
                       name=data['name'],
                       address=data['address'],
-                      dateRequested=data['dateRequested'],
-                      deadlineDate=data['deadline'],
+                      dateRequested=date(data['dateRequested']),
+                      deadlineDate=date(data['deadline']),
                       email=data['email'],
                       phoneNumber=data['phone'],
                       notes=data['notes'],
@@ -277,6 +281,8 @@ def create_restaurant_request(data):
                       collected=data['collected'])
     return request
 
+def date(date):
+    return timezone.make_aware(datetime.strptime(date, DATE_FORMAT))
 
 # Execution starts here
 if __name__ == '__main__':
