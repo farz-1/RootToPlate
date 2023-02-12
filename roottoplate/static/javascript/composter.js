@@ -20,7 +20,7 @@ function degToRad(degree) {
     function init() {
         var last_fed_string = document.getElementById("composter_last_fed").getAttribute('jsvalue');
         const last_fed = new Date(last_fed_string);
-    }
+
 
     let countDown = new Date().getTime() + (testTime),
         x = setInterval(function () {
@@ -69,4 +69,5 @@ function degToRad(degree) {
             }
             //seconds
         }, 0);
+    };
 })();
