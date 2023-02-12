@@ -192,3 +192,8 @@ def simple_admin(request):
             else:
                 context['input_type_form'] = input_type_form
     return render(request, 'composter/simple_admin.html', context)
+
+
+@login_required(login_url='/composter/login/')
+def restaurant_notification(request):
+    return render(request, 'composter/restaurant_notifs.html')
