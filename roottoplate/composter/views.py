@@ -8,9 +8,10 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
+from django.db.models import Max
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
-from composter.models import InputType, Input, TemperatureEntry
+from composter.models import InputType, Input, InputEntry, TemperatureEntry
 from django.utils import timezone
 
 
@@ -39,7 +40,9 @@ def about(request):
 
 
 def composter(request):
-    return render(request, "composter/composter.html")
+    compost_last_fed = InputEntry.objects.all().aggregate(Max('entryTime')).get('entryTime__max')
+    compost_last_fed_js = compost_last_fed.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return render(request, "composter/composter.html", {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js})
 
 
 @csrf_protect
