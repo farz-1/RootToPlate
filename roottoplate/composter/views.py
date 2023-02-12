@@ -43,6 +43,7 @@ def composter(request):
     compost_last_fed = InputEntry.objects.all().aggregate(Max('entryTime')).get('entryTime__max')
     compost_last_fed_js = compost_last_fed.strftime("%Y-%m-%dT%H:%M:%SZ")
     context = {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js}
+    print(context['compost_last_fed'])
     return render(request, "composter/composter.html", context)
 
 

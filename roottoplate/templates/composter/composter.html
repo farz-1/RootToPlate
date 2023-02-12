@@ -11,12 +11,12 @@
     <canvas id="canvas" width="500" height="500"></canvas>
     <h4 id="composter_last_fed" jsvalue="{{ compost_last_fed_js }}">Compost last fed: {{ compost_last_fed }}</h4>
     <div id="countdown">
-        <div style="position: center; font-size: 20px;">
+        <div  style="position: center; font-size: 20px;">
             <ul>
-                <li><span id="days"> </span> Days</li>
-                <li><span id="hours"></span> Hours</li>
-                <li><span id="minutes"></span> Minutes</li>
-                <li><span id="seconds"></span> Seconds</li>
+                <hi><span id="days"> </span> Days</hi>
+                <hi><span id="hours"></span> Hours</hi>
+                <hi><span id="minutes"></span> Minutes</hi>
+                <hi><span id="seconds"></span> Seconds</hi>
             </ul>
         </div>
         <div class="message">
@@ -33,4 +33,20 @@
     {% endif %}
 </div>
 </div>
+
+<style>
+hi {
+  display: inline-block;
+  font-size: 20px;
+  list-style-type: none;
+  padding: 10px;
+  text-transform: uppercase;
+}
+ 
+hi span {
+  display: block;
+  font-size: 35px;
+}
+</style>
+
 {% endblock %}
