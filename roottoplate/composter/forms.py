@@ -54,7 +54,7 @@ class InputTypeForm(forms.ModelForm):
 class InputEntryForm(forms.ModelForm):
     entryTime = forms.DateTimeField(initial=datetime.datetime.today, label='Time',
                                     widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
-    notes = forms.CharField(required=False)
+    notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':'2'}))
 
     class Meta:
         model = InputEntry
@@ -84,7 +84,7 @@ class TempEntryForm(forms.ModelForm):
     probe2 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True, label='Probe 2')
     probe3 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True, label='Probe 3')
     probe4 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True, label='Probe 4')
-    notes = forms.CharField(required=False)
+    notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':'2'}))
 
     class Meta:
         model = TemperatureEntry
@@ -100,7 +100,7 @@ class RestaurantForm(forms.ModelForm):
                                        label='Last date to be picked up')
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     phoneNumber = forms.IntegerField(required=False, label='Phone number')
-    notes = forms.CharField(required=False)
+    notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':'2'}))
     numberOfBags = forms.IntegerField(required=False, label='Number of bags of food waste')
 
     class Meta:
@@ -112,7 +112,7 @@ class OutputForm(forms.ModelForm):
     amount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     time = forms.DateTimeField(initial=datetime.datetime.today,
                                widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
-    notes = forms.CharField(required=False)
+    notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':'2'}))
 
     class Meta:
         model = Output
