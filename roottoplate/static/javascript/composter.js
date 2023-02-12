@@ -15,6 +15,12 @@ function degToRad(degree) {
     //**********THIS IS THE TIME DISPLAYED ON THE CLOCK********************************
     let testTime = 5 * second;
     //*********************************************************************************
+    window.onload = init;
+    
+    function init() {
+        var last_fed_string = document.getElementById("composter_last_fed").getAttribute('jsvalue');
+        const last_fed = new Date(last_fed_string);
+    }
 
     let countDown = new Date().getTime() + (testTime),
         x = setInterval(function () {
