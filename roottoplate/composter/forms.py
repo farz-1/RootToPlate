@@ -64,7 +64,7 @@ class InputEntryForm(forms.ModelForm):
 # the idea is that a variable number of this form
 # appears on the same page as the InputEntryForm and then is dealt with in the view
 class InputForm(forms.ModelForm):
-    inputType = forms.ModelChoiceField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}),
+    inputType = forms.ModelChoiceField(widget=forms.Select(attrs={'placeholder': 'Required Field'}),
                                        queryset=InputType.objects.all(), required=True, label='Input type')
     inputAmount = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
                                      required=True, label='Input amount')
@@ -98,7 +98,7 @@ class RestaurantForm(forms.ModelForm):
     deadlineDate = forms.DateTimeField(widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}),
                                        initial=datetime.datetime.now() + datetime.timedelta(weeks=1), required=True,
                                        label='Last date to be picked up')
-    email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'Required Field'}), required=True)
     phoneNumber = forms.IntegerField(required=False, label='Phone number')
     notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':'2'}))
     numberOfBags = forms.IntegerField(required=False, label='Number of bags of food waste')
