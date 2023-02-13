@@ -8,7 +8,6 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
-from django.db.models import Max
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
 from composter.models import InputType, Input, InputEntry, TemperatureEntry
@@ -46,7 +45,6 @@ def composter(request):
     compost_last_fed = last_five_entries[0].get('entryTime')
     compost_last_fed_js = compost_last_fed.strftime("%Y-%m-%dT%H:%M:%SZ")
     context = {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js}
-
 
     if request.user.is_staff:
         for entry in last_five_entries:
