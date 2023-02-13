@@ -40,10 +40,19 @@ def about(request):
 
 
 def composter(request):
-    compost_last_fed = InputEntry.objects.all().aggregate(Max('entryTime')).get('entryTime__max')
+    last_five_entries = InputEntry.objects.all().order_by('-entryTime').values()[:5]
+
+    # get time the composter was last fed
+    compost_last_fed = last_five_entries[0].get('entryTime')
     compost_last_fed_js = compost_last_fed.strftime("%Y-%m-%dT%H:%M:%SZ")
-    context = {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js}
-    print(context['compost_last_fed'])
+
+    for entry in last_five_entries:
+        entry['username'] = User.objects.get(id=entry['user_id']).username
+        inputs = Input.objects.filter(inputEntry=entry['entryID']).values()
+        entry['inputs'] = [{'type': i.get('inputType'), 'amount': i.get('inputAmount')} for i in inputs]
+    print(last_five_entries[0])
+
+    context = {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js, 'last_five_entries': last_five_entries}
     return render(request, "composter/composter.html", context)
 
 
