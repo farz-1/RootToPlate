@@ -49,8 +49,7 @@ def composter(request):
     for entry in last_five_entries:
         entry['username'] = User.objects.get(id=entry['user_id']).username
         inputs = Input.objects.filter(inputEntry=entry['entryID']).values()
-        entry['inputs'] = [{'type': i.get('inputType'), 'amount': i.get('inputAmount')} for i in inputs]
-    print(last_five_entries[0])
+        entry['inputs'] = [{'type': i.get('inputType_id'), 'amount': i.get('inputAmount')} for i in inputs]
 
     context = {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js, 'last_five_entries': last_five_entries}
     return render(request, "composter/composter.html", context)
