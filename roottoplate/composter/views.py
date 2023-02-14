@@ -156,11 +156,11 @@ def restaurant_request_form(request):
 @login_required(login_url='/composter/')
 def simple_admin(request):
     user = User.objects.get(username=request.user.username)
-    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),'change_password_form': ChangePasswordForm()}
+    context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(), 'change_password_form': ChangePasswordForm()}
     if not user.is_staff:
         messages.error(request, "You are not authorised to access this.")
         return redirect('composter:index')
-    if request.method== 'POST':
+    if request.method == 'POST':
         # deal with each form and add success message if successful
         if 'add_user' in request.POST:
             user_form = UserForm(request.POST)

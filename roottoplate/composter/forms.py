@@ -8,6 +8,7 @@ import datetime
 class UserForm(UserCreationForm):
     # accessible by admin only
     add_user = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
     class Meta:
         model = User
         fields = {'username',
@@ -43,7 +44,6 @@ class InputTypeForm(forms.ModelForm):
     woodChipRatio = forms.DecimalField(required=False)
     CNRatio = forms.DecimalField(required=True)
     add_input_type = forms.BooleanField(widget=forms.HiddenInput, initial=True)
-
 
     class Meta:
         model = InputType
