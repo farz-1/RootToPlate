@@ -3,32 +3,93 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
-<h1 class="container text-center" id="headline">Countdown to next composter feed</h1>
-<script src="{%static 'javascript/composter.js' %}"></script>
-<div class="card w-80 text-center">
-<div class="container text-center">
-    <canvas id="canvas" width="500" height="500"></canvas>
-    <div id="countdown">
-        <div style="position: center; font-size: 20px;">
-            <ul>
-                <li><span id="days"> </span> Days</li>
-                <li><span id="hours"></span> Hours</li>
-                <li><span id="minutes"></span> Minutes</li>
-                <li><span id="seconds"></span> Seconds</li>
-            </ul>
-        </div>
-        <div class="message">
-            <div id="content">
-                <!--this is to stop the count down-->
+    <h1 class="container text-center" id="headline">Countdown to next composter feed</h1>
+    <script src="{% static 'javascript/composter.js' %}"></script>
+    <div class="card w-80 text-center">
+        <div class="container text-center">
+            <canvas id="canvas" width="500" height="500"></canvas>
+            <h4 id="composter_last_fed" jsvalue="{{ compost_last_fed_js }}">Compost last
+                fed: {{ compost_last_fed }}</h4>
+            <div id="countdown">
+                <div style="position: center; font-size: 20px;">
+                    <ul>
+                        <hi><span id="days"> </span> Days</hi>
+                        <hi><span id="hours"></span> Hours</hi>
+                        <hi><span id="minutes"></span> Minutes</hi>
+                        <hi><span id="seconds"></span> Seconds</hi>
+                    </ul>
+                </div>
+                <div class="message">
+                    <div id="content">
+                        <!--this is to stop the count down-->
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <br>
-    {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
-    <a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
-    <a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
+                <a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
+                <a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
+            {% endif %}
+            {% if user.is_staff %}
+                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample"
+                   role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Show logs</a>
+                </div>
+                </div>
+                <br>
+                <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <table class="table">
+                    <caption>History</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Entry Time</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Input Amount/Input Type</th>
+                            <th scope="col">Notes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entry in last_five_entries %}
+                            <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ entry.entryTime }}</td>
+                            <td>{{ entry.username }}</td>
+                            <td><p>
+                                {% if entry.inputs%}
+                                {% for input in entry.inputs %}
+                                    {{ input.amount }},({{ input.type }})
+                                    {% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                                {% else %}
+                                Nothing added
+                                {% endif %}
+                            </p></td>
+                            <td>{% if entry.notes %}
+                                {{ entry.notes }}
+                                {% else %}
+                                No notes
+                            {% endif %}</td>
+                        {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
     {% endif %}
-</div>
-</div>
+    <style>
+        hi {
+            display: inline-block;
+            font-size: 20px;
+            list-style-type: none;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+
+        hi span {
+            display: block;
+            font-size: 35px;
+        }
+    </style>
 {% endblock %}

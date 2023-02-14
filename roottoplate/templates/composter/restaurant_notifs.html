@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<title>Restaurant notification</title>
+{% extends 'composter/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content_block %}
+    {% if restaurant_notifs %}
+    {% for notif in restaurant_notifs %}
+        <h1 class="container text-center">Restaurant notification</h1>
+        <div class="card">
+            <div class="card mb-4">
+                <div class="row g-10">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ notif.name }}</h5>
+                            <p class="card-text">Collection date: {{ notif.deadlineDate }}</p>
+                            <p class="card-text">Address: {{ notif.address }}</p>
+                            <p class="card-text">{{ notif.numberOfBags }} bags of waste</p>
+                            <p class="card-text">{{ notif.email }} {{ phoneNumber }}</p>
+                            {% if notif.collected %}
+                                <button type="button" class="btn btn-success w-30">Collected!</button>
+                            {% else %}
+                                <a href="{% url 'composter:collect_request' notif.requestID %}"><button type="button" class="btn btn-danger w-30">Collect</button></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{% static 'images/image.png' %}" class="img-fluid rounded-start" style="border-style: solid;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+    There are no requests!
+    {% endif %}
+{% endblock %}

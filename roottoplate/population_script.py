@@ -5,7 +5,11 @@ import django  # noqa: E402
 django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
-    RestaurantRequest, Output  # noqa:E402
+    RestaurantRequest, Output, EnergyUsage  # noqa:E402
+from datetime import datetime  # noqa:E402
+from django.utils import timezone  # noqa:E402
+
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 def populate():
@@ -166,6 +170,16 @@ def populate():
          'collected': False},
     ]
 
+    energies = [
+        #  energy entries, stored as a list of dictionaries
+        {'date': '2023-01-02',
+         'gas': 1800,
+         'electricity': 1800},
+        {'date': '2023-02-02',
+         'gas': 3200,
+         'electricity': 2400}
+    ]
+
     for u in users:
         new_user = create_user(u)
         print("Created profile: " + str(new_user))
@@ -187,6 +201,9 @@ def populate():
 
     for r in restaurant_requests:
         create_restaurant_request(r)
+
+    for e in energies:
+        create_energy(e)
 
 
 def create_user(data):
@@ -218,7 +235,7 @@ def create_input_entry(data):
     print("creating input entry " + str(data['id']) + "...")
     user = User.objects.get(username=data['user'])
     input_entry = InputEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=data['entryTime'],
+                                                   entryTime=date(data['entryTime']),
                                                    notes=data['notes'],
                                                    user=user)
     return input_entry
@@ -239,7 +256,7 @@ def create_temperature_entry(data):
     print("creating temperature entry " + str(data['id']) + "...")
     user = User.objects.get(username=data['user'])
     entry = TemperatureEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=data['entryTime'],
+                                                   entryTime=date(data['entryTime']),
                                                    probe1=data['probe1'],
                                                    probe2=data['probe2'],
                                                    probe3=data['probe3'],
@@ -255,7 +272,7 @@ def create_output(data):
     user = User.objects.get(username=data['user'])
     output = Output.objects.get_or_create(outputID=data['id'],
                                           amount=data['amount'],
-                                          time=data['time'],
+                                          time=date(data['time']),
                                           notes=data['notes'],
                                           user=user)[0]
     return output
@@ -268,14 +285,27 @@ def create_restaurant_request(data):
         get_or_create(requestID=data['id'],
                       name=data['name'],
                       address=data['address'],
-                      dateRequested=data['dateRequested'],
-                      deadlineDate=data['deadline'],
+                      dateRequested=date(data['dateRequested']),
+                      deadlineDate=date(data['deadline']),
                       email=data['email'],
                       phoneNumber=data['phone'],
                       notes=data['notes'],
                       numberOfBags=data['bags'],
                       collected=data['collected'])
     return request
+
+
+def create_energy(data):
+    #  creates energy entry
+    print('creating energy entry')
+    entry = EnergyUsage.objects.get_or_create(date=data['date'],
+                                              gas=data['gas'],
+                                              electricity=data['electricity'])
+    return entry
+
+
+def date(date):
+    return timezone.make_aware(datetime.strptime(date, DATE_FORMAT))
 
 
 # Execution starts here

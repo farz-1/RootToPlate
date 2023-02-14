@@ -10,7 +10,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm, EnergyForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
-from composter.models import InputType, Input, InputEntry, TemperatureEntry, EnergyUsage
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest, EnergyUsage
+from django.utils import timezone
 import datetime
 
 
@@ -80,7 +81,23 @@ def about(request):
 
 
 def composter(request):
-    return render(request, "composter/composter.html")
+    context = {}
+    last_five_entries = InputEntry.objects.all().order_by('-entryTime').values()[:5]
+
+    # get time the composter was last fed
+    if last_five_entries:
+        compost_last_fed = last_five_entries[0].get('entryTime')
+        compost_last_fed_js = compost_last_fed.strftime("%Y-%m-%dT%H:%M:%SZ")
+        context = {'compost_last_fed': compost_last_fed, 'compost_last_fed_js': compost_last_fed_js}
+
+        if request.user.is_staff:
+            for entry in last_five_entries:
+                entry['username'] = User.objects.get(id=entry['user_id']).username
+                inputs = Input.objects.filter(inputEntry=entry['entryID']).values()
+                entry['inputs'] = [{'type': i.get('inputType_id'), 'amount': i.get('inputAmount')} for i in inputs]
+            context['last_five_entries'] = last_five_entries
+
+    return render(request, "composter/composter.html", context)
 
 
 @csrf_protect
@@ -178,19 +195,31 @@ def output_entry(request):
 
 
 def restaurant_request_form(request):
-    if request.method == "POST":
-        restaurant_form = RestaurantForm(request.POST)
-        if restaurant_form.is_valid():
-            restaurant_req = restaurant_form.save(commit=False)
-            restaurant_req.dateRequested = datetime.datetime.now()
-            restaurant_req.save()
-            return redirect(reverse('composter:index'))
-        else:
-            print(restaurant_form.errors)
-
+    if request.user.is_authenticated:
+        restaurant_notifs = RestaurantRequest.objects.all()
+        return render(request, 'composter/restaurant_notifs.html', {'restaurant_notifs': restaurant_notifs})
     else:
-        restaurant_form = RestaurantForm()
-    return render(request, 'composter/restaurant_form.html', {'restaurant_form': restaurant_form})
+        if request.method == "POST":
+            restaurant_form = RestaurantForm(request.POST)
+            if restaurant_form.is_valid():
+                restaurant_req = restaurant_form.save(commit=False)
+                restaurant_req.dateRequested = timezone.now()
+                restaurant_req.save()
+                return redirect(reverse('composter:index'))
+            else:
+                print(restaurant_form.errors)
+
+        else:
+            restaurant_form = RestaurantForm()
+        return render(request, 'composter/restaurant_form.html', {'restaurant_form': restaurant_form})
+
+
+@login_required(login_url='/composter/')
+def collect_request(request, request_id):
+    req = RestaurantRequest.objects.get(requestID=request_id)
+    req.collected = True
+    req.save()
+    return redirect('composter:restaurant_form')
 
 
 # admin only views
