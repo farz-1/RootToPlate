@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output, EnergyUsage
 from datetime import date, datetime, timedelta
+import datetime
 
 
 class DateSelectorWidget(forms.MultiWidget):

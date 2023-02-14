@@ -5,7 +5,7 @@ import django  # noqa: E402
 django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
-    RestaurantRequest, Output  # noqa:E402
+    RestaurantRequest, Output, EnergyUsage  # noqa:E402
 from datetime import datetime  # noqa:E402
 from django.utils import timezone  # noqa:E402
 
@@ -170,6 +170,16 @@ def populate():
          'collected': False},
     ]
 
+    energies = [
+        #  energy entries, stored as a list of dictionaries
+        {'date': '2023-01-02',
+         'gas': 1800,
+         'electricity': 1800},
+        {'date': '2023-02-02',
+         'gas': 3200,
+         'electricity': 2400}
+    ]
+
     for u in users:
         new_user = create_user(u)
         print("Created profile: " + str(new_user))
@@ -191,6 +201,9 @@ def populate():
 
     for r in restaurant_requests:
         create_restaurant_request(r)
+
+    for e in energies:
+        create_energy(e)
 
 
 def create_user(data):
@@ -280,6 +293,15 @@ def create_restaurant_request(data):
                       numberOfBags=data['bags'],
                       collected=data['collected'])
     return request
+
+
+def create_energy(data):
+    #  creates energy entry
+    print('creating energy entry')
+    entry = EnergyUsage.objects.get_or_create(date=data['date'],
+                                              gas=data['gas'],
+                                              electricity=data['electricity'])
+    return entry
 
 
 def date(date):

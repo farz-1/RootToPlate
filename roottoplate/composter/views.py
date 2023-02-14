@@ -12,6 +12,7 @@ from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputF
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, EnergyUsage
 from django.utils import timezone
+import datetime
 
 
 def index(request):
