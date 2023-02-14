@@ -33,22 +33,31 @@
                 datasets: [{
                     label: 'Carbon saved by composting',
                     data: {{ cNegative|safe }},
-                    borderColor: "#E60088",
-                    backgroundColor: "#E60088"
+                    borderColor: "#B8BF0D",
+                    backgroundColor: "#B8BF0D"
                 },
                 {
                     label: 'Carbon footprint of energy consumption',
                     data: {{ cPositive|safe }},
-                    borderColor: "#B8BF0D",
-                    backgroundColor: "#B8BF0D"
-                }
-            ]
+                    borderColor: "#E01F1D",
+                    backgroundColor: "#E01F1D"
+                }]
             },
-    options: {
+            options: {
+                indexAxis: 'y',
                 legend: {display: true},
                 title: {
                     display: true,
-                    text: "Input types"
+                    text: "Carbon offset of energy consumption"
+                },
+                scales: {
+                    xAxes: [{ stacked: true }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        },
+                        stacked: false
+                    }]
                 }
             }
 });
