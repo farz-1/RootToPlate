@@ -50,10 +50,9 @@ function degToRad(degree) {
             //Hours
             //calcualte set intervale between jumps always 2 days ahead 
             //update every minute
-            increment = 360 / (2*day);
             ctx1.beginPath();
             //      pos,pos,size
-            ctx1.arc(250, 250, 200, degToRad(270), degToRad(269.999 - (increment * distance)));
+            ctx1.arc(250, 250, 200, degToRad(270),degToRad(270+(360*(1-((distance)/(2*day))))));
             ctx1.stroke();
 
             //do something later when date is reached
