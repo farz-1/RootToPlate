@@ -8,9 +8,9 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
-from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm
+from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm, EnergyForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
-from composter.models import InputType, Input, InputEntry, TemperatureEntry
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, EnergyUsage
 from django.utils import timezone
 
 
@@ -31,7 +31,48 @@ def index(request):
     tempTimes = [x.get('entryTime').strftime("%d/%m/%Y") for x in tempEntries]
 
     context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
+
+    # calculations for the carbon neutrality
+    cubic_m_to_co2 = 1.9
+    kwh_to_co2 = 590  # assuming oil burning power plant
+    compost_to_co2_saved = 1.495
+    cPositive, cNegative, cLabels = [], [], ["This month", "This year"]
+
+    meter_readings = EnergyUsage.objects.all().order_by('-date').values()
+    if len(meter_readings) > 1:
+        elec = [x.get('electricity') for x in meter_readings]
+        gas = [x.get('gas') for x in meter_readings]
+
+        cPositive.append((elec[0] - elec[1]) * kwh_to_co2 + (gas[0] - gas[1]) * cubic_m_to_co2)
+
+        if len(meter_readings) > 12:
+            cPositive.append((elec[0]-elec[11]) * kwh_to_co2 + (gas[0] - gas[11]) * cubic_m_to_co2)
+        else:
+            # take average of months you do have, assuming one meter reading is taken per month
+            cPositive.append((elec[0]-elec[-1]) / (len(elec)-1) * 12 * kwh_to_co2
+                             + (gas[0]-gas[-1]) / (len(gas)-1) * 12 * cubic_m_to_co2)
+
+        # and le composting
+        last_month = InputEntry.objects.filter(entryTime__month=datetime.date.today().month,
+                                               entryTime__year=datetime.date.today().year)
+        this_year = InputEntry.objects.filter(entryTime__year=datetime.date.today().year)
+        for entry_set in [last_month, this_year]:
+            compost_total = sum_amounts_from_entries(entry_set)
+            cNegative.append(float(compost_total) * compost_to_co2_saved)
+
+        context['cPositive'] = cPositive
+        context['cNegative'] = cNegative
+        context['cLabels'] = cLabels
+
     return render(request, "composter/index.html", context)
+
+
+def get_inputs_from_entry(entryid):
+    return Input.objects.filter(inputEntry=entryid)
+
+
+def sum_amounts_from_entries(entry_set):
+    return sum([sum([y.inputAmount for y in get_inputs_from_entry(x.entryID)]) for x in entry_set])
 
 
 def about(request):
@@ -173,7 +214,7 @@ def restaurant_request_form(request):
 def simple_admin(request):
     user = User.objects.get(username=request.user.username)
     context = {'user_form': UserForm(), 'input_type_form': InputTypeForm(),
-               'change_password_form': ChangePasswordForm()}
+               'change_password_form': ChangePasswordForm(), 'energy_form': EnergyForm()}
     if not user.is_staff:
         messages.error(request, "You are not authorised to access this.")
         return redirect('composter:index')
@@ -202,6 +243,14 @@ def simple_admin(request):
                 context['success_message'] = f"Input type {input_type_form.data['name']} added successfully"
             else:
                 context['input_type_form'] = input_type_form
+        elif 'add_meter_reading' in request.POST:
+            energy_form = EnergyForm(request.POST)
+            if energy_form.is_valid():
+                energy_form.save()
+                context['success_message'] = "Meter readings taken."
+            else:
+                context['energy_form'] = energy_form
+
     return render(request, 'composter/simple_admin.html', context)
 
 
