@@ -13,6 +13,7 @@ urlpatterns = [
     path('temp-entry/', views.temp_entry, name='temp_entry'),
     path('output-entry/', views.output_entry, name="output_entry"),
     path('restaurants/', views.restaurant_request_form, name='restaurant_form'),
+    path('collect-request/<int:request_id>', views.collect_request, name="collect_request"),
     # admin only urls
     path('simple-admin/', views.simple_admin, name='simple_admin'),
 

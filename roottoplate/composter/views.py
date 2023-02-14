@@ -170,6 +170,14 @@ def restaurant_request_form(request):
         return render(request, 'composter/restaurant_form.html', {'restaurant_form': restaurant_form})
 
 
+@login_required(login_url='/composter/')
+def collect_request(request, request_id):
+    req = RestaurantRequest.objects.get(requestID=request_id)
+    req.collected = True
+    req.save()
+    return redirect('composter:restaurant_form')
+
+
 # admin only views
 @login_required(login_url='/composter/')
 def simple_admin(request):
