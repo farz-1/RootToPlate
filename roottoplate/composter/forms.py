@@ -1,11 +1,33 @@
 from django import forms
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output
-import datetime
+from composter.models import InputType, InputEntry, Input, TemperatureEntry, RestaurantRequest, Output, EnergyUsage
+from datetime import date, datetime, timedelta
 
-date_requested = timezone.make_aware(datetime.datetime.now(), timezone.utc)
+
+class DateSelectorWidget(forms.MultiWidget):
+    def __init__(self, attrs=None):
+        days = [(day, day) for day in range(1, 32)]
+        months = [(month, month) for month in range(1, 13)]
+        years = [(year, year) for year in range(2000, 2100)]
+        widgets = [
+            forms.Select(attrs=attrs, choices=days),
+            forms.Select(attrs=attrs, choices=months),
+            forms.Select(attrs=attrs, choices=years),
+        ]
+        super().__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if isinstance(value, date):
+            return [value.day, value.month, value.year]
+        elif isinstance(value, str):
+            year, month, day = value.split('-')
+            return [day, month, year]
+        return [None, None, None]
+
+    def value_from_datadict(self, data, files, name):
+        day, month, year = super().value_from_datadict(data, files, name)
+        return '{}-{}-{}'.format(year, month, day)
 
 
 class UserForm(UserCreationForm):
@@ -54,7 +76,7 @@ class InputTypeForm(forms.ModelForm):
 
 
 class InputEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=date_requested,
+    entryTime = forms.DateTimeField(initial=datetime.today,
                                     widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     notes = forms.CharField(required=False)
 
@@ -79,7 +101,7 @@ InputFormSet = forms.formsets.formset_factory(InputForm, extra=1, max_num=5)
 
 
 class TempEntryForm(forms.ModelForm):
-    entryTime = forms.DateTimeField(initial=date_requested,
+    entryTime = forms.DateTimeField(initial=datetime.today,
                                     widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     probe1 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     probe2 = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
@@ -95,9 +117,9 @@ class TempEntryForm(forms.ModelForm):
 class RestaurantForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    dateRequested = forms.DateTimeField(initial=datetime.datetime.now(), required=False)
+    dateRequested = forms.DateTimeField(initial=datetime.now(), required=False)
     deadlineDate = forms.DateTimeField(widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}),
-                                       initial=datetime.datetime.now() + datetime.timedelta(weeks=1), required=True)
+                                       initial=datetime.now() + timedelta(weeks=1), required=True)
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
     phoneNumber = forms.IntegerField(required=False)
     notes = forms.CharField(required=False)
@@ -110,10 +132,21 @@ class RestaurantForm(forms.ModelForm):
 
 class OutputForm(forms.ModelForm):
     amount = forms.DecimalField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    time = forms.DateTimeField(initial=date_requested,
+    time = forms.DateTimeField(initial=datetime.today,
                                widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}), required=True)
     notes = forms.CharField(required=False)
 
     class Meta:
         model = Output
         fields = {'amount', 'time', 'notes'}
+
+
+class EnergyForm(forms.ModelForm):
+    date = forms.DateField(initial=date.today, widget=DateSelectorWidget(), required=True)
+    gas = forms.IntegerField(required=True)
+    electricity = forms.IntegerField(required=True)
+    add_meter_reading = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
+    class Meta:
+        model = EnergyUsage
+        fields = {'date', 'gas', 'electricity'}
