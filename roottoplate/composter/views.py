@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
-from composter.models import InputType, Input, InputEntry, TemperatureEntry
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest
 from django.utils import timezone
 
 
@@ -151,19 +151,23 @@ def output_entry(request):
 
 
 def restaurant_request_form(request):
-    if request.method == "POST":
-        restaurant_form = RestaurantForm(request.POST)
-        if restaurant_form.is_valid():
-            restaurant_req = restaurant_form.save(commit=False)
-            restaurant_req.dateRequested = timezone.now()
-            restaurant_req.save()
-            return redirect(reverse('composter:index'))
-        else:
-            print(restaurant_form.errors)
-
+    if request.user.is_authenticated:
+        restaurant_notifs = RestaurantRequest.objects.all()
+        return render(request, 'composter/restaurant_notifs.html', {'restaurant_notifs': restaurant_notifs})
     else:
-        restaurant_form = RestaurantForm()
-    return render(request, 'composter/restaurant_form.html', {'restaurant_form': restaurant_form})
+        if request.method == "POST":
+            restaurant_form = RestaurantForm(request.POST)
+            if restaurant_form.is_valid():
+                restaurant_req = restaurant_form.save(commit=False)
+                restaurant_req.dateRequested = timezone.now()
+                restaurant_req.save()
+                return redirect(reverse('composter:index'))
+            else:
+                print(restaurant_form.errors)
+
+        else:
+            restaurant_form = RestaurantForm()
+        return render(request, 'composter/restaurant_form.html', {'restaurant_form': restaurant_form})
 
 
 # admin only views
@@ -201,8 +205,3 @@ def simple_admin(request):
             else:
                 context['input_type_form'] = input_type_form
     return render(request, 'composter/simple_admin.html', context)
-
-
-@login_required(login_url='/composter/login/')
-def restaurant_notification(request):
-    return render(request, 'composter/restaurant_notifs.html')

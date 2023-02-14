@@ -47,9 +47,6 @@
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'composter:restaurant_notification' %}">Restaurant collection</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'composter:logout' %}">Logout</a>
                 </li>
             {% else %}
