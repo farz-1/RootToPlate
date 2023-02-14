@@ -1,12 +1,11 @@
 variables:
   DJANGO_CONFIG: "test"
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-
 default:
   image: python
-  tags: 
+  tags:
     - docker
-  
+
   cache:
     paths:
       - .cache/pip/
@@ -21,16 +20,7 @@ default:
 stages:
   - build
   - test
-
-migrations:
-  stage: build
-  script:
-    - cd roottoplate
-    - python3 manage.py makemigrations
-    - python3 manage.py makemigrations composter
-    - python3 manage.py migrate
-    - python3 manage.py check
-
+  - deploy
 
 django-tests:
   stage: test
@@ -43,3 +33,12 @@ static-analysis:
   script:
     - python -m pip install flake8
     - flake8 --extend-exclude=venv/ --max-line-length 130
+    - flake8 .
+
+heroku_deploy:
+  stage: deploy
+  script:
+    - apt-get update -yq
+    - apt-get install -y ruby ruby-dev rubygems-integration
+    - gem install dpl
+    - dpl --provider=heroku --app=roottoplate --api-key=73562996-0279-4eba-8859-3c9b0460e28a

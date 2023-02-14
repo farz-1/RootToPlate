@@ -1,28 +1,71 @@
+<!DOCTYPE html>
 <title>Composter</title>
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
-    <h1 class= "container text-center" id="headline">Countdown to next composter feed</h1>
-    <script src="{%static 'javascript/composter.js' %}"></script>
-<a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
-<a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
-<a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
+<h1 class="container text-center" id="headline">Countdown to next composter feed</h1>
+<script src="{%static 'javascript/composter.js' %}"></script>
+<div class="card w-80 text-center">
 <div class="container text-center">
+    
     <canvas id="canvas" width="500" height="500"></canvas>
+    <h4 id="composter_last_fed" jsvalue="{{ compost_last_fed_js }}">Compost last fed: {{ compost_last_fed }}</h4>
     <div id="countdown">
-    <div style="position: center; font-size: 20px;">
-      <ul>
-        <li><span id="days"> </span> Days</li>
-        <li><span id="hours"></span> Hours</li>
-        <li><span id="minutes"></span> Minutes</li>
-        <li><span id="seconds"></span> Seconds</li>
-      </ul>
+        <div  style="position: center; font-size: 20px;">
+            <ul>
+                <hi><span id="days"> </span> Days</hi>
+                <hi><span id="hours"></span> Hours</hi>
+                <hi><span id="minutes"></span> Minutes</hi>
+                <hi><span id="seconds"></span> Seconds</hi>
+            </ul>
+        </div>
+        <div class="message">
+            <div id="content">
+                <!--this is to stop the count down-->
+            </div>
+        </div>
     </div>
-  <div class="message">
-    <div id="content">
-        <!--this is to stop the count down-->
-    </div>
-  </div>
-  </div>
+    {% if user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'composter:output_entry' %}" role="button">Output Form</a>
+    <a class="btn btn-primary" href="{% url 'composter:input_entry' %}" role="button">Input Form</a>
+    <a class="btn btn-primary" href="{% url 'composter:temp_entry' %}" role="button">Temperature Form</a>
+    {% endif %}
 </div>
-  {% endblock %}
+</div>
+
+<div>
+    {% if user.is_staff %}
+        {% for entry in last_five_entries %}
+        <div>
+            <p>
+            {{ entry.entryTime }}
+            {{ entry.username }}
+            </p>
+            {% for input in entry.inputs %}
+                <p>
+                {{ input.type }}
+                {{ input.amount }}
+                </p>
+            {% endfor %}
+            <p>{% if entry.notes %}{{ entry.notes }}{% endif %}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<style>
+hi {
+  display: inline-block;
+  font-size: 20px;
+  list-style-type: none;
+  padding: 10px;
+  text-transform: uppercase;
+}
+ 
+hi span {
+  display: block;
+  font-size: 35px;
+}
+</style>
+
+{% endblock %}

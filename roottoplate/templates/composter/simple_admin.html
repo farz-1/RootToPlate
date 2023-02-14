@@ -29,7 +29,7 @@
         <label for="id_password2">Password: </label>
         {{ user_form.password2.errors }}
         {{ user_form.password2 }}
-        <label for="id_isAdmin">This user has staff permissions: </label> </label>
+        <label for="id_isAdmin">This user has staff permissions: </label>
         {{ user_form.is_staff }}
     </div>
 
@@ -94,4 +94,23 @@
       });
     }
 </script>
+<h2>Add meter reading</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+    {% csrf_token %}
+    {% for hidden in energy_form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <div>
+        <label for="id_date">Date: </label>
+        {{ energy_form.date.errors }}
+        {{ energy_form.date }}
+        <label for="id_gas">Gas reading: </label>
+        {{ energy_form.gas.errors }}
+        {{ energy_form.gas }}
+        <label for="id_electricity">Electricity reading: </label>
+        {{ energy_form.electricity.errors }}
+        {{ energy_form.electricity }}
+    </div>
+    <input type="submit" name="submit" value="Submit meter reading">
+</form>
 {% endblock %}
