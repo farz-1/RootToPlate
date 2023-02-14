@@ -1,11 +1,13 @@
 {% extends 'composter/base.html' %}
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/collapse.css' %}">
 
 {% block content_block %}
 {% if success_message %}
 <h3>{{ success_message }}</h3> 
 {% endif %}
-<h2>Add User</h2>
+<button class="collapsible">Add User</button>
+<div class="content">
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
     {% csrf_token %}
     {% for hidden in user_form.hidden_fields %}
@@ -33,8 +35,10 @@
 
     <input type="submit" name="submit" value="Add user">
 </form>
+</div>
 <hr>
-<h2>Add Input Type</h2>
+<button class="collapsible">Add Input Type</button>
+<div class="content">
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
     {% csrf_token %}
     {% for hidden in input_type_form.hidden_fields %}
@@ -51,8 +55,11 @@
 
     <input type="submit" name="submit" value="Add input type">
 </form>
+</div>
+
 <hr>
-<h2>Change Password</h2>
+<button class="collapsible">Change Password</button>
+<div class="content">
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
     {% csrf_token %}
     {% for hidden in change_password_form.hidden_fields %}
@@ -69,6 +76,24 @@
 
     <input type="submit" name="submit" value="Change password">
 </form>
+</div>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
 <h2>Add meter reading</h2>
 <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
     {% csrf_token %}
