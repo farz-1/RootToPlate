@@ -24,8 +24,7 @@
                 </div>
             {% endfor %}
             <button type="button" id="add-form" class="btn btn-primary">Add another input</button>
-            <button type="button" id="#" class="btn btn-danger">Remove input</button>
-            <!--<button id="add-form" type="button">Add another input</button>-->
+            <button type="button" id="remove-form" class="btn btn-danger">Remove input</button>
         </div>
 
 
@@ -33,31 +32,47 @@
 
         {{ entry_form.notes.errors}}
         {{ entry_form.notes|as_crispy_field }}
-    <!--<button type="submit">Submit input</button>-->
     <button type="submit" value="Post" class="btn btn-success">Submit input</button>
     </div>
 
 </form>
 <script>
-    let inputForm = document.querySelectorAll(".input-form")
-    let container = document.querySelector("#input-form-container")
-    let addButton = document.querySelector("#add-form")
-    let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+    let inputForm = document.querySelectorAll(".input-form");
+    let container = document.querySelector("#input-form-container");
+    let addButton = document.querySelector("#add-form");
+    let removeButton = document.querySelector('#remove-form');
+    let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+    let maxForms = document.querySelector("#id_form-MAX_NUM_FORMS").getAttribute('value');
 
-    let formNum = inputForm.length-1
-    addButton.addEventListener('click', addForm)
+    let formNum = inputForm.length-1;
+    addButton.addEventListener('click', addForm);
+    removeButton.addEventListener('click', removeForm);
 
     function addForm(e){
-        e.preventDefault()
+        e.preventDefault();
+        if (totalForms.getAttribute('value') < maxForms) {
+            let newForm = inputForm[0].cloneNode(true);
+            let formRegex = RegExp(`form-(\\d){1}-`, 'g');
 
-        let newForm = inputForm[0].cloneNode(true)
-        let formRegex = RegExp(`form-(\\d){1}-`, 'g')
+            formNum++;
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+            container.insertBefore(newForm, addButton);
 
-        formNum++
-        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
-        container.insertBefore(newForm, addButton)
+            totalForms.setAttribute('value', `${formNum+1}`);
+        } else {
+            alert("Please use two submissions for more than 5 inputs.")
+        }
+    }
+    function removeForm(e){
+        e.preventDefault();
+        if (totalForms.getAttribute('value') > 1) {
+            document.getElementsByClassName('input-form')[formNum].remove();
+            totalForms.setAttribute('value', `${formNum}`);
+            formNum--;
+        } else {
+            alert("Cannot have no inputs.")
+        }
 
-        totalForms.setAttribute('value', `${formNum+1}`)
     }
 </script>
 {% endblock %}
