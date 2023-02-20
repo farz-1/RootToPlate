@@ -20,10 +20,10 @@ function degToRad(degree) {
         const last_fed = new Date(last_fed_string);
 
 
-    let countDown = new Date(last_fed).getTime(),
+    let countDown = new Date(last_fed).getTime() + 2*day,
         x = setInterval(function () {
             let now = new Date().getTime(),
-                distance = now - countDown;
+                distance = countDown - now;
                 if (distance < 0) {
                     distance = 0;
                 }
