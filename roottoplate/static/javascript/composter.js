@@ -23,7 +23,7 @@ function degToRad(degree) {
     let countDown = new Date(last_fed).getTime(),
         x = setInterval(function () {
             let now = new Date().getTime(),
-                distance = countDown - now;
+                distance = now - countDown;
                 if (distance < 0) {
                     distance = 0;
                 }
