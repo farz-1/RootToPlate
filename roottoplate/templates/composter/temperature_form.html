@@ -16,18 +16,33 @@
         <h5>Probe 1</h5>
         {{ temperature_form.probe1.errors }}
         {{ temperature_form.probe1 }}
+        {% if temperature_form.probe1.help_text %}
+        <p class="help">{{ temperature_form.probe1.help_text|safe }}</p>
+        {% endif %}
         <h5>Probe 2</h5>
         {{ temperature_form.probe2.errors }}
         {{ temperature_form.probe2 }}
+        {% if temperature_form.probe2.help_text %}
+        <p class="help">{{ temperature_form.probe2.help_text|safe }}</p>
+        {% endif %}
         <h5>Probe 3</h5>
         {{ temperature_form.probe3.errors }}
         {{ temperature_form.probe3 }}
+        {% if temperature_form.probe3.help_text %}
+        <p class="help">{{ temperature_form.probe3.help_text|safe }}</p>
+        {% endif %}
         <h5>Probe 4</h5>
         {{ temperature_form.probe4.errors }}
         {{ temperature_form.probe4 }}
+        {% if temperature_form.probe4.help_text %}
+        <p class="help">{{ temperature_form.probe4.help_text|safe }}</p>
+        {% endif %}
         <h5>Notes</h5>
         {{ temperature_form.notes.errors }}
         {{ temperature_form.notes }}
+        {% if temperature_form.probe5.help_text %}
+        <p class="help">{{ temperature_form.probe5.help_text|safe }}</p>
+        {% endif %}
         <input type="submit" name="submit" value="Post">
     </div>
 
