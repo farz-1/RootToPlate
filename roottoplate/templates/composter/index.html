@@ -36,12 +36,12 @@
                     borderColor: "#B8BF0D",
                     backgroundColor: "#B8BF0D"
                 },
-                {
-                    label: 'Carbon footprint of energy consumption',
-                    data: {{ cPositive|safe }},
-                    borderColor: "#E01F1D",
-                    backgroundColor: "#E01F1D"
-                }]
+                    {
+                        label: 'Carbon footprint of energy consumption',
+                        data: {{ cPositive|safe }},
+                        borderColor: "#E01F1D",
+                        backgroundColor: "#E01F1D"
+                    }]
             },
             options: {
                 indexAxis: 'y',
@@ -51,23 +51,23 @@
                     text: "Carbon offset of energy consumption"
                 },
                 scales: {
-                    xAxes: [{ stacked: true }],
+                    xAxes: [{stacked: true}],
                     yAxes: [{
                         ticks: {
-                            beginAtZero:true
+                            beginAtZero: true
                         },
                         stacked: false
                     }]
                 }
             }
-});
+        });
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
-                labels: {{ typeNames|safe }},
+                labels: {{ tyN|safe }},
                 datasets: [{
                     backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
-                    data: {{ typeCounts|safe }}
+                    data: {{ pe|safe }}
                 }]
             },
             options: {
@@ -75,9 +75,18 @@
                 title: {
                     display: true,
                     text: "Input types"
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var value = data.datasets[0].data[tooltipItem.index];
+                            return value.toFixed(1) + " %";
+                        }
+                    }
                 }
             }
         });
+
 
         const data = {
             labels: {{ tempTimes|safe }},
