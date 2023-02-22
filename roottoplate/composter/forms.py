@@ -146,7 +146,8 @@ class OutputForm(forms.ModelForm):
 
 
 class EnergyForm(forms.ModelForm):
-    date = forms.DateField(initial=date.today, widget=DateSelectorWidget(), required=True)
+    date = forms.DateField(initial=date.today, widget=forms.widgets.DateInput(attrs={'type': 'datetime-local'}),
+                           required=True)
     gas = forms.IntegerField(required=True)
     electricity = forms.IntegerField(required=True)
     add_meter_reading = forms.BooleanField(widget=forms.HiddenInput, initial=True)
