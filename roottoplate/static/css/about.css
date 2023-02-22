@@ -12,16 +12,18 @@ h1 {
     text-align: center;
 }
 
-.card{
+.card-about{
     border-radius: 1rem; 
     background-color: #032F3C;
     width: 100%;
     height: 300px;
 }
 
-.fw-bold{
+.fw-bold-about{
     color: white;
 }
+
+
 
 
 
