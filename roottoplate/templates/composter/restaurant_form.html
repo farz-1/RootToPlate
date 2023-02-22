@@ -5,6 +5,7 @@
 <title>Food Collection</title>
 {% block content_block %}
 <h1 class="container text-center">Food Collection Form</h1>
+    <br>
     <form method="post" class="container justify-content-center"
           enctype="multipart/form-data" action="{% url 'composter:restaurant_form' %}">
         {% csrf_token %}

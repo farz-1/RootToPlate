@@ -4,7 +4,8 @@
 {% load crispy_forms_tags %}
 <title>Output Form</title>
 {% block content_block %}
-<h1 class="card-title container text-center">Output form</h1>
+<h1 class="card-title container text-center">Composter Output Form</h1>
+    <br>
 <form method="post" class="container justify-content-center"
       enctype="multipart/form-data" action="{% url 'composter:output_entry' %}">
     {% csrf_token %}

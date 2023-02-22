@@ -117,9 +117,9 @@ def user_login(request):
             else:
                 return HttpResponse("Your account is disabled")
         else:
-            return HttpResponse("Invalid login details")
-    else:
-        return render(request, 'composter/login.html')
+            messages.error(request, "Invalid login details.")
+
+    return render(request, 'composter/login.html')
 
 
 @login_required(login_url='/composter/login/')

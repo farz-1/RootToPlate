@@ -2,7 +2,8 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content_block %}
-    <h1 class="container text-center">Simple Admin</h1>
+    <h1 class="container text-center">Administrative Dashboard</h1>
+    <br>
     {% if success_message %}
         <h3>{{ success_message }}</h3>
     {% endif %}
@@ -11,7 +12,7 @@
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    User registration
+                    User Registration
                 </button>
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
@@ -35,7 +36,7 @@
                             {{ user_form.password2.errors }}
                             {{ user_form.password2|as_crispy_field }}
                             {{ user_form.is_staff|as_crispy_field }}
-                            <button type="submit" value="Post" class="btn btn-success">Add user</button>
+                            <button type="submit" value="Post" class="btn btn-success">Add User</button>
                         </div>
                     </form>
                 </div>
@@ -46,7 +47,7 @@
             <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Add input type
+                    Add Input Type
                 </button>
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -64,7 +65,7 @@
                                 {{ input_type_form.name|as_crispy_field }}
                                 {{ input_type_form.CNRatio.errors }}
                                 {{ input_type_form.CNRatio|as_crispy_field }}
-                                <button type="submit" value="Post" class="btn btn-success">Add input</button>
+                                <button type="submit" value="Post" class="btn btn-success">Add Input</button>
                             </div>
                         </form>
                     </div>
@@ -76,7 +77,7 @@
             <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Change user password
+                    Change User Password
                 </button>
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
@@ -105,7 +106,7 @@
             <h2 class="accordion-header" id="headingFour">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                    Add gas metering
+                    Add Meter Readings
                 </button>
             </h2>
             <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
@@ -125,7 +126,7 @@
                                 {{ energy_form.gas|as_crispy_field }}
                                 {{ energy_form.electricity.errors }}
                                 {{ energy_form.electricity|as_crispy_field }}
-                                <button type="submit" value="Post" class="btn btn-success">Submit meter reading</button>
+                                <button type="submit" value="Post" class="btn btn-success">Submit Readings</button>
                             </div>
                         </form>
                     </div>

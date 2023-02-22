@@ -5,6 +5,7 @@
 <title>Composter Input Form</title>
 {% block content_block %}
     <h1 class="container text-center">Composter Input Form</h1>
+    <br>
 <form id="form-container" class="container justify-content-center"
       method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -23,8 +24,8 @@
                     {{ input.inputAmount|as_crispy_field }}
                 </div>
             {% endfor %}
-            <button type="button" id="add-form" class="btn btn-primary">Add another input</button>
-            <button type="button" id="remove-form" class="btn btn-danger">Remove input</button>
+            <button type="button" id="add-form" class="btn btn-primary">Add Another Input</button>
+            <button type="button" id="remove-form" class="btn btn-danger">Remove Input</button>
         </div>
 
 
@@ -32,7 +33,7 @@
 
         {{ entry_form.notes.errors}}
         {{ entry_form.notes|as_crispy_field }}
-    <button type="submit" value="Post" class="btn btn-success">Submit input</button>
+    <button type="submit" value="Post" class="btn btn-success">Submit Input</button>
     </div>
 
 </form>
