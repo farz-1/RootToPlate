@@ -34,9 +34,10 @@ def index(request):
     context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
 
     # calculations for the carbon neutrality
-    cubic_m_to_co2 = 1.9
-    kwh_to_co2 = 590  # assuming oil burning power plant
-    compost_to_co2_saved = 1.495
+    cubic_m_to_co2 = 1.9 # kg / m^3
+    kwh_to_co2 = 0.82  # edf co2 kg/kwh as taken from their website
+    compost_to_co2_saved = 1.495 # kg/kg, assuming food waste would be landfilled otherwise
+    compost_to_co2_saved_bad = 0.023
     cPositive, cNegative, cLabels = [], [], ["This month", "This year"]
 
     meter_readings = EnergyUsage.objects.all().order_by('-date').values()
