@@ -33,35 +33,16 @@ def index(request):
 
     context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
 
-    # calculations for the carbon neutrality
-    cubic_m_to_co2 = 1.9 # kg / m^3
-    kwh_to_co2 = 0.82  # edf co2 kg/kwh as taken from their website
-    compost_to_co2_saved = 1.495 # kg/kg, assuming food waste would be landfilled otherwise
-    cPositive, cNegative, cLabels = [], [], ["This month","Last month", "This year"]
-
-    meter_readings = EnergyUsage.objects.all().order_by('-date').values()
-    if len(meter_readings) > 1:
-        elec = [x.get('electricity') for x in meter_readings]
-        gas = [x.get('gas') for x in meter_readings]
-
-        cPositive.append((elec[0] - elec[1]) * kwh_to_co2 + (gas[0] - gas[1]) * cubic_m_to_co2)
-
-        if len(meter_readings) > 12:
-            cPositive.append((elec[0]-elec[11]) * kwh_to_co2 + (gas[0] - gas[11]) * cubic_m_to_co2)
-        else:
-            # take average of months you do have, assuming one meter reading is taken per month
-            cPositive.append((elec[0]-elec[-1]) / (len(elec)-1) * 12 * kwh_to_co2
-                             + (gas[0]-gas[-1]) / (len(gas)-1) * 12 * cubic_m_to_co2)
-
-        # and le composting
-        last_month = InputEntry.objects.filter(entryTime__month=datetime.date.today().month,
-                                               entryTime__year=datetime.date.today().year)
-        this_year = InputEntry.objects.filter(entryTime__year=datetime.date.today().year)
-        for entry_set in [last_month, this_year]:
-            compost_total = sum_amounts_from_entries(entry_set)
-            cNegative.append(float(compost_total) * compost_to_co2_saved)
-    else:
+    cLabels, cPositive, cNegative = [],[],[]
+    carbon = calculate_carbon_neutrality()    
+    if carbon is None:
         context['notEnoughEnergyInfo'] = 'true'
+    else:
+        for label, value in carbon.items():
+            cLabels.append(label)
+            cPositive.append(value['cPositive'])
+            cNegative.append(value['cNegative'])
+
     context['cPositive'] = cPositive
     context['cNegative'] = cNegative
     context['cLabels'] = cLabels
@@ -75,6 +56,53 @@ def get_inputs_from_entry(entryid):
 
 def sum_amounts_from_entries(entry_set):
     return sum([sum([y.inputAmount for y in get_inputs_from_entry(x.entryID)]) for x in entry_set])
+
+
+def calculate_carbon_neutrality():
+    cubic_m_to_co2 = 1.9 # kg / m^3
+    kwh_to_co2 = 0.082  # edf co2 kg/kwh as taken from their website
+    compost_to_co2_saved = 1.495 # kg/kg, assuming food waste would be landfilled otherwise
+    labels = ['This Month', 'Last Month', 'This Year']
+    carbon = {label: {'cPositive':None, 'cNegative': None} for label in labels}
+
+    this_month = datetime.date.today().replace(day=1)
+    last_month = this_month - datetime.timedelta(days=1)
+    start_of_this_year = datetime.date.today() - datetime.timedelta(days=365)
+
+    print(this_month)
+    print(last_month)
+
+    meter_readings = EnergyUsage.objects.filter(date__gte=start_of_this_year).order_by('-date').values()
+    if len(meter_readings) > 1:
+        dates = [x.get('date') for x in meter_readings]
+        elec = [x.get('electricity') for x in meter_readings]
+        gas = [x.get('gas') for x in meter_readings]
+
+        lm_factor = 30 / (dates[0] - dates[1]).days
+        lm_elec = (elec[0] - elec[1]) * lm_factor
+        lm_gas = (gas[0] - gas[1]) * lm_factor
+
+        carbon[labels[0]]['cPositive'] = lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2
+        carbon[labels[1]]['cPositive'] = lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2 # this is the same as the last month
+        
+        ty_factor = 365 / (dates[0] - dates[-1]).days
+        ty_elec = (elec[0] - elec[-1]) * ty_factor
+        ty_gas = (gas[0] - gas[-1]) * ty_factor
+
+        carbon[labels[2]]['cPositive'] = ty_elec * kwh_to_co2 + ty_gas * cubic_m_to_co2
+
+        # and le composting
+        tm_compost = InputEntry.objects.filter(entryTime__month=this_month.month,
+                                               entryTime__year=this_month.year)
+        lm_compost = InputEntry.objects.filter(entryTime__month=last_month.month,
+                                               entryTime__year=last_month.year)
+        ty_compost = InputEntry.objects.filter(entryTime__year=this_month.year)
+        for label, entry_set in {'This Month': tm_compost, 'Last Month': lm_compost, 'This Year': ty_compost}.items():
+            compost_total = sum_amounts_from_entries(entry_set)
+            carbon[label]['cNegative'] = float(compost_total) * compost_to_co2_saved
+        return carbon
+    else:
+        return None
 
 
 def about(request):
