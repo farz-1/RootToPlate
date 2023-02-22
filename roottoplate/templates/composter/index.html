@@ -6,7 +6,11 @@
     <h1 class="container text-center">Young Enterprise Scotland</h1>
     <br>
     <br>
+    {% if notEnoughEnergyInfo %}
+    <h4>Not enough information to display graph. </h4>
+    {% else %}
     <canvas id="Carbonneutral" class="card" style="width: 100% ;height: auto"></canvas>
+    {% endif %}
     <br>
     <div class="row">
         <div class="col-sm-6">
@@ -26,6 +30,8 @@
     </div>
 
     <script>
+        var graphExists = document.getElementById("Carbonneutral");
+        if (graphExists) {
         new Chart("Carbonneutral", {
             type: 'horizontalBar',
             data: {
@@ -60,7 +66,7 @@
                     }]
                 }
             }
-});
+        });}
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {

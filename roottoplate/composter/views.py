@@ -37,8 +37,7 @@ def index(request):
     cubic_m_to_co2 = 1.9 # kg / m^3
     kwh_to_co2 = 0.82  # edf co2 kg/kwh as taken from their website
     compost_to_co2_saved = 1.495 # kg/kg, assuming food waste would be landfilled otherwise
-    compost_to_co2_saved_bad = 0.023
-    cPositive, cNegative, cLabels = [], [], ["This month", "This year"]
+    cPositive, cNegative, cLabels = [], [], ["This month","Last month", "This year"]
 
     meter_readings = EnergyUsage.objects.all().order_by('-date').values()
     if len(meter_readings) > 1:
@@ -61,10 +60,11 @@ def index(request):
         for entry_set in [last_month, this_year]:
             compost_total = sum_amounts_from_entries(entry_set)
             cNegative.append(float(compost_total) * compost_to_co2_saved)
-
-        context['cPositive'] = cPositive
-        context['cNegative'] = cNegative
-        context['cLabels'] = cLabels
+    else:
+        context['notEnoughEnergyInfo'] = 'true'
+    context['cPositive'] = cPositive
+    context['cNegative'] = cNegative
+    context['cLabels'] = cLabels
 
     return render(request, "composter/index.html", context)
 
