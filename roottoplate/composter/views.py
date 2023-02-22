@@ -33,19 +33,22 @@ def index(request):
 
     context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
 
-    cLabels, cPositive, cNegative = [],[],[]
+    mLabels, mPositive, mNegative = [],[],[]
+    yLabels, yPositive, yNegative = [],[],[]
     carbon = calculate_carbon_neutrality()    
     if carbon is None:
         context['notEnoughEnergyInfo'] = 'true'
     else:
         for label, value in carbon.items():
-            cLabels.append(label)
-            cPositive.append(value['cPositive'])
-            cNegative.append(value['cNegative'])
+            if label == 'This Year':
+                yLabels, yPositive, yNegative = [label], [value['cPositive']], [value['cNegative']]
+            else:
+                mLabels.append(label)
+                mPositive.append(value['cPositive'])
+                mNegative.append(value['cNegative'])        
 
-    context['cPositive'] = cPositive
-    context['cNegative'] = cNegative
-    context['cLabels'] = cLabels
+    context['cMonth'] = {'label': mLabels, 'positive': mPositive, 'negative': mNegative}
+    context['yMonth'] = {'label': yLabels, 'positive': yPositive, 'negative': yNegative}
 
     return render(request, "composter/index.html", context)
 

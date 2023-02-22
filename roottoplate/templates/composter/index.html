@@ -9,7 +9,8 @@
     {% if notEnoughEnergyInfo %}
     <h4>Not enough information to display graph. </h4>
     {% else %}
-    <canvas id="Carbonneutral" class="card" style="width: 100% ;height: auto"></canvas>
+    <canvas id="CarbonNeutralMonth" class="card" style="width: 100% ;height: auto"></canvas>
+    <canvas id="CarbonNeutralYear" class="card" style="width: 100% ;height: auto"></canvas>
     {% endif %}
     <br>
     <div class="row">
@@ -30,43 +31,79 @@
     </div>
 
     <script>
-        var graphExists = document.getElementById("Carbonneutral");
+        var graphExists = document.getElementById("CarbonNeutralMonth");
         if (graphExists) {
-        new Chart("Carbonneutral", {
-            type: 'horizontalBar',
-            data: {
-                labels: {{ cLabels|safe }},
-                datasets: [{
-                    label: 'Carbon saved by composting',
-                    data: {{ cNegative|safe }},
-                    borderColor: "#B8BF0D",
-                    backgroundColor: "#B8BF0D"
-                },
-                {
-                    label: 'Carbon footprint of energy consumption',
-                    data: {{ cPositive|safe }},
-                    borderColor: "#E01F1D",
-                    backgroundColor: "#E01F1D"
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                legend: {display: true},
-                title: {
-                    display: true,
-                    text: "Carbon offset of energy consumption"
-                },
-                scales: {
-                    xAxes: [{ stacked: true }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        },
-                        stacked: false
+            new Chart("CarbonNeutralMonth", {
+                type: 'horizontalBar',
+                data: {
+                    labels: {{ cMonth.label|safe }},
+                    datasets: [{
+                        label: 'Carbon saved by composting',
+                        data: {{ cMonth.negative|safe }},
+                        borderColor: "#B8BF0D",
+                        backgroundColor: "#B8BF0D"
+                    },
+                    {
+                        label: 'Carbon footprint of energy consumption',
+                        data: {{ cMonth.positive|safe }},
+                        borderColor: "#E01F1D",
+                        backgroundColor: "#E01F1D"
                     }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    legend: {display: true},
+                    title: {
+                        display: true,
+                        text: "Carbon offset of energy consumption"
+                    },
+                    scales: {
+                        xAxes: [{ stacked: true }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            },
+                            stacked: false
+                        }]
+                    }
                 }
-            }
-        });}
+            });
+            new Chart("CarbonNeutralYear", {
+                type: 'horizontalBar',
+                data: {
+                    labels: {{ yMonth.label|safe }},
+                    datasets: [{
+                        label: 'Carbon saved by composting',
+                        data: {{ yMonth.negative|safe }},
+                        borderColor: "#B8BF0D",
+                        backgroundColor: "#B8BF0D"
+                    },
+                    {
+                        label: 'Carbon footprint of energy consumption',
+                        data: {{ yMonth.positive|safe }},
+                        borderColor: "#E01F1D",
+                        backgroundColor: "#E01F1D"
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    legend: {display: true},
+                    title: {
+                        display: true,
+                        text: "Carbon offset of energy consumption for the year"
+                    },
+                    scales: {
+                        xAxes: [{ stacked: true }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            },
+                            stacked: false
+                        }]
+                    }
+                }
+            });
+        }
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
