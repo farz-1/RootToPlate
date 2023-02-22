@@ -72,9 +72,6 @@ def calculate_carbon_neutrality():
     last_month = this_month - datetime.timedelta(days=1)
     start_of_this_year = datetime.date.today() - datetime.timedelta(days=365)
 
-    print(this_month)
-    print(last_month)
-
     meter_readings = EnergyUsage.objects.filter(date__gte=start_of_this_year).order_by('-date').values()
     if len(meter_readings) > 1:
         dates = [x.get('date') for x in meter_readings]
@@ -85,14 +82,14 @@ def calculate_carbon_neutrality():
         lm_elec = (elec[0] - elec[1]) * lm_factor
         lm_gas = (gas[0] - gas[1]) * lm_factor
 
-        carbon[labels[0]]['cPositive'] = lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2
-        carbon[labels[1]]['cPositive'] = lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2 # this is the same as the last month
+        carbon[labels[0]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)
+        carbon[labels[1]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2) # this is the same as the last month
         
         ty_factor = 365 / (dates[0] - dates[-1]).days
         ty_elec = (elec[0] - elec[-1]) * ty_factor
         ty_gas = (gas[0] - gas[-1]) * ty_factor
 
-        carbon[labels[2]]['cPositive'] = ty_elec * kwh_to_co2 + ty_gas * cubic_m_to_co2
+        carbon[labels[2]]['cPositive'] = int(ty_elec * kwh_to_co2 + ty_gas * cubic_m_to_co2)
 
         # and le composting
         tm_compost = InputEntry.objects.filter(entryTime__month=this_month.month,
@@ -102,7 +99,7 @@ def calculate_carbon_neutrality():
         ty_compost = InputEntry.objects.filter(entryTime__year=this_month.year)
         for label, entry_set in {'This Month': tm_compost, 'Last Month': lm_compost, 'This Year': ty_compost}.items():
             compost_total = sum_amounts_from_entries(entry_set)
-            carbon[label]['cNegative'] = float(compost_total) * compost_to_co2_saved
+            carbon[label]['cNegative'] = int(float(compost_total) * compost_to_co2_saved)
         return carbon
     else:
         return None
