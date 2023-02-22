@@ -18,6 +18,11 @@ import datetime
 def index(request):
     typeNames = [x.name for x in InputType.objects.all()]
     typeCounts = [float(sum(y.inputAmount for y in Input.objects.filter(inputType=x))) for x in typeNames]
+    total = float(sum(typeCounts))
+    percentages = [(count / total * 100 )for count in typeCounts]
+    label_strings = ["{} ({:.1f}%)".format(type_name, percentage) for type_name, percentage in
+                     zip(typeNames, percentages)]
+
     # remove counts of 0
     n = len(typeNames) - 1
     for i in range(n + 1):
@@ -31,7 +36,7 @@ def index(request):
 
     tempTimes = [x.get('entryTime').strftime("%d/%m/%Y") for x in tempEntries]
 
-    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
+    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes, 'percentages': percentages,'label_':label_strings}
 
     # calculations for the carbon neutrality
     cubic_m_to_co2 = 1.9
