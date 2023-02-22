@@ -33,9 +33,9 @@ def index(request):
 
     context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
 
-    mLabels, mPositive, mNegative = [],[],[]
-    yLabels, yPositive, yNegative = [],[],[]
-    carbon = calculate_carbon_neutrality()    
+    mLabels, mPositive, mNegative = [], [], []
+    yLabels, yPositive, yNegative = [], [], []
+    carbon = calculate_carbon_neutrality()
     if carbon is None:
         context['notEnoughEnergyInfo'] = 'true'
     else:
@@ -45,7 +45,7 @@ def index(request):
             else:
                 mLabels.append(label)
                 mPositive.append(value['cPositive'])
-                mNegative.append(value['cNegative'])        
+                mNegative.append(value['cNegative'])
 
     context['cMonth'] = {'label': mLabels, 'positive': mPositive, 'negative': mNegative}
     context['yMonth'] = {'label': yLabels, 'positive': yPositive, 'negative': yNegative}
@@ -62,11 +62,11 @@ def sum_amounts_from_entries(entry_set):
 
 
 def calculate_carbon_neutrality():
-    cubic_m_to_co2 = 1.9 # kg / m^3
+    cubic_m_to_co2 = 1.9  # kg / m^3
     kwh_to_co2 = 0.082  # edf co2 kg/kwh as taken from their website
-    compost_to_co2_saved = 1.495 # kg/kg, assuming food waste would be landfilled otherwise
+    compost_to_co2_saved = 1.495  # kg/kg, assuming food waste would be landfilled otherwise
     labels = ['This Month', 'Last Month', 'This Year']
-    carbon = {label: {'cPositive':None, 'cNegative': None} for label in labels}
+    carbon = {label: {'cPositive': None, 'cNegative': None} for label in labels}
 
     this_month = datetime.date.today().replace(day=1)
     last_month = this_month - datetime.timedelta(days=1)
@@ -83,8 +83,8 @@ def calculate_carbon_neutrality():
         lm_gas = (gas[0] - gas[1]) * lm_factor
 
         carbon[labels[0]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)
-        carbon[labels[1]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2) # this is the same as the last month
-        
+        carbon[labels[1]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)  # this is the same as the last month
+
         ty_factor = 365 / (dates[0] - dates[-1]).days
         ty_elec = (elec[0] - elec[-1]) * ty_factor
         ty_gas = (gas[0] - gas[-1]) * ty_factor
