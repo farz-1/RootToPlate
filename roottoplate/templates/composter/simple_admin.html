@@ -1,119 +1,126 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/collapse.css' %}">
-
-{% block content_block %}
-{% if success_message %}
-<h3>{{ success_message }}</h3> 
-{% endif %}
-<button class="collapsible">Add User</button>
 <div class="content">
-<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
-    {% csrf_token %}
-    {% for hidden in user_form.hidden_fields %}
-    {{ hidden }}
-    {% endfor %}
-    <div>
-        <label for="id_username">Username: </label>
-        {{ user_form.username.errors }}
-        {{ user_form.username }}
-        <label for="id_first_name">First name: </label>
-        {{ user_form.first_name.errors }}
-        {{ user_form.first_name }}
-        <label for="id_last_name">Last name: </label>
-        {{ user_form.last_name.errors }}
-        {{ user_form.last_name }}
-        <label for="id_password1">Password: </label>
-        {{ user_form.password1.errors }}
-        {{ user_form.password1 }}
-        <label for="id_password2">Repeat Password: </label>
-        {{ user_form.password2.errors }}
-        {{ user_form.password2 }}
-        <label for="id_isAdmin">This user has staff permissions: </label>
-        {{ user_form.is_staff }}
-    </div>
+    <div class="row">
+        <div class="column">
+            {% block content_block %}
+                {% if success_message %}
+                    <h3>{{ success_message }}</h3>
+                {% endif %}
+                <button class="collapsible">Add User</button>
+                <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+                    {% csrf_token %}
+                    {% for hidden in user_form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <div>
+                        <label for="id_username">Username: </label>
+                        {{ user_form.username.errors }}
+                        {{ user_form.username }}
+                        <label for="id_first_name">First name: </label>
+                        {{ user_form.first_name.errors }}
+                        {{ user_form.first_name }}
+                        <label for="id_last_name">Last name: </label>
+                        {{ user_form.last_name.errors }}
+                        {{ user_form.last_name }}
+                        <label for="id_password1">Password: </label>
+                        {{ user_form.password1.errors }}
+                        {{ user_form.password1 }}
+                        <label for="id_password2">Repeat Password: </label>
+                        {{ user_form.password2.errors }}
+                        {{ user_form.password2 }}
+                        <label for="id_isAdmin">This user has staff permissions: </label>
+                        {{ user_form.is_staff }}
+                    </div>
+                    <input type="submit" name="submit" value="Add user">
+                </form>
 
-    <input type="submit" name="submit" value="Add user">
-</form>
-</div>
-<hr>
-<button class="collapsible">Add Input Type</button>
-<div class="content">
-<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
-    {% csrf_token %}
-    {% for hidden in input_type_form.hidden_fields %}
-    {{ hidden }}
-    {% endfor %}
-    <div>
-        <label for="id_name">Name: </label>
-        {{ input_type_form.name.errors }}
-        {{ input_type_form.name }}
-        <label for="id_CNRatio">Carbon Nitrogen ratio: </label>
-        {{ input_type_form.CNRatio.errors }}
-        {{ input_type_form.CNRatio }}
-    </div>
+                </div>
 
-    <input type="submit" name="submit" value="Add input type">
-</form>
-</div>
+                <div class="column">
+                    <hr>
+                    <button class="collapsible">Add Input Type</button>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+                        {% csrf_token %}
+                        {% for hidden in input_type_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <div>
+                            <label for="id_name">Name: </label>
+                            {{ input_type_form.name.errors }}
+                            {{ input_type_form.name }}
+                            <label for="id_CNRatio">Carbon Nitrogen ratio: </label>
+                            {{ input_type_form.CNRatio.errors }}
+                            {{ input_type_form.CNRatio }}
+                        </div>
+                        <input type="submit" name="submit" value="Add input type">
+                    </form>
+                </div>
 
-<hr>
-<button class="collapsible">Change Password</button>
-<div class="content">
-<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
-    {% csrf_token %}
-    {% for hidden in change_password_form.hidden_fields %}
-    {{ hidden }}
-    {% endfor %}
-    <div>
-        <label for="id_username">Username: </label>
-        {{ change_password_form.username.errors }}
-        {{ change_password_form.username }}
-        <label for="id_password">New password: </label>
-        {{ change_password_form.password.errors }}
-        {{ change_password_form.password }}
-    </div>
+                <div class="column">
+                    <hr>
+                    <button class="collapsible">Change Password</button>
+                    <div class="content">
+                        <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+                            {% csrf_token %}
+                            {% for hidden in change_password_form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <div>
+                                <label for="id_username">Username: </label>
+                                {{ change_password_form.username.errors }}
+                                {{ change_password_form.username }}
+                                <label for="id_password">New password: </label>
+                                {{ change_password_form.password.errors }}
+                                {{ change_password_form.password }}
+                            </div>
 
-    <input type="submit" name="submit" value="Change password">
-</form>
-</div>
+                            <input type="submit" name="submit" value="Change password">
+                        </form>
+                    </div>
+                </div>
 
-<script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
+                <script>
+                    var coll = document.getElementsByClassName("collapsible");
+                    var i;
 
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-          content.style.display = "none";
-        } else {
-          content.style.display = "block";
-        }
-      });
-    }
-</script>
-    <br>
-<p>Add meter reading</p>
-<form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
-    {% csrf_token %}
-    {% for hidden in energy_form.hidden_fields %}
-    {{ hidden }}
-    {% endfor %}
-    <div>
-        <label for="id_date">Date: </label>
-        {{ energy_form.date.errors }}
-        {{ energy_form.date }}
-        <label for="id_gas">Gas reading: </label>
-        {{ energy_form.gas.errors }}
-        {{ energy_form.gas }}
-        <label for="id_electricity">Electricity reading: </label>
-        {{ energy_form.electricity.errors }}
-        {{ energy_form.electricity }}
-    </div>
-    <input type="submit" name="submit" value="Submit meter reading">
-</form>
+                    for (i = 0; i < coll.length; i++) {
+                        coll[i].addEventListener("click", function () {
+                            this.classList.toggle("active");
+                            var content = this.nextElementSibling;
+                            if (content.style.display === "block") {
+                                content.style.display = "none";
+                            } else {
+                                content.style.display = "block";
+                            }
+                        });
+                    }
+                </script>
+                <br>
+                <div class="column">
+                    <p>Add meter reading</p>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'composter:simple_admin' %}">
+                        {% csrf_token %}
+                        {% for hidden in energy_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <div>
+                            <label for="id_date">Date: </label>
+                            {{ energy_form.date.errors }}
+                            {{ energy_form.date }}
+                            <label for="id_gas">Gas reading: </label>
+                            {{ energy_form.gas.errors }}
+                            {{ energy_form.gas }}
+                            <label for="id_electricity">Electricity reading: </label>
+                            {{ energy_form.electricity.errors }}
+                            {{ energy_form.electricity }}
+                        </div>
+                        <input type="submit" name="submit" value="Submit meter reading">
+                    </form>
+                </div>
+                </div>
+                </div>
 
-{% endblock %}
-    <br>
+            {% endblock %}
+
