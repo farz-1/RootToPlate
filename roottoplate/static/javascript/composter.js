@@ -40,13 +40,13 @@ function degToRad(degree) {
 
                 // Fill with blue
                 ctx1.beginPath();
-                ctx1.strokeStyle = "red";
+                ctx1.strokeStyle = "rgb(224,31,29)";
                 ctx1.arc(250, 250, 200, 0, 2 * Math.PI);
                 ctx1.stroke();
 
                 // Fill with green
                 ctx1.beginPath();
-                ctx1.strokeStyle = "green";
+                ctx1.strokeStyle = "rgb(3,120,61)";
                 ctx1.arc(250, 250, 200, degToRad(270), degToRad(270 + 360 * percentage));
                 ctx1.stroke();
 
