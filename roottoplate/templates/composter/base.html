@@ -45,14 +45,22 @@
                     <a class="nav-link" href="{% url 'composter:about' %}">About Us</a>
                 </li>
                 {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'composter:simple_admin' %}">Admin Dashboard</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'composter:logout' %}">Logout</a>
+                        <a class="nav-link" href="{% url 'composter:logout' %}"
+                           style="color: rgb(224,31,29)">Logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'composter:login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'composter:login' %}" style="color:#B8BF0D;">Login</a>
                     </li>
                 {% endif %}
+
+
             </ul>
         </div>
     </nav>
@@ -73,20 +81,19 @@
                             Our Vision is for Scotland to be a place where all young people are given the opportunity to
                             have a rewarding future in work and life - no matter where they start their journey.
                             <br>
-                            <br>
-                            Our Mission is to inspire and equip young people, irrespective of their background, to
+                            <span style="color: #B8BF0D">Our Mission</span> is to inspire and equip young people,
+                            irrespective of their background, to
                             learn,
-                            develop and reach their full potential through enterprise and financial education.
+                            develop and reach their full potential through enterprise and financial education.s
                             <br>
-                            <br>
-                            In everything that we do, we will work with the following values: Integrity, Enthusiasm,
+                            <span style="color: #B8BF0D">In Everything</span> that we do, we will work with the
+                            following values: Integrity, Enthusiasm,
                             Creativity & Collaboration.
                         </p>
-                        <p>Make a donation today and help support Enterprise for All.</p>
-                        <div class="donate">
-                            <a href="https://www.paypal.com/donate/?hosted_button_id=NHJ94KRT45X9J"> Donate Now</a>
-                        </div>
                     </div>
+                    <p style="color: white; font-size:90%">Make a donation today and help support Enterprise for All.<a
+                            href="https://www.paypal.com/donate/?hosted_button_id=NHJ94KRT45X9J"
+                            style="color: #B8BF0D;padding-left: 15px">Donate Now</a></p>
                 </div>
 
                 <div class="col-lg-3 col-md-6 mb-4 ">
@@ -121,39 +128,43 @@
                     </div>
                 </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 ">
-                <div class="container-fluid ">
-                    <h4 class="mb-1 text-light">Connect with Us</h4>
-                    <table class="table" style="border-color: white;">
-                        <caption></caption>
-                        <th></th>
+                <div class="col-lg-3 col-md-6 mb-4 ">
+                    <div class="container-fluid ">
+                        <h4 class="mb-1 text-light">Connect with Us</h4>
+                        <table class="table" style="border-color: white;">
+                            <caption></caption>
+                            <th></th>
 
-                        <tbody>
-                        <tr>
-                            <td>
-                                <a href="https://www.facebook.com/YoungEnterpriseScotland/">
-                                    <em class="bi bi-facebook text-light"><br></em>Facebook</a></td>
-                        </tr>
-                        <tr>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="https://www.facebook.com/YoungEnterpriseScotland/">
+                                        <em class="bi bi-facebook text-light" style="padding-right: 10px"><br></em>Facebook</a>
+                                </td>
+                            </tr>
+                            <tr>
 
-                            <td><a href="https://www.instagram.com/yescotland/">
-                                <em class="bi bi-instagram text-light"><br></em>Instagram</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="https://twitter.com/YE_Scotland">
-                                <em class="bi bi-twitter text-light"><br></em>Twitter</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="https://www.linkedin.com/company/young-enterprise-scotland">
-                                <em class="bi bi-linkedin text-light"><br></em>LinkedIn</a></td>
-                        </tr>
+                                <td><a href="https://www.instagram.com/yescotland/">
+                                    <em class="bi bi-instagram text-light" style="padding-right: 10px"><br></em>Instagram</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://twitter.com/YE_Scotland">
+                                    <em class="bi bi-twitter text-light"
+                                        style="padding-right: 10px"><br></em>Twitter</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://www.linkedin.com/company/young-enterprise-scotland">
+                                    <em class="bi bi-linkedin text-light" style="padding-right: 10px"><br></em>LinkedIn</a>
+                                </td>
+                            </tr>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-</div>
-</footer>
+    </footer>
 </div>
 </html>

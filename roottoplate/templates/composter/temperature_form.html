@@ -4,7 +4,7 @@
 {% load crispy_forms_tags %}
 <title>Temperature Form</title>
 {% block content_block %}
-<h1 class="card-title container text-center">Temperature form</h1>
+<h1 class="card-title container text-center">Temperature Form</h1>
 <form method="post" class="container justify-content-center"
       enctype="multipart/form-data" action="{% url 'composter:temp_entry' %}">
     {% csrf_token %}
@@ -31,7 +31,7 @@
         {{ temperature_form.notes.errors }}
         {{ temperature_form.notes|as_crispy_field }}
         <br>
-        <button type="submit" value="Post" class="btn btn-success">Submit data</button>
+        <button type="submit" value="Post" class="btn btn-success">Submit Data</button>
         <!--<input type="submit" name="submit" value="Post">-->
     </div>
 

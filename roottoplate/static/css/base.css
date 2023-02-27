@@ -18,7 +18,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif !important;
-    background: linear-gradient(to left top, whitesmoke, gainsboro);
+    background: linear-gradient(to left top, whitesmoke, white);
 }
 
 h1, h2, h3, h4, h5 {
@@ -38,7 +38,7 @@ p{
     justify-content: space-between;
     padding: 20px;
     background-color: #B8BF0D;
-    color: #fff;
+    color: white;
 }
 
 .nav-links a {

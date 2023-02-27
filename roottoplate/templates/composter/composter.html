@@ -3,13 +3,14 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
-    <h1 class="container text-center" id="headline">Countdown to next composter feed</h1>
+    <h1 class="container text-center" id="headline">Time to Next Feed</h1>
+    <br>
     <script src="{% static 'javascript/composter.js' %}"></script>
     <div class="card w-80 text-center">
         <div class="container text-center">
             <canvas id="canvas" width="500" height="500"></canvas>
-            <div id="composter_last_fed" jsvalue="{{ compost_last_fed_js }}">
-                Compost last fed: {{ compost_last_fed }}</div>
+            <h4 id="composter_last_fed" jsvalue="{{ compost_last_fed_js }}">Composter last
+                fed on {{ compost_last_fed }}</h4>
             <div id="countdown">
                 <div style="position: center; font-size: 20px;">
                     <ul>
@@ -33,7 +34,7 @@
             {% if user.is_staff %}
                 <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample"
                    role="button" aria-expanded="false" aria-controls="collapseExample">
-                    Show logs</a>
+                    Show Logs</a>
                 </div>
                 </div>
                 <br>
@@ -46,7 +47,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Entry Time</th>
                             <th scope="col">Username</th>
-                            <th scope="col">Input Amount/Input Type</th>
+                            <th scope="col" style="padding-left: 35px">Input Amount and Type</th>
                             <th scope="col">Notes</th>
                         </tr>
                         </thead>
