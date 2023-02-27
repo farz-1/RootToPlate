@@ -44,6 +44,8 @@ function degToRad(degree) {
                 // Fill with green
                 ctx1.beginPath();
                 ctx1.strokeStyle = "green";
+                ctx1.shadowColor = "green";
+                ctx1.shadowBlur = 20;
                 ctx1.arc(250, 250, 200, degToRad(270), degToRad(270 + 360 * percentage));
                 ctx1.stroke();
 

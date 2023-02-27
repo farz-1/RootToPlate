@@ -23,6 +23,13 @@ body {
 
 h1, h2, h3, h4, h5 {
     font-family: 'Montserrat', sans-serif !important;
+    font-weight: bold; 
+    color: white;
+}
+
+p{
+    color: white; 
+    font-size:90%"
 }
 
 .navbar {
@@ -100,10 +107,6 @@ h1, h2, h3, h4, h5 {
     box-sizing: border-box;
 }
 
-a {
-    text-decoration: none;
-}
-
 li {
     list-style: none;
 }
@@ -116,4 +119,16 @@ html{
 
 .grad-base{
     background-image: linear-gradient(0deg,#335a61 50%, white 80%);
+}
+
+.table{
+    border-color: white;
+}
+
+.footer{
+    background-color: #335a61;
+}
+
+.donate{
+    color: #B8BF0D;
 }
