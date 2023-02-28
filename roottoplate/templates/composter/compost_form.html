@@ -14,9 +14,15 @@
                     <h6>Input type: </h6>
                     {{ input.inputType.errors }}
                     {{ input.inputType }}
+                    {% if input.inputType.help_text %}
+                    <p class="help">{{ input.inputType.help_text|safe }}</p>
+                    {% endif %}
                     <h6>Input amount: </h6>
                     {{ input.inputAmount.errors }}
                     {{ input.inputAmount }}
+                    {% if input.inputAmount.help_text %}
+                    <p class="help">{{ input.inputAmount.help_text|safe }}</p>
+                    {% endif %}
                 </div>
             {% endfor %}
             <button id="add-form" type="button">Add another input</button>
@@ -28,6 +34,9 @@
         <label for="id_notes">Notes: </label>
         {{ entry_form.notes.errors}}
         {{ entry_form.notes }}
+        {% if entry_form.notes.help_text %}
+        <p class="help">{{ entry_form.notes.help_text|safe }}</p>
+        {% endif %}
     </div>
     <button type="submit">Submit input</button>
 </form>
