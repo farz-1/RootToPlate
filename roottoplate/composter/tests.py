@@ -443,4 +443,3 @@ def create_non_admin():
     user.is_staff = False
     user.is_superuser = False
     user.save()
-
