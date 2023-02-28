@@ -29,9 +29,10 @@ def index(request):
     if len(tempEntries) > 30:
         tempEntries = tempEntries[-30:]
 
-    tempTimes = [x.get('entryTime').strftime("%d/%m/%Y") for x in tempEntries]
+    tempTimes = [x.get('entryTime').strftime("%d-%m-%Y") for x in tempEntries]
+    tempTimesInt = [int(x.get('entryTime').timestamp()) for x in tempEntries]
 
-    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes}
+    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes, 'tempTimesInt': tempTimesInt}
 
     mLabels, mPositive, mNegative = [], [], []
     yLabels, yPositive, yNegative = [], [], []
