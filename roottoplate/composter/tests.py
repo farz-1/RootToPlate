@@ -89,108 +89,93 @@ class LoggedInUserURLTesting(TestCase):
     URL testing for logged in users
     """
     def setUp(self):
-        set_up_test_users()
+        create_non_admin()
 
     def test_index_page_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200, 'Index at incorrect location.')
 
     def test_index_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200, 'Index not available by name.')
 
     def test_about_page_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/about/')
         self.assertEqual(response.status_code, 200, 'About page at incorrect location.')
 
     def test_about_page_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:about'))
         self.assertEqual(response.status_code, 200, 'About page not available by name.')
 
     def test_login_page_redirects_logged_in_user(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/login/')
         self.assertEqual(response.status_code, 302, 'Login page does not redirect user.')
 
     def test_login_page_by_name_redirects_logged_in_user(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:login'))
         self.assertEqual(response.status_code, 302, 'Login page does not redirect user.')
 
     def test_composter_page_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/composter/')
         self.assertEqual(response.status_code, 200, 'Composter page at incorrect location.')
 
     def test_composter_page_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:composter'))
         self.assertEqual(response.status_code, 200, 'Composter page not available by name.')
 
     def test_input_entry_page_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/input-entry/')
         self.assertEqual(response.status_code, 200, 'Input entry page at incorrect location.')
 
     def test_input_entry_page_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:input_entry'))
         self.assertEqual(response.status_code, 200, 'Input entry page could not be accessed by name.')
 
     def test_input_entry_template_name_correct(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:input_entry'))
         self.assertTemplateUsed(response, 'composter/compost_form.html', 'Input entry page uses incorrect template.')
 
     def test_temp_entry_page_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/temp-entry/')
         self.assertEqual(response.status_code, 200, 'Temperature entry at incorrect location.')
 
     def test_temp_entry_page_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:temp_entry'))
         self.assertEqual(response.status_code, 200, 'Temperature entry page could not be accessed by name.')
 
     def test_temp_entry_template_name_correct(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:temp_entry'))
         self.assertTemplateUsed(response, 'composter/temperature_form.html', 'Temperature entry '
                                                                              'uses incorrect template.')
 
     def test_output_entry_page_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/output-entry/')
         self.assertEqual(response.status_code, 200, 'Output entry at incorrect location.')
 
     def test_output_entry_page_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:output_entry'))
         self.assertEqual(response.status_code, 200, 'Output could not be accessed by name.')
 
     def test_output_entry_template_name_correct(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get(reverse('composter:output_entry'))
         self.assertTemplateUsed(response, 'composter/compost_output_form.html', 'Output entry uses incorrect template.')
-
-    def test_simple_admin_at_correct_location(self):
-        self.client.login(username='kw01', password='grass99')
-        response = self.client.get('/composter/simple-admin/')
-        self.assertEqual(response.status_code, 200, 'Admin page at incorrect location.')
-
-    def test_simple_admin_available_by_name(self):
-        self.client.login(username='kw01', password='grass99')
-        response = self.client.get(reverse('composter:simple_admin'))
-        self.assertEqual(response.status_code, 200, 'Admin page could not be accessed by name.')
-
-    def test_simple_admin_template_name_correct(self):
-        self.client.login(username='kw01', password='grass99')
-        response = self.client.get(reverse('composter:simple_admin'))
-        self.assertTemplateUsed(response, 'composter/simple_admin.html', 'Admin page does not use correct template')
 
     def test_simple_admin_redirects_non_staff(self):
         self.client.login(username='ab88', password='45dirt')
@@ -198,7 +183,7 @@ class LoggedInUserURLTesting(TestCase):
         self.assertEqual(response.status_code, 302, 'Admin page does not redirect non-staff users.')
 
     def test_logout_working(self):
-        self.client.login(username='kw01', password='grass99')
+        self.client.login(username='ab88', password='45dirt')
         response = self.client.get('/composter/logout/')
         self.assertEqual(response.status_code, 302, 'Logout button did not redirect user')
         # should not redirect
@@ -341,7 +326,7 @@ class PopulationScriptTests(TestCase):
 
 class FormTests(TestCase):
     def setUp(self):
-        set_up_test_users()
+        create_non_admin()
 
     def test_module_exists(self):
         project_path = os.getcwd()
@@ -350,7 +335,7 @@ class FormTests(TestCase):
         self.assertTrue(os.path.exists(forms_module_path))
 
     def test_user_login_form(self):
-        response = self.client.post(reverse('composter:login'), {'username': 'kw01', 'password': 'grass99'},
+        response = self.client.post(reverse('composter:login'), {'username': 'ab88', 'password': '45dirt'},
                                     follow=True)
         self.assertTrue(response.context['user'].is_active, 'Could not log in with user form.')
 
@@ -367,7 +352,7 @@ class FormTests(TestCase):
 
     def test_temp_entry_form(self):
         expected = len(TemperatureEntry.objects.filter()) + 1
-        self.client.login(username='ag23', password='compost1')  # non-admin
+        self.client.login(username='ab88', password='45dirt')  # non-admin
         self.client.post(reverse('composter:temp_entry'),
                          {'entryTime': timezone.now(), 'probe1': '54', 'probe2': '53', 'probe3': '51',
                           'probe4': '51', 'notes': 'test'})
@@ -379,7 +364,7 @@ class FormTests(TestCase):
         expected_inputs = 1
         InputType.objects.get_or_create(name='test_type', woodChipRatio=1, CNRatio=1)
         type_pk = InputType.objects.get(pk='test_type').pk
-        self.client.login(username='ag23', password='compost1')
+        self.client.login(username='ab88', password='45dirt')
         self.client.post(reverse('composter:input_entry'),
                          {'entryTime': timezone.now(), 'form-TOTAL_FORMS': 1, 'form-INITIAL_FORMS': 0,
                           'form-0-inputType': type_pk, 'form-0-inputAmount': 1, 'notes': 'n'})
@@ -389,10 +374,16 @@ class FormTests(TestCase):
 
     def test_output_entry_form(self):
         expected = len(Output.objects.filter()) + 1
-        self.client.login(username='ag23', password='compost1')
+        self.client.login(username='ab88', password='45dirt')
         self.client.post(reverse('composter:output_entry'),
                          {'time': timezone.now(), 'amount': 3, 'notes': 't'})
         self.assertEqual(expected, len(Output.objects.filter()), 'Output form could not create a new output.')
+
+
+class AdminTests(TestCase):
+
+    def setUp(self):
+        create_admin()
 
     def test_add_user(self):
         expected = len(User.objects.filter()) + 1
@@ -409,7 +400,8 @@ class FormTests(TestCase):
         self.client.post(reverse('composter:simple_admin'), type_data, follow=True)
         self.assertEqual(expected, len(InputType.objects.filter()), 'Could not create new input type with admin form.')
 
-    def test_change_password(self):
+    def test_change_other_user_password(self):
+        create_non_admin()
         self.client.login(username='kw01', password='grass99')
         password_data = {'change_password': True, 'username': 'ab88', 'password': '11compost99'}
         self.client.post(reverse('composter:simple_admin'), password_data, follow=True)
@@ -423,20 +415,32 @@ class FormTests(TestCase):
         self.assertTrue(self.client.login(username='kw01', password='11compost99'), 'Could not change own user '
                                                                                     'password with admin form.')
 
+    def test_simple_admin_at_correct_location(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get('/composter/simple-admin/')
+        self.assertEqual(response.status_code, 200, 'Admin page at incorrect location.')
 
-def set_up_test_users():
-    user = User.objects.create_user(username='kw01',
-                                    password='grass99')
+    def test_simple_admin_available_by_name(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:simple_admin'))
+        self.assertEqual(response.status_code, 200, 'Admin page could not be accessed by name.')
+
+    def test_simple_admin_template_name_correct(self):
+        self.client.login(username='kw01', password='grass99')
+        response = self.client.get(reverse('composter:simple_admin'))
+        self.assertTemplateUsed(response, 'composter/simple_admin.html', 'Admin page does not use correct template')
+
+
+def create_admin():
+    user = User.objects.create_user(username='kw01', password='grass99')
     user.is_staff = True
     user.is_superuser = True
     user.save()
-    user2 = User.objects.create_user(username='ab88',
-                                     password='45dirt')
-    user2.is_staff = False
-    user2.is_superuser = False
-    user2.save()
-    user3 = User.objects.create_user(username='ag23',
-                                     password='compost1')
-    user3.is_staff = False
-    user3.is_superuser = False
-    user3.save()
+
+
+def create_non_admin():
+    user = User.objects.create_user(username='ab88', password='45dirt')
+    user.is_staff = False
+    user.is_superuser = False
+    user.save()
+
