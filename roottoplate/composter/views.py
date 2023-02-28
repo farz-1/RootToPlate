@@ -32,7 +32,8 @@ def index(request):
     tempTimes = [x.get('entryTime').strftime("%d-%m-%Y") for x in tempEntries]
     tempTimesInt = [int(x.get('entryTime').timestamp()) for x in tempEntries]
 
-    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes, 'tempTimesInt': tempTimesInt}
+    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries,
+               'tempTimes': tempTimes, 'tempTimesInt': tempTimesInt}
 
     mLabels, mPositive, mNegative = [], [], []
     yLabels, yPositive, yNegative = [], [], []
