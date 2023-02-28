@@ -325,6 +325,10 @@ class PopulationScriptTests(TestCase):
 
 
 class FormTests(TestCase):
+    """
+    Testing of login, input, temperature, output and restaurant forms.
+    Ensures they create new entry in database.
+    """
     def setUp(self):
         create_non_admin()
 
@@ -381,7 +385,10 @@ class FormTests(TestCase):
 
 
 class AdminTests(TestCase):
-
+    """
+    Tests admin functionality. Tests the admin forms and makes sure they create new entries in database.
+    Tests the admin pages and their templates.
+    """
     def setUp(self):
         create_admin()
 
@@ -431,6 +438,7 @@ class AdminTests(TestCase):
         self.assertTemplateUsed(response, 'composter/simple_admin.html', 'Admin page does not use correct template')
 
 
+#  Creates a test admin user
 def create_admin():
     user = User.objects.create_user(username='kw01', password='grass99')
     user.is_staff = True
@@ -438,6 +446,7 @@ def create_admin():
     user.save()
 
 
+#  Creates a test non-admin user
 def create_non_admin():
     user = User.objects.create_user(username='ab88', password='45dirt')
     user.is_staff = False
