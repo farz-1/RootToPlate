@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0',
                  'roottoplate.herokuapp.com',  # your herokuapp url
-                 '127.0.0.1']
+                 '127.0.0.1',
+                 'localhost']
 
 # Application definition
 
