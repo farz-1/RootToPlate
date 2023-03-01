@@ -34,7 +34,7 @@ def index(request):
     tempTimesInt = [int(x.get('entryTime').timestamp()) for x in tempEntries]
 
     context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries,
-               'tempTimes': tempTimes, 'tempTimesInt': tempTimesInt}
+               'tempTimes': tempTimes, 'tempTimesInt': tempTimesInt, 'percentages':percentages}
 
     mLabels, mPositive, mNegative = [], [], []
     yLabels, yPositive, yNegative = [], [], []

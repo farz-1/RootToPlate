@@ -107,10 +107,10 @@
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
-                labels: {{ tyN|safe }},
+                labels: {{ typeNames|safe }},
                 datasets: [{
                     backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
-                    data: {{ pe|safe }}
+                    data: {{ percentages|safe }}
                 }]
             },
             options: {
