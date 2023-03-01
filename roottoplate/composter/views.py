@@ -86,7 +86,8 @@ def calculate_carbon_neutrality():
         lm_gas = (gas[0] - gas[1]) * lm_factor
 
         carbon[labels[0]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)
-        carbon[labels[1]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)  # this is the same as the last month
+        # this is the same as the last month
+        carbon[labels[1]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)
 
         ty_factor = 365 / (dates[0] - dates[-1]).days
         ty_elec = (elec[0] - elec[-1]) * ty_factor
