@@ -56,7 +56,7 @@ class TypeAddedInline(admin.TabularInline):
 
 
 class InputTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'woodChipRatio', 'CNRatio')
+    list_display = ('name', 'CNRatio', 'nitrogenPercent', 'moisturePercent')
     inlines = [TypeAddedInline]
 
 
