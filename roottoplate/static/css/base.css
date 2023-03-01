@@ -113,3 +113,21 @@ body{
 html{
     height: 100%;
 }
+
+.yellow{
+    color: #B8BF0D;
+    padding-left: 15px;
+}
+
+.table{
+    border-color: white;
+}
+
+.card-fluid{
+    border-radius: 1rem;
+    background-color: #032F3C;
+}
+
+.img-fluid{
+    border-style: solid;
+}
