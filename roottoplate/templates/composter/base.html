@@ -14,7 +14,7 @@
     <title>Root2Plate</title>
     <link rel="icon" type="image/png" sizes="32x32" href={% static 'images/favicon.ico' %}>
 </head>
-<div style="background: linear-gradient(0deg, #335a61 50% , white 80%)">
+<div class="background">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
@@ -51,8 +51,7 @@
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'composter:logout' %}"
-                           style="color: rgb(224,31,29)">Logout</a>
+                        <a class="nav-link" href="{% url 'composter:logout' %}" style="color: rgb(224,31,29)">Logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -94,8 +93,8 @@
                         </p>
                     </div>
                     <p style="color: white; font-size:90%">Make a donation today and help support Enterprise for All.<a
-                            id="yellow" href="https://www.paypal.com/donate/?hosted_button_id=NHJ94KRT45X9J"
-                            >Dnate Now</a></p>
+                            href="https://www.paypal.com/donate/?hosted_button_id=NHJ94KRT45X9J" style="color:#B8BF0D;"
+                            >Donate Now</a></p>
                 </div>
 
                 <div class="col-lg-3 col-md-6 mb-4 ">
