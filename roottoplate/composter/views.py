@@ -161,17 +161,17 @@ def user_logout(request):
 
 
 def calculate_mixture_sums(cur_inputs):
-    sumN = sum([i['amount']*i['type'].get('nitrogenpercentage')*i['type'].get('moisture') for i in cur_inputs])
+    sumN = sum([i['amount']*i['type'].get('nitrogenPercentage')*i['type'].get('moisturePercentage') for i in cur_inputs])
     for i in cur_inputs:
-        i['carbon'] = i['type'].get('nitrogenpercentage')*i['type'].get('cn_ratio')
-    sumC = sum([i['amount']*i['carbon']*i['type'].get('moisture') for i in cur_inputs])
+        i['carbon'] = i['type'].get('nitrogenPercentage')*i['type'].get('CNRatio')
+    sumC = sum([i['amount']*i['carbon']*i['type'].get('moisturePercentage') for i in cur_inputs])
     return sumC, sumN
 
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
     cn = sumC/sumN
-    nitrogen, moisture = rec_input.get('nitrogenpercentage'), rec_input.get('moisture')
-    carbon = rec_input.get('nitrogenpercentage')*rec_input.get('cn_ratio')
+    nitrogen, moisture = rec_input.get('nitrogenPercentage'), rec_input.get('moisturePercentage')
+    carbon = rec_input.get('nitrogenPercentage')*rec_input.get('CNRatio')
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
 
