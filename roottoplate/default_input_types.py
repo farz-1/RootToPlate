@@ -17,11 +17,6 @@ def populate_input_types(file_path):
 
 
 def create_input_type(item):
-    print(item[0])
     new_type = InputType.objects.get_or_create(name=item[0], nitrogenPercent=item[1],
                                                CNRatio=item[2], moisturePercent=item[3])
     return new_type
-
-
-FILEPATH = 'static/db-data/default_input_types.csv'
-populate_input_types(FILEPATH)

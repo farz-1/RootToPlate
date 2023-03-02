@@ -1,4 +1,5 @@
 import os
+from default_input_types import populate_input_types
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'roottoplate.settings')
 import django  # noqa: E402
@@ -9,31 +10,13 @@ from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
 from datetime import datetime  # noqa:E402
 from django.utils import timezone  # noqa:E402
 
+
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 def populate():
-    # input types, stored as a list of dictionaries
-    input_types = [
-        {'name': 'Food scraps',
-         'woodChipRatio': 5,  # 5:1
-         'CNRatio': 2},  # placeholder
-        {'name': 'Vegetable clipping',
-         'woodChipRatio': 3,  # 3:1
-         'CNRatio': 2},
-        {'name': 'Fresh/wet grass',
-         'woodChipRatio': 6,  # 6:1
-         'CNRatio': 2},
-        {'name': 'Brown/dry grass',
-         'woodChipRatio': 10,  # 10:1
-         'CNRatio': 2},
-        {'name': 'Weeds',
-         'woodChipRatio': 3,  # 3:1
-         'CNRatio': 2},
-        {'name': 'Plank stalks',
-         'woodChipRatio': 5,  # 5:1
-         'CNRatio': 2},
-    ]
+    FILEPATH = 'static/db-data/default_input_types.csv'
+    populate_input_types(FILEPATH)
 
     input_entries = [
         # input entries, stored as list of dictionaries
@@ -54,16 +37,16 @@ def populate():
     inputs = [
         # inputs, stored as list of dictionaries
         {'inputEntry': 10002,
-         'inputType': 'Food scraps',
+         'inputType': 'Wood',
          'amount': 2},
         {'inputEntry': 10003,
-         'inputType': 'Food scraps',
+         'inputType': 'Urine',
          'amount': 4},
         {'inputEntry': 10003,
-         'inputType': 'Weeds',
+         'inputType': 'Leaves',
          'amount': 2},
         {'inputEntry': 10001,
-         'inputType': 'Brown/dry grass',
+         'inputType': 'Grass clippings',
          'amount': 1},
     ]
 
@@ -187,9 +170,6 @@ def populate():
     for o in outputs:
         create_output(o)
 
-    for it in input_types:
-        create_input_types(it)
-
     for ti in temperature_entries:
         create_temperature_entry(ti)
 
@@ -218,16 +198,6 @@ def create_user(data):
         user.is_superuser = True
     user.save()
     return user
-
-
-def create_input_types(data):
-    # creates input type
-    print("creating " + data['name'] + " input type...")
-    input_type = InputType.objects.\
-        get_or_create(name=data['name'],
-                      woodChipRatio=data['woodChipRatio'],
-                      CNRatio=data['CNRatio'])[0]
-    return input_type
 
 
 def create_input_entry(data):
