@@ -26,16 +26,22 @@
                                     </div>
                                     <br>
                                     {% if messages %}
-                                        <ul class="messages">
+                                        <ul class="messages" style="color:rgb(224,31,29);">
                                             {% for message in messages %}
                                                 <li{% if message.tags %}
                                                     class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                                             {% endfor %}
                                         </ul>
                                     {% endif %}
+                                    <br>
+                                    <br>
                                     <input class="btn btn-outline-light btn-lg px-5" type="submit" value="Log in">
+                                    <br>
+
                                 </div>
                             </form>
+                            <br>
+
                         </div>
                     </div>
                 </div>

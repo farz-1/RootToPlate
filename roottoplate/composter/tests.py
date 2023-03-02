@@ -231,7 +231,7 @@ class PopulationScriptTests(TestCase):
     """
     def setUp(self):
         try:
-            import population_script
+            from roottoplate import population_script
         except ImportError:
             raise ImportError("Error importing population_script.py")
 
