@@ -160,6 +160,21 @@ def user_logout(request):
     return redirect(reverse('index'))
 
 
+def calculate_mixture_sums(cur_inputs):
+    sumN = sum([i['amount']*i['type'].get('nitrogenPercentage')*i['type'].get('moisturePercentage') for i in cur_inputs])
+    for i in cur_inputs:
+        i['carbon'] = i['type'].get('nitrogenPercentage')*i['type'].get('CNRatio')
+    sumC = sum([i['amount']*i['carbon']*i['type'].get('moisturePercentage') for i in cur_inputs])
+    return sumC, sumN
+
+
+def calculate_recommended_addition(rec_input, sumC, sumN):
+    cn = sumC/sumN
+    nitrogen, moisture = rec_input.get('nitrogenPercentage'), rec_input.get('moisturePercentage')
+    carbon = rec_input.get('nitrogenPercentage')*rec_input.get('CNRatio')
+    return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
+
+
 class InputFormView(TemplateView):
     template_name = "composter/compost_form.html"
 
@@ -174,8 +189,26 @@ class InputFormView(TemplateView):
 
         entry_form = InputEntryForm(self.request.POST)
         input_formset = InputFormSet(self.request.POST)
+        context = {}
 
-        if entry_form.is_valid() and input_formset.is_valid():
+        if 'get_advice' in self.request.POST:
+            cur_inputs = []
+            for input in input_formset:
+                cur_inputs.append({'amount': input.inputAmount, 'type': InputType.objects.filter(name=input.inputType)})
+            sumC, sumN = calculate_mixture_sums(cur_inputs)
+            if sumC/sumN > 35:
+                rec_input = InputType.objects.filter(name='Food waste')
+                rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
+                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."
+            elif sumC/sumN < 20:
+                rec_input = InputType.objects.filter(name='Woodchips')
+                rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
+                advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."
+            else:
+                advice = f"The carbon-nitrogen ratio is within the recommended range."
+            context['advice'] = advice
+
+        elif entry_form.is_valid() and input_formset.is_valid():
             entry = entry_form.save(commit=False)
             entry.user = user
             entry.save()
@@ -188,7 +221,9 @@ class InputFormView(TemplateView):
             print(entry_form.errors)
             for inputs in input_formset:
                 print(inputs.errors)
-        context = {'input_formset': input_formset, 'entry_form': entry_form}
+
+        context['input_formset'] = input_formset
+        context['entry_form'] = entry_form
         return render(request, self.template_name, context)
 
 
