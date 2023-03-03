@@ -200,13 +200,13 @@ class InputFormView(TemplateView):
             if sumC/sumN > 35:
                 rec_input = InputType.objects.filter(name='Food waste')
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
-                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."
+                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
             elif sumC/sumN < 20:
                 rec_input = InputType.objects.filter(name='Woodchips')
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
-                advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."
+                advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."  # noqa:E501
             else:
-                advice = f"The carbon-nitrogen ratio is within the recommended range."
+                advice = "The carbon-nitrogen ratio is within the recommended range."
             context['advice'] = advice
 
         elif entry_form.is_valid() and input_formset.is_valid():
