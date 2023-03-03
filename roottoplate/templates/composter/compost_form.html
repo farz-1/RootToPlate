@@ -13,7 +13,7 @@
         {% if advice %}
             <p>{{ advice }}</p>
         {% endif %}
-        <button type="get_advice" value="Post" class="btn btn-success">Get advice</button>
+        <button type="submit" value="Post" name="get_advice" class="btn btn-success">Get advice</button>
     </div>
     <div class="card w-50">
         {{ entry_form.entryTime.errors }}
