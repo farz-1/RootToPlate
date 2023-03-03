@@ -161,10 +161,10 @@ def user_logout(request):
 
 
 def calculate_mixture_sums(cur_inputs):
-    sumN = sum([i['amount']*i['type'].get('nitrogenPercentage')*i['type'].get('moisturePercentage') for i in cur_inputs])
+    sumN = float(sum([i['amount']*i['type'].nitrogenPercent*i['type'].moisturePercent for i in cur_inputs]))
     for i in cur_inputs:
-        i['carbon'] = i['type'].get('nitrogenPercentage')*i['type'].get('CNRatio')
-    sumC = sum([i['amount']*i['carbon']*i['type'].get('moisturePercentage') for i in cur_inputs])
+        i['carbon'] = i['type'].nitrogenPercent*i['type'].CNRatio
+    sumC = float(sum([i['amount']*i['carbon']*i['type'].moisturePercent for i in cur_inputs]))
     return sumC, sumN
 
 
@@ -194,7 +194,8 @@ class InputFormView(TemplateView):
         if 'get_advice' in self.request.POST:
             cur_inputs = []
             for input in input_formset:
-                cur_inputs.append({'amount': input.inputAmount, 'type': InputType.objects.filter(name=input.inputType)})
+                input = input.save(commit=False)
+                cur_inputs.append({'amount': input.inputAmount, 'type': input.inputType})
             sumC, sumN = calculate_mixture_sums(cur_inputs)
             if sumC/sumN > 35:
                 rec_input = InputType.objects.filter(name='Food waste')
