@@ -15,11 +15,10 @@
                     <div class="row g-10">
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5>{{ notif.name }}</h5>
+                                <h5>{{ notif.name  }}</h5>
                                 <p class="card-text">Collection date: {{ notif.deadlineDate }}</p>
                                 <p class="card-text">Address: {{ notif.address }}</p>
-
-
+                                <div id="map" style="height: 200px ;width:500px"></div>
                                 <p class="card-text">Number of bags:{{ notif.numberOfBags }}</p>
                                 <p class="card-text">E-mail and Phone Number: {{ notif.email }} {{ phoneNumber }}</p>
                                 <p class="card-text">Additional notes: {{ notif.notes }}</p>
@@ -28,8 +27,6 @@
                                 {% else %}
                                     <a href="{% url 'composter:collect_request' notif.requestID %}">
                                         <button type="button" class="btn btn-danger w-30">Collect</button>
-                                        <div id="map" style="height: 200px ;width:500px"></div>
-
                                     </a>
                                 {% endif %}
                             </div>
@@ -78,7 +75,6 @@
                         });
                     }
                 </script>
-
                 <script async defer
                         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYHqoQspF0vvLU1c0ZZcv_WjaGiyXyRpQ&callback=initMap">
                 </script>
