@@ -81,7 +81,7 @@ def populate():
         print("Created profile: " + str(new_user))
 
     create_temperature_entries(temperature_entries)
-    create_input_entries(ie)
+    create_input_entries(input_entries)
 
     for r in restaurant_requests:
         create_restaurant_request(r)
@@ -106,22 +106,59 @@ def create_user(data):
 
 def create_input_entries(data):
     # creates input entry
-    print("creating input entry " + str(data['id']) + "...")
-    user = User.objects.get(username=data['user'])
-    input_entry = InputEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=date(data['entryTime']),
-                                                   notes=data['notes'],
-                                                   user=user)
+    user = User.objects.get(username='kw01')
+    count = 0
+    for item in data:
+        print(f'creating input entry {str(count)}...')
+        input_entry = InputEntry.objects.get_or_create(entryID=count, entryTime=date(item[0] + ' 00:00:00'),
+                                                       notes='', user=user)
+        input_entry.
+        if item[1]:
+            input_type = 'Coffee grounds'
+            amount = item[1]
+            create_input(input_entry, input_type, amount)
+
+        if item[2]:
+            input_type = 'Food waste'
+            amount = item[2]
+            create_input(input_entry, input_type, amount)
+
+        if item[3]:
+            input_type = 'Grass clippings'
+            amount = item[3]
+            create_input(input_entry, input_type, amount)
+
+        if item[4]:
+            input_type = 'Leaves'
+            amount = item[4]
+            create_input(input_entry, input_type, amount)
+
+        if item[5]:
+            input_type = 'Shrub trimmings'
+            amount = item[5]
+            create_input(input_entry, input_type, amount)
+
+        if item[6]:
+            input_type = 'Wood'
+            amount = item[6]
+            create_input(input_entry, input_type, amount)
+
+        if item[7]:
+            input_type = 'Hay'
+            amount = item[7]
+            create_input(input_entry, input_type, amount)
+
+        count += 1
+
     return input_entry
 
 
-def create_input(data):
+def create_input(entry, input_type, amount):
     # creates input
-    entry = InputEntry.objects.get(entryID=data['inputEntry'])
-    input_type = InputType.objects.get(name=data['inputType'])
+    input_type = InputType.objects.get(name=input_type)
     new_input = Input.objects.get_or_create(inputEntry=entry,
                                             inputType=input_type,
-                                            inputAmount=data['amount'])
+                                            inputAmount=amount)
     return new_input
 
 
@@ -130,8 +167,9 @@ def create_temperature_entries(data):
     user = User.objects.get(username='kw01')
     count = 0
     for item in data:
+        print(f'creating temp entry {str(count)}...')
         entry = TemperatureEntry.objects.get_or_create(entryID=count,
-                                                       entryTime=date(item[0]),
+                                                       entryTime=date(item[0] + ' 00:00:00'),
                                                        probe1=item[1],
                                                        probe2=item[2],
                                                        probe3=item[3],
@@ -140,18 +178,6 @@ def create_temperature_entries(data):
                                                        user=user)[0]
         count += 1
     return entry
-
-
-def create_output(data):
-    # creates output
-    print("creating output " + str(data['id']) + "...")
-    user = User.objects.get(username=data['user'])
-    output = Output.objects.get_or_create(outputID=data['id'],
-                                          amount=data['amount'],
-                                          time=date(data['time']),
-                                          notes=data['notes'],
-                                          user=user)[0]
-    return output
 
 
 def create_restaurant_request(data):
