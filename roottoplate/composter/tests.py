@@ -260,7 +260,7 @@ class PopulationScriptTests(TestCase):
         """
         input_entries = InputEntry.objects.filter()
         self.assertEqual(len(input_entries), 48, f'48 input entries expected from population script, '
-                                                f'{len(input_entries)} created.')
+                                                 f'{len(input_entries)} created.')
 
     def test_inputs(self):
         """
@@ -388,7 +388,8 @@ class AdminTests(TestCase):
 
     def test_add_input_type(self):
         expected = len(InputType.objects.filter()) + 1
-        type_data = {'add_input_type': True, 'name': 'test', 'woodChipRatio': 2, 'CNRatio': 2}
+        type_data = {'add_input_type': True, 'name': 'test', 'CNRatio': 2, 'nitrogenPercentage': 2,
+                     'moisturePercentage': 2}
         self.client.login(username='kw01', password='grass99')
         self.client.post(reverse('composter:simple_admin'), type_data, follow=True)
         self.assertEqual(expected, len(InputType.objects.filter()), 'Could not create new input type with admin form.')

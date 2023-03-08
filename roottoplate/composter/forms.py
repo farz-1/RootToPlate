@@ -75,9 +75,12 @@ class ChangePasswordForm(forms.ModelForm):
 class InputTypeForm(forms.ModelForm):
     # accessible by admin only
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    woodChipRatio = forms.DecimalField(required=False)
     CNRatio = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
                                  required=True, label='Carbon : Nitrogen ratio')
+    nitrogenPercent = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
+                                         required=True, label='Nitrogen percentage')
+    moisturePercent = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
+                                         required=True, label='Moisture percentage')
     add_input_type = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
     def __init__(self, *args, **kwargs):
