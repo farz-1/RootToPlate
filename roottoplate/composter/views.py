@@ -200,8 +200,12 @@ class InputFormView(TemplateView):
                 cur_inputs.append({'amount': float(input.inputAmount), 'type': input.inputType})
             # get the total carbon and nitrogen in the mixture
             sumC, sumN = calculate_mixture_sums(cur_inputs)
+            # if there's no nitrogen, add four times the amount of current material
+            if sumN == 0:
+                rec_input_amount = sum([x['amount'] for x in cur_inputs])*4
+                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
             # if the ratio is too big then add more green
-            if sumC/sumN > 35:
+            elif sumC/sumN > 35:
                 rec_input = InputType.objects.filter(name='Food waste').values()[0]
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
