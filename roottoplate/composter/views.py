@@ -166,14 +166,15 @@ def calculate_mixture_sums(cur_inputs):
     for i in cur_inputs:
         i['carbon'] = i['nitrogen']*i['CNRatio']
     sumC = sum([i['amount']*i['carbon']*i['moisture'] for i in cur_inputs])
+    print(f"sumc: {sumC}, sumN: {sumN}")
     return sumC, sumN
 
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
-    cn = sumC/sumN
-    nitrogen, moisture = float(rec_input.get('nitrogenPercent')), float(rec_input.get('moisturePercent'))
-    if moisture == 0: moisture = 1
+    cn = 27 # ideal carbon nitrogen ratio
+    nitrogen, moisture = float(rec_input.get('nitrogenPercent')), 100 - float(rec_input.get('moisturePercent'))
     carbon = float(rec_input.get('nitrogenPercent')*rec_input.get('CNRatio'))
+    print(f"cn: {cn}, nitrogen: {nitrogen}, carbon: {carbon}, moisture: {moisture}")
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
 
@@ -200,11 +201,8 @@ class InputFormView(TemplateView):
                 input = input.save(commit=False)
                 cur_inputs.append({'amount': float(input.inputAmount),
                                    'nitrogen': float(input.inputType.nitrogenPercent),
-                                   'moisture': float(input.inputType.moisturePercent),
+                                   'moisture': 100 - float(input.inputType.moisturePercent),
                                    'CNRatio': float(input.inputType.CNRatio)})
-            # preventing 0 division errors by insisting that nothing in scotland is dry
-            for input in cur_inputs:
-                if input['moisture'] == 0: input['moisture'] = 1
             # get the total carbon and nitrogen in the mixture
             sumC, sumN = calculate_mixture_sums(cur_inputs)
             
