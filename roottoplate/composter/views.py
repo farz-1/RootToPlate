@@ -172,8 +172,8 @@ def calculate_mixture_sums(cur_inputs):
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
     cn = 27  # ideal carbon nitrogen ratio
-    nitrogen, moisture = float(rec_input.get('nitrogenPercent')), 100 - float(rec_input.get('moisturePercent'))
-    carbon = float(rec_input.get('nitrogenPercent')*rec_input.get('CNRatio'))
+    nitrogen, moisture = float(rec_input.nitrogenPercent), 100 - float(rec_input.moisturePercent)
+    carbon = float(rec_input.nitrogenPercent*rec_input.CNRatio)
     print(f"cn: {cn}, nitrogen: {nitrogen}, carbon: {carbon}, moisture: {moisture}")
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
@@ -208,23 +208,23 @@ class InputFormView(TemplateView):
 
             # if the ratio is too big then add more green
             if sumC/sumN > 35:
-                rec_input = InputType.objects.filter(name='Food waste').values()[0]
-                rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
-                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
+                rec_input = InputType.objects.get(name='Food waste')
+                rec_input_amount = round(calculate_recommended_addition(rec_input, sumC, sumN), 1)
+                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material. "  # noqa:E501
             # if the ratio is too small then add more brown
             elif sumC/sumN < 20:
-                rec_input = InputType.objects.filter(name='Wood').values()[0]
-                rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
-                advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."  # noqa:E501
+                rec_input = InputType.objects.get(name='Wood')
+                rec_input_amount = round(calculate_recommended_addition(rec_input, sumC, sumN), 1)
+                advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material. "  # noqa:E501
             # the ratio is ready to submit
             else:
-                advice = "The carbon-nitrogen ratio is within the recommended range."
+                advice = "The carbon-nitrogen ratio is within the recommended range. "
             tempEntries = TemperatureEntry.objects.all().order_by('-entryTime').values()
             tempAvg = sum([tempEntries[0].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
             if tempAvg > 55:
-                advice += "\nThe temperature of the composter is above 55, add more brown material than normally recommended"  # noqa:E501
+                advice += "The temperature of the composter is above 55, add more brown material than normally recommended"  # noqa:E501
             if tempAvg < 45:
-                advice += "\nThe temperature of the composter is below 45, add more green material than normally recommended"  # noqa:E501
+                advice += "The temperature of the composter is below 45, add more green material than normally recommended"  # noqa:E501
             context['advice'] = advice
 
         # form is submitted, process as normal
