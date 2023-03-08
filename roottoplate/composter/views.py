@@ -220,9 +220,9 @@ class InputFormView(TemplateView):
             tempEntries = TemperatureEntry.objects.all().order_by('-entryTime').values()
             tempAvg = sum([tempEntries[0].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
             if tempAvg > 55:
-                advice += f"\nThe temperature of the composter is above 55, add more brown material than normally recommended"
+                advice += "\nThe temperature of the composter is above 55, add more brown material than normally recommended"  # noqa:E501
             if tempAvg < 45:
-                advice+= f"\nThe temperature of the composter is below 45, add more green material than normally recommended"
+                advice += "\nThe temperature of the composter is below 45, add more green material than normally recommended"  # noqa:E501
             context['advice'] = advice
 
         # form is submitted, process as normal
