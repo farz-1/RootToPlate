@@ -107,7 +107,7 @@ def create_user(data):
 def create_input_entries(data):
     # creates input entry
     user = User.objects.get(username='kw01')
-    count = 1
+    count = 0
     for item in data:
         print(f'creating input entry {str(count)}...')
         input_entry = InputEntry.objects.get_or_create(entryID=count, entryTime=date(item[0] + ' 00:00:00'),
