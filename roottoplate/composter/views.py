@@ -171,7 +171,7 @@ def calculate_mixture_sums(cur_inputs):
 
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
-    cn = 27 # ideal carbon nitrogen ratio
+    cn = 27  # ideal carbon nitrogen ratio
     nitrogen, moisture = float(rec_input.get('nitrogenPercent')), 100 - float(rec_input.get('moisturePercent'))
     carbon = float(rec_input.get('nitrogenPercent')*rec_input.get('CNRatio'))
     print(f"cn: {cn}, nitrogen: {nitrogen}, carbon: {carbon}, moisture: {moisture}")
@@ -205,7 +205,7 @@ class InputFormView(TemplateView):
                                    'CNRatio': float(input.inputType.CNRatio)})
             # get the total carbon and nitrogen in the mixture
             sumC, sumN = calculate_mixture_sums(cur_inputs)
-            
+
             # if the ratio is too big then add more green
             if sumC/sumN > 35:
                 rec_input = InputType.objects.filter(name='Food waste').values()[0]
