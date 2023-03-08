@@ -193,18 +193,23 @@ class InputFormView(TemplateView):
 
         if 'get_advice' in self.request.POST:
             cur_inputs = []
+            # get the inputs without saving the form
             for input in input_formset:
                 input = input.save(commit=False)
                 cur_inputs.append({'amount': input.inputAmount, 'type': input.inputType})
+            # get the total carbon and nitrogen in the mixture
             sumC, sumN = calculate_mixture_sums(cur_inputs)
+            # if the ratio is too big then add more green
             if sumC/sumN > 35:
                 rec_input = InputType.objects.filter(name='Food waste')
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
+            # if the ratio is too small then add more brown
             elif sumC/sumN < 20:
                 rec_input = InputType.objects.filter(name='Woodchips')
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."  # noqa:E501
+            # the ratio is ready to submit
             else:
                 advice = "The carbon-nitrogen ratio is within the recommended range."
             tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
@@ -215,6 +220,7 @@ class InputFormView(TemplateView):
                 advice+= f"\nThe temperature of the composter is below 45, add more green material than normally recommended"
             context['advice'] = advice
 
+        # form is submitted, process as normal
         elif entry_form.is_valid() and input_formset.is_valid():
             entry = entry_form.save(commit=False)
             entry.user = user
@@ -224,6 +230,7 @@ class InputFormView(TemplateView):
                 input.inputEntry = entry
                 input.save()
             return redirect(reverse('composter:composter'))
+        # otherwise, show errors
         else:
             print(entry_form.errors)
             for inputs in input_formset:
