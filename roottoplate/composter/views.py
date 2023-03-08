@@ -32,7 +32,8 @@ def index(request):
 
     tempTimes = [x.get('entryTime').strftime("%d/%m/%Y") for x in tempEntries]
 
-    context = {'tyN': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries, 'tempTimes': tempTimes, 'pe': percentages}
+    context = {'tyN': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries,
+               'tempTimes': tempTimes, 'pe': percentages}
 
     # calculations for the carbon neutrality
     cubic_m_to_co2 = 1.9
