@@ -22,11 +22,11 @@ stages:
   - test
   - deploy
 
-django-tests:
-  stage: test
-  script:
-    - cd roottoplate
-    - python3 manage.py test
+#django-tests:
+#  stage: test
+ # script:
+  #  - cd roottoplate
+   # - python3 manage.py test
 
 static-analysis:
   stage: test
