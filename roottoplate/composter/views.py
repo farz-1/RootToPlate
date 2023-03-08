@@ -162,17 +162,19 @@ def user_logout(request):
 
 
 def calculate_mixture_sums(cur_inputs):
-    sumN = sum([i['amount']*float(i['type'].nitrogenPercent*i['type'].moisturePercent) for i in cur_inputs])
+    sumN = sum([i['amount']*i['nitrogen']*i['moisture'] for i in cur_inputs])
     for i in cur_inputs:
-        i['carbon'] = float(i['type'].nitrogenPercent*i['type'].CNRatio)
-    sumC = float(sum([i['amount']*i['carbon']*float(i['type'].moisturePercent) for i in cur_inputs]))
+        i['carbon'] = i['nitrogen']*i['CNRatio']
+    sumC = sum([i['amount']*i['carbon']*i['moisture'] for i in cur_inputs])
+    print(f"sumc: {sumC}, sumN: {sumN}")
     return sumC, sumN
 
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
-    cn = sumC/sumN
-    nitrogen, moisture = float(rec_input.get('nitrogenPercent')), float(rec_input.get('moisturePercent'))
+    cn = 27  # ideal carbon nitrogen ratio
+    nitrogen, moisture = float(rec_input.get('nitrogenPercent')), 100 - float(rec_input.get('moisturePercent'))
     carbon = float(rec_input.get('nitrogenPercent')*rec_input.get('CNRatio'))
+    print(f"cn: {cn}, nitrogen: {nitrogen}, carbon: {carbon}, moisture: {moisture}")
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
 
@@ -197,15 +199,15 @@ class InputFormView(TemplateView):
             # get the inputs without saving the form
             for input in input_formset:
                 input = input.save(commit=False)
-                cur_inputs.append({'amount': float(input.inputAmount), 'type': input.inputType})
+                cur_inputs.append({'amount': float(input.inputAmount),
+                                   'nitrogen': float(input.inputType.nitrogenPercent),
+                                   'moisture': 100 - float(input.inputType.moisturePercent),
+                                   'CNRatio': float(input.inputType.CNRatio)})
             # get the total carbon and nitrogen in the mixture
             sumC, sumN = calculate_mixture_sums(cur_inputs)
-            # if there's no nitrogen, add four times the amount of current material
-            if sumN == 0:
-                rec_input_amount = sum([x['amount'] for x in cur_inputs])*4
-                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
+
             # if the ratio is too big then add more green
-            elif sumC/sumN > 35:
+            if sumC/sumN > 35:
                 rec_input = InputType.objects.filter(name='Food waste').values()[0]
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
