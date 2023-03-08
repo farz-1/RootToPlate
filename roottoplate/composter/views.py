@@ -207,6 +207,12 @@ class InputFormView(TemplateView):
                 advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."  # noqa:E501
             else:
                 advice = "The carbon-nitrogen ratio is within the recommended range."
+            tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
+            tempAvg = sum([tempEntries[-1].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
+            if tempAvg > 55:
+                advice += f"\nThe temperature of the composter is above 55, add more brown material than normally recommended"
+            if tempAvg < 45:
+                advice+= f"\nThe temperature of the composter is below 45, add more green material than normally recommended"
             context['advice'] = advice
 
         elif entry_form.is_valid() and input_formset.is_valid():
