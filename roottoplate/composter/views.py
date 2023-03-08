@@ -171,8 +171,8 @@ def calculate_mixture_sums(cur_inputs):
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
     cn = sumC/sumN
-    nitrogen, moisture = rec_input.get('nitrogenPercentage'), rec_input.get('moisturePercentage')
-    carbon = rec_input.get('nitrogenPercentage')*rec_input.get('CNRatio')
+    nitrogen, moisture = rec_input.get('nitrogenPercent'), rec_input.get('moisturePercent')
+    carbon = rec_input.get('nitrogenPercent')*rec_input.get('CNRatio')
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
 
@@ -202,12 +202,12 @@ class InputFormView(TemplateView):
             sumC, sumN = calculate_mixture_sums(cur_inputs)
             # if the ratio is too big then add more green
             if sumC/sumN > 35:
-                rec_input = InputType.objects.filter(name='Food waste')
+                rec_input = InputType.objects.filter(name='Food waste').values()[0]
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
             # if the ratio is too small then add more brown
             elif sumC/sumN < 20:
-                rec_input = InputType.objects.filter(name='Woodchips')
+                rec_input = InputType.objects.filter(name='Wood').values()[0]
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."  # noqa:E501
             # the ratio is ready to submit
