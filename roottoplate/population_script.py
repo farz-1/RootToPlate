@@ -1,4 +1,5 @@
 import os
+import csv
 from default_input_types import populate_input_types
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'roottoplate.settings')
@@ -6,85 +7,26 @@ import django  # noqa: E402
 django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
-    RestaurantRequest, Output, EnergyUsage  # noqa:E402
+    RestaurantRequest, EnergyUsage  # noqa:E402
 from datetime import datetime  # noqa:E402
 from django.utils import timezone  # noqa:E402
 
-
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+INPUT_TYPES_FILEPATH = 'static/db-data/default_input_types.csv'
+TEMPERATURES_FILEPATH = 'static/db-data/temperatures.csv'
+INPUTS_FILEPATH = 'static/db-data/inputs.csv'
 
 
 def populate():
-    FILEPATH = 'static/db-data/default_input_types.csv'
-    populate_input_types(FILEPATH)
+    populate_input_types(INPUT_TYPES_FILEPATH)
 
-    input_entries = [
-        # input entries, stored as list of dictionaries
-        {'id': 10001,
-         'entryTime': '2022-12-25 23:24:54',
-         'notes': 'all good',
-         'user': 'ag23'},
-        {'id': 10002,
-         'entryTime': '2022-12-26 19:24:42',
-         'notes': 'late sorry',
-         'user': 'kw01'},
-        {'id': 10003,
-         'entryTime': '2023-01-05 05:21:19',
-         'notes': 'ok composter',
-         'user': 'ag23'},
-    ]
+    with open(TEMPERATURES_FILEPATH) as csvfile:
+        reader = csv.reader(csvfile)
+        temperature_entries = list(reader)
 
-    inputs = [
-        # inputs, stored as list of dictionaries
-        {'inputEntry': 10002,
-         'inputType': 'Wood',
-         'amount': 2},
-        {'inputEntry': 10003,
-         'inputType': 'Urine',
-         'amount': 4},
-        {'inputEntry': 10003,
-         'inputType': 'Leaves',
-         'amount': 2},
-        {'inputEntry': 10001,
-         'inputType': 'Grass clippings',
-         'amount': 1},
-    ]
-
-    temperature_entries = [
-        # temperature entries, stored as list of dictionaries
-        {'id': 10001,
-         'entryTime': '2022-12-25 21:24:54',
-         'probe1': 44.6,
-         'probe2': 44.7,
-         'probe3': 45.7,
-         'probe4': 44.9,
-         'notes': 'no issues',
-         'user': 'ag23'},
-        {'id': 34264,
-         'entryTime': '2022-12-13 06:11:44',
-         'probe1': 44.2,
-         'probe2': 44.4,
-         'probe3': 41.7,
-         'probe4': 40.9,
-         'notes': 'no issues',
-         'user': 'kw01'},
-        {'id': 10002,
-         'entryTime': '2022-12-20 20:20:20',
-         'probe1': 39.6,
-         'probe2': 40.9,
-         'probe3': 42.5,
-         'probe4': 44.0,
-         'notes': 'probe 1 cold',
-         'user': 'ag23'},
-        {'id': 10003,
-         'entryTime': '2022-11-13 13:59:18',
-         'probe1': 45.0,
-         'probe2': 44.6,
-         'probe3': 43.9,
-         'probe4': 44.1,
-         'notes': 'good compost temp',
-         'user': 'ab88'},
-    ]
+    with open(INPUTS_FILEPATH) as csvfile:
+        reader = csv.reader(csvfile)
+        input_entries = list(reader)
 
     users = [
         # users, stored as list of dictionaries
@@ -110,43 +52,14 @@ def populate():
          'isAdmin': False},
     ]
 
-    outputs = [
-        # outputs, stored as list of dictionaries
-        {'id': '1001',
-         'amount': 22.2,
-         'time': '2023-01-22 21:01:00',
-         'notes': 'looks good',
-         'user': 'ag23'},
-        {'id': '1002',
-         'amount': 22.5,
-         'time': '2022-11-30 04:52:43',
-         'notes': 'looks good',
-         'user': 'lb212'},
-        {'id': '6584',
-         'amount': 21.2,
-         'time': '2022-12-31 23:54:54',
-         'notes': 'brilliant',
-         'user': 'ag23'},
-        {'id': '1006',
-         'amount': 23.4,
-         'time': '2023-01-01 16:33:30',
-         'notes': 'looks good',
-         'user': 'ab88'},
-        {'id': '1009',
-         'amount': 27.7,
-         'time': '2022-12-29 22:01:02',
-         'notes': 'looks good',
-         'user': 'ag23'},
-    ]
-
     restaurant_requests = [
         # restaurant requests, stored as list of dictionaries
         {'id': '20002',
-         'name': 'Ka Pao',
-         'address': '26 Vinicombe Street',  # temp, using google data later?
+         'name': 'TEST_RESTAURANT',
+         'address': '26 Vinicombe Street',
          'dateRequested': '2023-01-02 22:01:40',
          'deadline': '2023-01-30 23:00:00',
-         'email': 'kapao@kapao.com',
+         'email': 'test@kapao.com',
          'phone': 44800829839,
          'notes': 'quick',
          'bags': 2,
@@ -167,17 +80,8 @@ def populate():
         new_user = create_user(u)
         print("Created profile: " + str(new_user))
 
-    for o in outputs:
-        create_output(o)
-
-    for ti in temperature_entries:
-        create_temperature_entry(ti)
-
-    for ie in input_entries:
-        create_input_entry(ie)
-
-    for i in inputs:
-        create_input(i)
+    create_temperature_entries(temperature_entries)
+    create_input_entries(input_entries)
 
     for r in restaurant_requests:
         create_restaurant_request(r)
@@ -200,52 +104,81 @@ def create_user(data):
     return user
 
 
-def create_input_entry(data):
+def create_input_entries(data):
     # creates input entry
-    print("creating input entry " + str(data['id']) + "...")
-    user = User.objects.get(username=data['user'])
-    input_entry = InputEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=date(data['entryTime']),
-                                                   notes=data['notes'],
-                                                   user=user)
+    user = User.objects.get(username='kw01')
+    count = 0
+    for item in data:
+        print(f'creating input entry {str(count)}...')
+        input_entry = InputEntry.objects.get_or_create(entryID=count, entryTime=date(item[0] + ' 00:00:00'),
+                                                       notes='', user=user)
+
+        if item[1]:
+            input_type = 'Coffee grounds'
+            amount = item[1]
+            create_input(count, input_type, amount)
+
+        if item[2]:
+            input_type = 'Food waste'
+            amount = item[2]
+            create_input(count, input_type, amount)
+
+        if item[3]:
+            input_type = 'Grass clippings'
+            amount = item[3]
+            create_input(count, input_type, amount)
+
+        if item[4]:
+            input_type = 'Leaves'
+            amount = item[4]
+            create_input(count, input_type, amount)
+
+        if item[5]:
+            input_type = 'Shrub trimmings'
+            amount = item[5]
+            create_input(count, input_type, amount)
+
+        if item[6]:
+            input_type = 'Wood'
+            amount = item[6]
+            create_input(count, input_type, amount)
+
+        if item[7]:
+            input_type = 'Hay'
+            amount = item[7]
+            create_input(count, input_type, amount)
+
+        count += 1
+
     return input_entry
 
 
-def create_input(data):
+def create_input(count, input_type, amount):
     # creates input
-    entry = InputEntry.objects.get(entryID=data['inputEntry'])
-    input_type = InputType.objects.get(name=data['inputType'])
+    entry = InputEntry.objects.get(entryID=count)
+    input_type = InputType.objects.get(name=input_type)
     new_input = Input.objects.get_or_create(inputEntry=entry,
                                             inputType=input_type,
-                                            inputAmount=data['amount'])
+                                            inputAmount=amount)
     return new_input
 
 
-def create_temperature_entry(data):
+def create_temperature_entries(data):
     # creates temperature entry
-    print("creating temperature entry " + str(data['id']) + "...")
-    user = User.objects.get(username=data['user'])
-    entry = TemperatureEntry.objects.get_or_create(entryID=data['id'],
-                                                   entryTime=date(data['entryTime']),
-                                                   probe1=data['probe1'],
-                                                   probe2=data['probe2'],
-                                                   probe3=data['probe3'],
-                                                   probe4=data['probe4'],
-                                                   notes=data['notes'],
-                                                   user=user)[0]
+    user = User.objects.get(username='kw01')
+    count = 0
+    for item in data:
+        print(f'creating temp entry {str(count)}...')
+        entry = TemperatureEntry.objects.get_or_create(entryID=count,
+                                                       entryTime=date(item[0] + ' 00:00:00'),
+                                                       probe1=item[1],
+                                                       probe2=item[2],
+                                                       probe3=item[3],
+                                                       probe4=item[4],
+                                                       notes='',
+                                                       user=user)[0]
+        count += 1
     return entry
-
-
-def create_output(data):
-    # creates output
-    print("creating output " + str(data['id']) + "...")
-    user = User.objects.get(username=data['user'])
-    output = Output.objects.get_or_create(outputID=data['id'],
-                                          amount=data['amount'],
-                                          time=date(data['time']),
-                                          notes=data['notes'],
-                                          user=user)[0]
-    return output
 
 
 def create_restaurant_request(data):
