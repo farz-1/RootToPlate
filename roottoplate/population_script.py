@@ -7,7 +7,7 @@ import django  # noqa: E402
 django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
-    RestaurantRequest, Output, EnergyUsage  # noqa:E402
+    RestaurantRequest, EnergyUsage  # noqa:E402
 from datetime import datetime  # noqa:E402
 from django.utils import timezone  # noqa:E402
 
@@ -107,54 +107,55 @@ def create_user(data):
 def create_input_entries(data):
     # creates input entry
     user = User.objects.get(username='kw01')
-    count = 0
+    count = 1
     for item in data:
         print(f'creating input entry {str(count)}...')
         input_entry = InputEntry.objects.get_or_create(entryID=count, entryTime=date(item[0] + ' 00:00:00'),
                                                        notes='', user=user)
-        input_entry.
+
         if item[1]:
             input_type = 'Coffee grounds'
             amount = item[1]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         if item[2]:
             input_type = 'Food waste'
             amount = item[2]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         if item[3]:
             input_type = 'Grass clippings'
             amount = item[3]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         if item[4]:
             input_type = 'Leaves'
             amount = item[4]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         if item[5]:
             input_type = 'Shrub trimmings'
             amount = item[5]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         if item[6]:
             input_type = 'Wood'
             amount = item[6]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         if item[7]:
             input_type = 'Hay'
             amount = item[7]
-            create_input(input_entry, input_type, amount)
+            create_input(count, input_type, amount)
 
         count += 1
 
     return input_entry
 
 
-def create_input(entry, input_type, amount):
+def create_input(count, input_type, amount):
     # creates input
+    entry = InputEntry.objects.get(entryID=count)
     input_type = InputType.objects.get(name=input_type)
     new_input = Input.objects.get_or_create(inputEntry=entry,
                                             inputType=input_type,

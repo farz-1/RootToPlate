@@ -28,7 +28,7 @@ def index(request):
 
     tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
     if len(tempEntries) > 30:
-        tempEntries = tempEntries[-30:]
+        tempEntries = tempEntries[len(tempEntries)-30:]
 
     tempTimes = [x.get('entryTime').strftime("%d-%m-%Y") for x in tempEntries]
     tempTimesInt = [int(x.get('entryTime').timestamp()) for x in tempEntries]
