@@ -25,6 +25,7 @@ def index(request):
         if typeCounts[n-i] == 0:
             del typeCounts[n-i]
             del typeNames[n-i]
+            del percentages[n-i]
 
     tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
     if len(tempEntries) > 30:
@@ -161,17 +162,17 @@ def user_logout(request):
 
 
 def calculate_mixture_sums(cur_inputs):
-    sumN = float(sum([i['amount']*i['type'].nitrogenPercent*i['type'].moisturePercent for i in cur_inputs]))
+    sumN = sum([i['amount']*float(i['type'].nitrogenPercent*i['type'].moisturePercent) for i in cur_inputs])
     for i in cur_inputs:
-        i['carbon'] = i['type'].nitrogenPercent*i['type'].CNRatio
-    sumC = float(sum([i['amount']*i['carbon']*i['type'].moisturePercent for i in cur_inputs]))
+        i['carbon'] = float(i['type'].nitrogenPercent*i['type'].CNRatio)
+    sumC = float(sum([i['amount']*i['carbon']*float(i['type'].moisturePercent) for i in cur_inputs]))
     return sumC, sumN
 
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
     cn = sumC/sumN
-    nitrogen, moisture = rec_input.get('nitrogenPercentage'), rec_input.get('moisturePercentage')
-    carbon = rec_input.get('nitrogenPercentage')*rec_input.get('CNRatio')
+    nitrogen, moisture = float(rec_input.get('nitrogenPercent')), float(rec_input.get('moisturePercent'))
+    carbon = float(rec_input.get('nitrogenPercent')*rec_input.get('CNRatio'))
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
 
@@ -193,28 +194,38 @@ class InputFormView(TemplateView):
 
         if 'get_advice' in self.request.POST:
             cur_inputs = []
+            # get the inputs without saving the form
             for input in input_formset:
                 input = input.save(commit=False)
-                cur_inputs.append({'amount': input.inputAmount, 'type': input.inputType})
+                cur_inputs.append({'amount': float(input.inputAmount), 'type': input.inputType})
+            # get the total carbon and nitrogen in the mixture
             sumC, sumN = calculate_mixture_sums(cur_inputs)
-            if sumC/sumN > 35:
-                rec_input = InputType.objects.filter(name='Food waste')
+            # if there's no nitrogen, add four times the amount of current material
+            if sumN == 0:
+                rec_input_amount = sum([x['amount'] for x in cur_inputs])*4
+                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
+            # if the ratio is too big then add more green
+            elif sumC/sumN > 35:
+                rec_input = InputType.objects.filter(name='Food waste').values()[0]
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material."  # noqa:E501
+            # if the ratio is too small then add more brown
             elif sumC/sumN < 20:
-                rec_input = InputType.objects.filter(name='Woodchips')
+                rec_input = InputType.objects.filter(name='Wood').values()[0]
                 rec_input_amount = calculate_recommended_addition(rec_input, sumC, sumN)
                 advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material."  # noqa:E501
+            # the ratio is ready to submit
             else:
                 advice = "The carbon-nitrogen ratio is within the recommended range."
-            tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
-            tempAvg = sum([tempEntries[-1].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
+            tempEntries = TemperatureEntry.objects.all().order_by('-entryTime').values()
+            tempAvg = sum([tempEntries[0].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
             if tempAvg > 55:
-                advice += f"\nThe temperature of the composter is above 55, add more brown material than normally recommended"
+                advice += "\nThe temperature of the composter is above 55, add more brown material than normally recommended"  # noqa:E501
             if tempAvg < 45:
-                advice+= f"\nThe temperature of the composter is below 45, add more green material than normally recommended"
+                advice += "\nThe temperature of the composter is below 45, add more green material than normally recommended"  # noqa:E501
             context['advice'] = advice
 
+        # form is submitted, process as normal
         elif entry_form.is_valid() and input_formset.is_valid():
             entry = entry_form.save(commit=False)
             entry.user = user
@@ -224,6 +235,7 @@ class InputFormView(TemplateView):
                 input.inputEntry = entry
                 input.save()
             return redirect(reverse('composter:composter'))
+        # otherwise, show errors
         else:
             print(entry_form.errors)
             for inputs in input_formset:
