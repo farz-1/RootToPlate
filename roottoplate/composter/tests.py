@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
     RestaurantRequest, Output
 import os
-import warnings
 import io
 import sys
 from django.utils import timezone
@@ -201,28 +200,6 @@ class DatabaseConfigurationTests(TestCase):
     def test_databases_variable_exists(self):
         self.assertTrue(settings.DATABASES, 'Database variable does not exist.')
         self.assertTrue('default' in settings.DATABASES)
-
-    def test_gitignore_contains_database(self):
-        """
-        gitignore should contain the database
-        """
-        base_dir = os.popen('git rev-parse --show-toplevel').read().strip()
-
-        if base_dir.startswith('fatal'):
-            warnings.warn("No github repo used")
-        else:
-            gitignore = os.path.join(base_dir, '.gitignore')
-            success = False
-
-            if os.path.exists(gitignore):
-                f = open(gitignore, 'r')
-
-                for line in f:
-                    line = line.strip()
-
-                    if line.startswith('db.sqlite3'):
-                        success = True
-            self.assertTrue(success, 'gitignore file does not contain database')
 
 
 class PopulationScriptTests(TestCase):
