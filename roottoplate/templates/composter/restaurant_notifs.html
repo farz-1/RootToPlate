@@ -5,38 +5,83 @@
 {% load crispy_forms_tags %}
 
 {% block content_block %}
+    <h1 class="container text-center">Restaurant Collections</h1>
+<br>
     {% if restaurant_notifs %}
-    {% for notif in restaurant_notifs %}
-        <h1 class="container text-center">Restaurant Collections</h1>
+        {% for notif in restaurant_notifs %}
 
-        <div class="card">
-            <div class="card mb-4">
-                <div class="row g-10">
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5>{{ notif.name }}</h5>
-                            <p class="card-text">Collection date: {{ notif.deadlineDate }}</p>
-                            <p class="card-text">Address: {{ notif.address }}</p>
-                            <p class="card-text">Number of bags:{{ notif.numberOfBags }}</p>
-                            <p class="card-text">E-mail and Phone Number: {{ notif.email }} {{ phoneNumber }}</p>
-                            <p class="card-text">Additional notes: {{ notif.notes }}</p>
-                            {% if notif.collected %}
-                                <button type="button" class="btn btn-success w-30">Collected!</button>
-                            {% else %}
-                                <a href="{% url 'composter:collect_request' notif.requestID %}">
-                                    <button type="button" class="btn btn-danger w-30">Collect</button></a>
-                            {% endif %}
+            <div class="card">
+                <div class="card mb-4">
+                    <div class="row g-10">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5>{{ notif.name }}</h5>
+                                <p class="card-text">Collection date: {{ notif.deadlineDate }}</p>
+                                <p class="card-text">Address: {{ notif.address }}</p>
+                                <div id="map" style="height: 200px ;width:500px"></div>
+                                <p class="card-text">Number of bags:{{ notif.numberOfBags }}</p>
+                                <p class="card-text">E-mail and Phone Number: {{ notif.email }} {{ phoneNumber }}</p>
+                                <p class="card-text">Additional notes: {{ notif.notes }}</p>
+                                {% if notif.collected %}
+                                    <button type="button" class="btn btn-success w-30">Collected!</button>
+                                {% else %}
+                                    <a href="{% url 'composter:collect_request' notif.requestID %}">
+                                        <button type="button" class="btn btn-danger w-30">Collect</button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="{% static 'images/image.png' %}" class="img-fluid rounded-start"
+                                 style="border-style: solid;" alt="temp">
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <img src="{% static 'images/image.png' %}" class="img-fluid rounded-start"
-                             style="border-style: solid;" alt="temp">
-                    </div>
                 </div>
+                <script>
+                    function initMap() {
+                        // Get the address from the card
+                        var address = "{{ notif.address }}";
+
+                        // Create a new geocoder object
+                        var geocoder = new google.maps.Geocoder();
+
+                        // Use the geocoder object to geocode the address
+                        geocoder.geocode({'address': address}, function (results, status) {
+                            if (status === 'OK') {
+                                // Create a new map centered on the geocoded location
+                                var map = new google.maps.Map(document.getElementById('map'), {
+                                    zoom: 15,
+                                    center: results[0].geometry.location
+                                });
+
+                                // Create a new marker at the geocoded location
+                                var marker = new google.maps.Marker({
+                                    map: map,
+                                    position: results[0].geometry.location
+                                });
+
+                                // Add a click event listener to the marker to open the info window
+                                marker.addListener('click', function () {
+                                    infowindow.open(map, marker);
+                                });
+
+                                // Create a new info window with the address as the content
+                                var infowindow = new google.maps.InfoWindow({
+                                    content: address
+                                });
+                            } else {
+                                alert('Geocode was not successful for the following reason: ' + status);
+                            }
+                        });
+                    }
+                </script>
+                <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYHqoQspF0vvLU1c0ZZcv_WjaGiyXyRpQ&callback=initMap">
+                </script>
+
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     {% else %}
-    There are no requests!
+        There are no requests!
     {% endif %}
 {% endblock %}
