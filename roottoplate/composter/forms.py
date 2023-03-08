@@ -91,7 +91,7 @@ class InputTypeForm(forms.ModelForm):
 
     class Meta:
         model = InputType
-        fields = {'name', 'CNRatio'}  # is the wood_chip calculated or input?
+        fields = {'name', 'CNRatio', 'nitrogenPercent', 'moisturePercent'}
 
 
 class InputEntryForm(forms.ModelForm):

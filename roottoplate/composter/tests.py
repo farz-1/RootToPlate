@@ -388,8 +388,8 @@ class AdminTests(TestCase):
 
     def test_add_input_type(self):
         expected = len(InputType.objects.filter()) + 1
-        type_data = {'add_input_type': True, 'name': 'test', 'CNRatio': 2, 'nitrogenPercentage': 2,
-                     'moisturePercentage': 2}
+        type_data = {'add_input_type': True, 'name': 'test', 'CNRatio': 2, 'nitrogenPercent': 2,
+                     'moisturePercent': 2}
         self.client.login(username='kw01', password='grass99')
         self.client.post(reverse('composter:simple_admin'), type_data, follow=True)
         self.assertEqual(expected, len(InputType.objects.filter()), 'Could not create new input type with admin form.')
