@@ -25,6 +25,7 @@ def index(request):
         if typeCounts[n-i] == 0:
             del typeCounts[n-i]
             del typeNames[n-i]
+            del percentages[n-i]
 
     tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
     if len(tempEntries) > 30:
