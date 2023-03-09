@@ -13,7 +13,7 @@ class GraphState:
     tempTimesInt = []
     cMonth = None
     cYear = None
-    notEnoughEnergyInfo = 'false'
+    notEnoughEnergyInfo = True
 
     def __new__(self):
         if self._instance is None:
@@ -79,8 +79,9 @@ class GraphState:
         yLabels, yPositive, yNegative = [], [], []
         carbon = calculate_carbon()
         if carbon is None:
-            self.notEnoughEnergyInfo = 'true'
+            self.notEnoughEnergyInfo = True
         else:
+            self.notEnoughEnergyInfo = False
             for label, value in carbon.items():
                 if label == 'This Year':
                     yLabels, yPositive, yNegative = [label], [value['cPositive']], [value['cNegative']]
@@ -127,3 +128,4 @@ def update_temperatues(sender, **kwargs):
 def update_input_types(sender, **kwargs):
     state = GraphState()
     state.calculate_type_percentages()
+
