@@ -96,14 +96,14 @@ class GraphState:
     def calculate_type_percentages(self):
         self.typeNames = [x.name for x in InputType.objects.all()]
         typeCounts = [float(sum(y.inputAmount for y in Input.objects.filter(inputType=x))) for x in self.typeNames]
-        total = float(sum(typeCounts))
-        self.typePercentages = [(count / total * 100)for count in typeCounts]
         n = len(self.typeNames) - 1
         for i in range(n + 1):
             if typeCounts[n-i] == 0:
                 del typeCounts[n-i]
                 del self.typeNames[n-i]
-                del self.typePercentages[n-i]
+        total = float(sum(typeCounts))
+        if total != 0:
+            self.typePercentages = [(count / total * 100)for count in typeCounts]
 
     def calculate_temperatures(self):
         self.tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
