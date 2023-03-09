@@ -17,7 +17,6 @@ class GraphState:
 
     def __new__(self):
         if self._instance is None:
-            print("here")
             self._instance = super(GraphState, self).__new__(self)
             self._instance.calculate_type_percentages()
             self._instance.calculate_carbon_neutrality()
@@ -25,7 +24,6 @@ class GraphState:
         return self._instance
 
     def calculate_carbon_neutrality(self):
-        print('calculating carbon neutrality')
         def get_inputs_from_entry(entryid):
             return Input.objects.filter(inputEntry=entryid)
 
@@ -95,7 +93,6 @@ class GraphState:
         self.cYear = {'label': yLabels, 'positive': yPositive, 'negative': yNegative}
 
     def calculate_type_percentages(self):
-        print('calculate type percentages')
         self.typeNames = [x.name for x in InputType.objects.all()]
         typeCounts = [float(sum(y.inputAmount for y in Input.objects.filter(inputType=x))) for x in self.typeNames]
         total = float(sum(typeCounts))
@@ -108,7 +105,6 @@ class GraphState:
                 del self.typePercentages[n-i]
 
     def calculate_temperatures(self):
-        print('calculate temperatures')
         self.tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
         if len(self.tempEntries) > 30:
             self.tempEntries = self.tempEntries[len(self.tempEntries)-30:]
@@ -120,13 +116,11 @@ class GraphState:
 @receiver(post_save, sender=EnergyUsage)
 def update_carbon_neutrality(sender, **kwargs):
     state = GraphState()
-    print('aaaaaaaaaaaaaaa')
     state.calculate_carbon_neutrality()
 
 @receiver(post_save, sender=TemperatureEntry)
 def update_temperatues(sender, **kwargs):
     state = GraphState()
-    print('bbbbbbbbbbbbbbbbb')
     state.calculate_temperatures()
 
 @receiver(post_save, sender=InputEntry)
