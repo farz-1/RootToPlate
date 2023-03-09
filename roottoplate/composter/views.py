@@ -10,10 +10,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm, EnergyForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
-from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest, EnergyUsage
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest
 from django.utils import timezone
 from composter.signals import GraphState
-import datetime
 
 
 def index(request):
@@ -22,6 +21,7 @@ def index(request):
                'tempEntries': state.tempEntries, 'tempTimes': state.tempTimes, 'tempTimesInt': state.tempTimesInt,
                'cMonth': state.cMonth, 'cYear': state.cYear, 'notEnoughEnergyInfo': state.notEnoughEnergyInfo}
     return render(request, "composter/index.html", context)
+
 
 def about(request):
     return render(request, "composter/about.html")

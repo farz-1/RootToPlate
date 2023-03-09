@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from composter.models import *
+from composter.models import InputEntry, EnergyUsage, Input, TemperatureEntry, InputType
 import datetime
 
 
@@ -27,10 +27,9 @@ class GraphState:
         def get_inputs_from_entry(entryid):
             return Input.objects.filter(inputEntry=entryid)
 
-
         def sum_amounts_from_entries(entry_set):
             return sum([sum([y.inputAmount for y in get_inputs_from_entry(x.entryID)]) for x in entry_set])
-        
+
         def calculate_carbon():
             cubic_m_to_co2 = 1.9  # kg / m^3
             kwh_to_co2 = 0.082  # edf co2 kg/kwh as taken from their website
@@ -64,17 +63,18 @@ class GraphState:
 
                 # and le composting
                 tm_compost = InputEntry.objects.filter(entryTime__month=this_month.month,
-                                               entryTime__year=this_month.year)
+                                                       entryTime__year=this_month.year)
                 lm_compost = InputEntry.objects.filter(entryTime__month=last_month.month,
-                                               entryTime__year=last_month.year)
+                                                       entryTime__year=last_month.year)
                 ty_compost = InputEntry.objects.filter(entryTime__year=this_month.year)
-                for label, entry_set in {'This Month': tm_compost, 'Last Month': lm_compost, 'This Year': ty_compost}.items():
+                entry_sets = {'This Month': tm_compost, 'Last Month': lm_compost, 'This Year': ty_compost}
+                for label, entry_set in entry_sets.items():
                     compost_total = sum_amounts_from_entries(entry_set)
                     carbon[label]['cNegative'] = int(float(compost_total) * compost_to_co2_saved)
                 return carbon
             else:
                 return None
-    
+
         mLabels, mPositive, mNegative = [], [], []
         yLabels, yPositive, yNegative = [], [], []
         carbon = calculate_carbon()
@@ -113,19 +113,21 @@ class GraphState:
         self.tempTimes = [x.get('entryTime').strftime("%d-%m-%Y") for x in self.tempEntries]
         self.tempTimesInt = [int(x.get('entryTime').timestamp()) for x in self.tempEntries]
 
+
 @receiver(post_save, sender=InputEntry)
 @receiver(post_save, sender=EnergyUsage)
 def update_carbon_neutrality(sender, **kwargs):
     state = GraphState()
     state.calculate_carbon_neutrality()
 
+
 @receiver(post_save, sender=TemperatureEntry)
 def update_temperatues(sender, **kwargs):
     state = GraphState()
     state.calculate_temperatures()
 
+
 @receiver(post_save, sender=InputEntry)
 def update_input_types(sender, **kwargs):
     state = GraphState()
     state.calculate_type_percentages()
-

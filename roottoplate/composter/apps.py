@@ -6,4 +6,4 @@ class ComposterConfig(AppConfig):
     name = 'composter'
 
     def ready(self):
-        from . import signals
+        from . import signals  # noqa:F401
