@@ -79,7 +79,6 @@ def calculate_mixture_sums(cur_inputs):
     for i in cur_inputs:
         i['carbon'] = i['nitrogen']*i['CNRatio']
     sumC = sum([i['amount']*i['carbon']*i['moisture'] for i in cur_inputs])
-    print(f"sumc: {sumC}, sumN: {sumN}")
     return sumC, sumN
 
 
@@ -87,7 +86,6 @@ def calculate_recommended_addition(rec_input, sumC, sumN):
     cn = 27  # ideal carbon nitrogen ratio
     nitrogen, moisture = float(rec_input.nitrogenPercent), 100 - float(rec_input.moisturePercent)
     carbon = float(rec_input.nitrogenPercent*rec_input.CNRatio)
-    print(f"cn: {cn}, nitrogen: {nitrogen}, carbon: {carbon}, moisture: {moisture}")
     return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
 
 
