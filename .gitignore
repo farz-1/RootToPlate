@@ -38,6 +38,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
+db.sqlite3
 htmlcov/
 .tox/
 .nox/
@@ -129,7 +130,6 @@ dmypy.json
 .pyre/
 
 # Migrations
-migrations/
 
 # Python cache files
 *.pyc
