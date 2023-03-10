@@ -11,7 +11,9 @@
     {% csrf_token %}
     <div>
         {% if advice %}
-            <p>{{ advice }}</p>
+        <div class="help-text">
+            <p class="indented">{{ advice }}</p>
+        </div>
         {% endif %}
         <button type="submit" value="Post" name="get_advice" class="btn btn-success">Get advice</button>
     </div>

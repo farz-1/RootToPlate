@@ -131,3 +131,14 @@ html{
 .donate{
     color: #B8BF0D;
 }
+
+.indented {
+  padding-left: 50pt;
+  padding-right: 50pt;
+}
+
+.help-text{
+    background-color: #d5f4e6;
+    font-family: Arial;
+    font-weight: bold;
+}
