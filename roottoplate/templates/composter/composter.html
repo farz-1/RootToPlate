@@ -39,46 +39,47 @@
                 </div>
                 <br>
                 <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                    <table class="table">
-                    <caption>History</caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Entry Time</th>
-                            <th scope="col">Username</th>
-                            <th scope="col" style="padding-left: 35px">Input Amount and Type</th>
-                            <th scope="col">Notes</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for entry in last_five_entries %}
+                    <div class="card card-body">
+                    <div class= "table-responsive">
+                        <table class="table">
+                            <thead>
                             <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ entry.entryTime }}</td>
-                            <td>{{ entry.username }}</td>
-                            <td><p>
-                                {% if entry.inputs%}
-                                {% for input in entry.inputs %}
-                                    {{ input.amount }},({{ input.type }})
-                                    {% if not forloop.last %},{% endif %}
-                                {% endfor %}
+                                <th scope="col">#</th>
+                                <th scope="col">Entry Time</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Input Amount and Type</th>
+                                <th scope="col">Notes</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for entry in last_five_entries %}
+                                <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ entry.entryTime }}</td>
+                                <td>{{ entry.username }}</td>
+                                <td><p>
+                                    {% if entry.inputs %}
+                                        {% for input in entry.inputs %}
+                                            {{ input.amount }}({{ input.type }})
+                                            {% if not forloop.last %},{% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        Nothing added
+                                    {% endif %}
+                                </p></td>
+                                <td>{% if entry.notes %}
+                                    {{ entry.notes }}
                                 {% else %}
-                                Nothing added
-                                {% endif %}
-                            </p></td>
-                            <td>{% if entry.notes %}
-                                {{ entry.notes }}
-                                {% else %}
-                                No notes
-                            {% endif %}</td>
-                        {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
+                                    No notes
+                                {% endif %}</td>
+                            {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
                 </div>
-            </div>
-    {% endif %}
+            {% endif %}
     <style>
         hi {
             display: inline-block;
@@ -92,5 +93,12 @@
             display: block;
             font-size: 35px;
         }
+        #canvas {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
     </style>
 {% endblock %}
