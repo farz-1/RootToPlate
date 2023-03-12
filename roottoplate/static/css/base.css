@@ -131,3 +131,9 @@ html{
 .donate{
     color: #B8BF0D;
 }
+.special-green{
+    color: #B8BF0D !important;
+}
+.special-white{
+    color: white;
+}

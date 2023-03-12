@@ -4,27 +4,26 @@
 {% load crispy_forms_tags %}
 <title>Output Form</title>
 {% block content_block %}
-<h1 class="card-title container text-center">Composter Output Form</h1>
-    <br>
-<form method="post" class="container justify-content-center"
-      enctype="multipart/form-data" action="{% url 'composter:output_entry' %}">
-    {% csrf_token %}
-    {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-    <div class="card w-50">
+    <h1 class="card-title container text-center mb-4">Composter Output Form</h1>
+    <form method="post" class="container justify-content-center"
+          enctype="multipart/form-data" action="{% url 'composter:output_entry' %}">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        <div class="card w-50">
 
-        {{ output_form.time.errors}}
-        {{ output_form.time|as_crispy_field}}
+            {{ output_form.time.errors }}
+            {{ output_form.time|as_crispy_field }}
 
-        {{ output_form.amount.errors }}
-        {{ output_form.amount|as_crispy_field }}
+            {{ output_form.amount.errors }}
+            {{ output_form.amount|as_crispy_field }}
 
-        {{ output_form.notes.errors }}
-        {{ output_form.notes|as_crispy_field }}
-        <br>
-        <button type="submit" value="Post" class="btn btn-success">Submit data</button>
-        <!--old button<input type="submit" name="submit" value="Post"> -->
-    </div>
-</form>
+            {{ output_form.notes.errors }}
+            {{ output_form.notes|as_crispy_field }}
+            <br>
+            <button type="submit" value="Post" class="btn btn-success">Submit data</button>
+            <!--old button<input type="submit" name="submit" value="Post"> -->
+        </div>
+    </form>
 {% endblock %}

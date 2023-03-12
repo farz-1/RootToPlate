@@ -4,76 +4,74 @@
 {% load crispy_forms_tags %}
 <title>Composter Input Form</title>
 {% block content_block %}
-    <h1 class="container text-center">Composter Input Form</h1>
-    <br>
-<form id="form-container" class="container justify-content-center"
-      method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="card w-50">
-        {{ entry_form.entryTime.errors }}
-        {{ entry_form.entryTime|as_crispy_field }}
-        <div id="input-form-container">
-            {{ input_formset.management_form }}
-            {% for input in input_formset %}
-                <div class="input-form">
+    <h1 class="container text-center mb-4">Composter Input Form</h1>
+    <form id="form-container" class="container justify-content-center"
+          method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card w-50">
+            {{ entry_form.entryTime.errors }}
+            {{ entry_form.entryTime|as_crispy_field }}
+            <div id="input-form-container">
+                {{ input_formset.management_form }}
+                {% for input in input_formset %}
+                    <div class="input-form">
 
-                    {{ input.inputType.errors }}
-                    {{ input.inputType|as_crispy_field }}
+                        {{ input.inputType.errors }}
+                        {{ input.inputType|as_crispy_field }}
 
-                    {{ input.inputAmount.errors }}
-                    {{ input.inputAmount|as_crispy_field }}
-                </div>
-            {% endfor %}
-            <button type="button" id="add-form" class="btn btn-primary">Add Another Input</button>
-            <button type="button" id="remove-form" class="btn btn-danger">Remove Input</button>
+                        {{ input.inputAmount.errors }}
+                        {{ input.inputAmount|as_crispy_field }}
+                    </div>
+                {% endfor %}
+                <button type="button" id="add-form" class="btn btn-primary">Add Another Input</button>
+                <button type="button" id="remove-form" class="btn btn-danger">Remove Input</button>
+            </div>
+
+
+            {{ entry_form.notes.errors }}
+            {{ entry_form.notes|as_crispy_field }}
+            <button type="submit" value="Post" class="btn btn-success">Submit Input</button>
         </div>
 
+    </form>
+    <script>
+        let inputForm = document.querySelectorAll(".input-form");
+        let container = document.querySelector("#input-form-container");
+        let addButton = document.querySelector("#add-form");
+        let removeButton = document.querySelector('#remove-form');
+        let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+        let maxForms = document.querySelector("#id_form-MAX_NUM_FORMS").getAttribute('value');
 
+        let formNum = inputForm.length - 1;
+        addButton.addEventListener('click', addForm);
+        removeButton.addEventListener('click', removeForm);
 
+        function addForm(e) {
+            e.preventDefault();
+            if (totalForms.getAttribute('value') < maxForms) {
+                let newForm = inputForm[0].cloneNode(true);
+                let formRegex = RegExp(`form-(\\d){1}-`, 'g');
 
-        {{ entry_form.notes.errors}}
-        {{ entry_form.notes|as_crispy_field }}
-    <button type="submit" value="Post" class="btn btn-success">Submit Input</button>
-    </div>
+                formNum++;
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+                container.insertBefore(newForm, addButton);
 
-</form>
-<script>
-    let inputForm = document.querySelectorAll(".input-form");
-    let container = document.querySelector("#input-form-container");
-    let addButton = document.querySelector("#add-form");
-    let removeButton = document.querySelector('#remove-form');
-    let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
-    let maxForms = document.querySelector("#id_form-MAX_NUM_FORMS").getAttribute('value');
-
-    let formNum = inputForm.length-1;
-    addButton.addEventListener('click', addForm);
-    removeButton.addEventListener('click', removeForm);
-
-    function addForm(e){
-        e.preventDefault();
-        if (totalForms.getAttribute('value') < maxForms) {
-            let newForm = inputForm[0].cloneNode(true);
-            let formRegex = RegExp(`form-(\\d){1}-`, 'g');
-
-            formNum++;
-            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
-            container.insertBefore(newForm, addButton);
-
-            totalForms.setAttribute('value', `${formNum+1}`);
-        } else {
-            alert("Please use two submissions for more than 5 inputs.")
-        }
-    }
-    function removeForm(e){
-        e.preventDefault();
-        if (totalForms.getAttribute('value') > 1) {
-            document.getElementsByClassName('input-form')[formNum].remove();
-            totalForms.setAttribute('value', `${formNum}`);
-            formNum--;
-        } else {
-            alert("Cannot have no inputs.")
+                totalForms.setAttribute('value', `${formNum + 1}`);
+            } else {
+                alert("Please use two submissions for more than 5 inputs.")
+            }
         }
 
-    }
-</script>
+        function removeForm(e) {
+            e.preventDefault();
+            if (totalForms.getAttribute('value') > 1) {
+                document.getElementsByClassName('input-form')[formNum].remove();
+                totalForms.setAttribute('value', `${formNum}`);
+                formNum--;
+            } else {
+                alert("Cannot have no inputs.")
+            }
+
+        }
+    </script>
 {% endblock %}

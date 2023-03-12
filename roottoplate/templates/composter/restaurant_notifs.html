@@ -5,11 +5,10 @@
 {% load crispy_forms_tags %}
 
 {% block content_block %}
-    <h1 class="container text-center">Restaurant Collections</h1>
-    <br>
+    <h1 class="container text-center mb-4">Restaurant Collections</h1>
     {% if restaurant_notifs %}
         {% for notif in restaurant_notifs %}
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card">
                     <div class="row g-10">
                         <div class="col-md-8">
@@ -43,7 +42,6 @@
                     </div>
                 </div>
             </div>
-            <br>
         {% endfor %}
     {% else %}
         There are no requests!

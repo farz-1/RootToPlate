@@ -1,19 +1,20 @@
 hi {
-            display: inline-block;
-            font-size: 20px;
-            list-style-type: none;
-            padding: 10px;
-            text-transform: uppercase;
-        }
+    display: inline-block;
+    font-size: 20px;
+    list-style-type: none;
+    padding: 10px;
+    text-transform: uppercase;
+}
 
-        hi span {
-            display: block;
-            font-size: 35px;
-        }
-        #canvas {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-    }
+hi span {
+    display: block;
+    font-size: 35px;
+}
+
+#canvas {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}

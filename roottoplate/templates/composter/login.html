@@ -11,20 +11,22 @@
                     <div class="card-fluid  text-white" style="border-radius: 1rem; background-color: #032F3C">
                         <div class="card-body p-5 text-center">
                             <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                            <p class="text-white-50 mb-5">Please enter your username and password!</p>
-                            <form action="" class="container justify-content-center" style="width: 100%"
+                            <p class="text-white-50 mb-3">Please enter your username and password!</p>
+                            <form action="" class="container justify-content-center mb-3" style="width: 100%"
                                   method="POST">
                                 {% csrf_token %}
-                                <div class="form-outline form-white mb-1 ">
-                                    <input style="width:100%" type="text" name="username" id="typeEmailX"
-                                           class="form-control form-control-lg"
-                                           placeholder="Username">
-                                    <br>
-                                    <div class="form-outline form-white mb-1">
-                                        <input style="width:100%" type="password" name="password" id="typePasswordX"
-                                               class="form-control form-control-lg" placeholder="Password">
+                                <div class="form-outline form-white mb-4">
+                                    <label for="typeEmailX"></label><input style="width:100%" type="text"
+                                                                           name="username" id="typeEmailX"
+                                                                           class="form-control form-control-lg"
+                                                                           placeholder="Username">
+
+                                    <div class="form-outline form-white mb-5">
+                                        <label for="typePasswordX"></label><input style="width:100%" type="password"
+                                                                                  name="password" id="typePasswordX"
+                                                                                  class="form-control form-control-lg"
+                                                                                  placeholder="Password">
                                     </div>
-                                    <br>
                                     {% if messages %}
                                         <ul class="messages" style="color:rgb(224,31,29);">
                                             {% for message in messages %}
@@ -33,15 +35,9 @@
                                             {% endfor %}
                                         </ul>
                                     {% endif %}
-                                    <br>
-                                    <br>
-                                    <input class="btn btn-outline-light btn-lg px-5" type="submit" value="Log in">
-                                    <br>
-
+                                    <input class="btn btn-outline-light btn-lg px-5 mb-2" type="submit" value="Log in">
                                 </div>
                             </form>
-                            <br>
-
                         </div>
                     </div>
                 </div>

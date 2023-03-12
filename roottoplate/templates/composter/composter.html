@@ -4,10 +4,9 @@
 {% load static %}
 {% block content_block %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/composter.css' %}">
-    <h1 class="container text-center" id="headline">Time to Next Feed</h1>
-    <br>
+    <h1 class="container text-center mb-4" id="headline">Time to Next Feed</h1>
     <script src="{% static 'javascript/composter.js' %}"></script>
-    <div class="card w-80 text-center">
+    <div class="card w-80 text-center mb-3">
         <div class="container text-center">
             <canvas id="canvas" width="500" height="500"></canvas>
             <h4 id="composter_last_fed" jsvalue="{{ compost_last_fed_js }}">Composter last
@@ -38,7 +37,6 @@
                     Show Logs</a>
                 </div>
                 </div>
-                <br>
                 <div class="collapse" id="collapseExample">
                     <div class="card card-body">
                         <div class="table-responsive">
