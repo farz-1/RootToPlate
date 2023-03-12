@@ -3,6 +3,7 @@
 {% extends 'composter/base.html' %}
 {% load static %}
 {% block content_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/composter.css' %}">
     <h1 class="container text-center" id="headline">Time to Next Feed</h1>
     <br>
     <script src="{% static 'javascript/composter.js' %}"></script>
@@ -40,65 +41,44 @@
                 <br>
                 <div class="collapse" id="collapseExample">
                     <div class="card card-body">
-                    <div class= "table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Entry Time</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Input Amount and Type</th>
-                                <th scope="col">Notes</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for entry in last_five_entries %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
                                 <tr>
-                                <th scope="row">{{ forloop.counter }}</th>
-                                <td>{{ entry.entryTime }}</td>
-                                <td>{{ entry.username }}</td>
-                                <td><p>
-                                    {% if entry.inputs %}
-                                        {% for input in entry.inputs %}
-                                            {{ input.amount }}({{ input.type }})
-                                            {% if not forloop.last %},{% endif %}
-                                        {% endfor %}
+                                    <th scope="col">#</th>
+                                    <th scope="col">Entry Time</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Input Amount and Type</th>
+                                    <th scope="col">Notes</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entry in last_five_entries %}
+                                    <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ entry.entryTime }}</td>
+                                    <td>{{ entry.username }}</td>
+                                    <td><p>
+                                        {% if entry.inputs %}
+                                            {% for input in entry.inputs %}
+                                                {{ input.amount }}({{ input.type }})
+                                                {% if not forloop.last %},{% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            Nothing added
+                                        {% endif %}
+                                    </p></td>
+                                    <td>{% if entry.notes %}
+                                        {{ entry.notes }}
                                     {% else %}
-                                        Nothing added
-                                    {% endif %}
-                                </p></td>
-                                <td>{% if entry.notes %}
-                                    {{ entry.notes }}
-                                {% else %}
-                                    No notes
-                                {% endif %}</td>
-                            {% endfor %}
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                        No notes
+                                    {% endif %}</td>
+                                {% endfor %}
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             {% endif %}
-    <style>
-        hi {
-            display: inline-block;
-            font-size: 20px;
-            list-style-type: none;
-            padding: 10px;
-            text-transform: uppercase;
-        }
-
-        hi span {
-            display: block;
-            font-size: 35px;
-        }
-        #canvas {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-    }
-    </style>
 {% endblock %}
