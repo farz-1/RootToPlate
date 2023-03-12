@@ -11,24 +11,24 @@
         <canvas id="CarbonNeutralYear" class="card mb-2" style="width: 100% ;height: auto"></canvas>
     {% endif %}
     <div class="row mt-4">
-        <div class="col-sm-6">
+        <div class="col-sm-6 mb-2">
             <div class="card">
                 <div class="card-body">
-                    <canvas id="inputTypeChart" class="container" style="width:50%;height: auto"></canvas>
+                    <canvas id="inputTypeChart" class="container"></canvas>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 mb-2">
             <div class="card">
                 <div class="card-body">
-                    <canvas id="tempChart" class="container" style="width:50%;height: auto"></canvas>
+                    <canvas id="tempChart" class="container"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        var graphExists = document.getElementById("CarbonNeutralMonth");
+        let graphExists = document.getElementById("CarbonNeutralMonth");
         if (graphExists) {
             new Chart("CarbonNeutralMonth", {
                 type: 'horizontalBar',
@@ -101,6 +101,7 @@
                 }
             });
         }
+
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
@@ -119,15 +120,15 @@
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            var value = data.datasets[0].data[tooltipItem.index];
+                            let value = data.datasets[0].data[tooltipItem.index];
                             return value.toFixed(1) + " %";
                         }
                     }
                 }
             }
         });
-        var tempTimes = {{ tempTimesInt|safe }};
-        var temps = [[{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}], [
+        let tempTimes = {{ tempTimesInt|safe }};
+        let temps = [[{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}], [
             {% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}], [
             {% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}], [
             {% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}]];
@@ -135,9 +136,9 @@
             for (let j = 0; j < tempTimes.length; j++) {
                 temps[i][j] = {x: tempTimes[j], y: temps[i][j]};
             }
-            ;
+
         }
-        ;
+
         const data = {
             labels: {{ tempTimes|safe }},
             datasets: [
@@ -209,7 +210,7 @@
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            var label = data.labels[tooltipItem.index];
+                            let label = data.labels[tooltipItem.index];
                             return label + ': ' + tooltipItem.yLabel;
                         }
                     }
@@ -217,7 +218,4 @@
             }
         });
     </script>
-
-
-
 {% endblock %}
