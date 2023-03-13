@@ -9,7 +9,10 @@
 <form id="form-container" class="container justify-content-center"
       method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div>
+    <div class="row">
+    <div class="col-md-6 mb-3">
+    <div class="card">
+    <div class="card-body p-5 text-left">
         <div>
             Composting works best with the right mixture of 'green' materials such as food waste, coffee, plant material, and 'brown' material such as twigs, brown leaves, woodchip. 
             What makes a material green or brown is not the colour of that material, but the carbon:nitrogen ratio of it. 
@@ -24,12 +27,17 @@
         </div>
         {% if advice %}
         <div class="help-text">
-            <p class="indented">{{ advice }}</p>
+            <p>{{ advice }}</p>
         </div>
         {% endif %}
         <button type="submit" value="Post" name="get_advice" class="btn btn-success">Get advice</button>
     </div>
-    <div class="card w-50">
+    </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+    <div class="card">
+    <div class="card-body p-5 text-left">
         {{ entry_form.entryTime.errors }}
         {{ entry_form.entryTime|as_crispy_field }}
         <div id="input-form-container">
@@ -55,6 +63,9 @@
         {{ entry_form.notes|as_crispy_field }}
     <button type="submit" value="Post" class="btn btn-success">Submit Input</button>
     </div>
+    </div>
+    </div>
+</div>
 
 </form>
 <script>
