@@ -122,7 +122,7 @@ class InputForm(forms.ModelForm):
         super(InputForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['inputType'].help_text = "Type of material added"
-        self.fields['inputAmount'].help_text = "Amount of material added"
+        self.fields['inputAmount'].help_text = "Amount of material added in litres/kg"
 
     class Meta:
         model = Input
