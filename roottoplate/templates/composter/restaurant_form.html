@@ -12,30 +12,30 @@
             {{ hidden }}
         {% endfor %}
         <div class="card w-50">
-            {{ restaurant_form.name.errors }}
-            {{ restaurant_form.name|as_crispy_field }}
+            <div class="card-body">
+                {{ restaurant_form.name.errors }}
+                {{ restaurant_form.name|as_crispy_field }}
 
-            {{ restaurant_form.address.errors }}
-            {{ restaurant_form.address|as_crispy_field }}
+                {{ restaurant_form.address.errors }}
+                {{ restaurant_form.address|as_crispy_field }}
 
-            {{ restaurant_form.deadlineDate.errors }}
-            {{ restaurant_form.deadlineDate|as_crispy_field }}
-            {{ restaurant_form.email.errors }}
-            {{ restaurant_form.email|as_crispy_field }}
+                {{ restaurant_form.deadlineDate.errors }}
+                {{ restaurant_form.deadlineDate|as_crispy_field }}
+                {{ restaurant_form.email.errors }}
+                {{ restaurant_form.email|as_crispy_field }}
 
-            {{ restaurant_form.phoneNumber.errors }}
-            {{ restaurant_form.phoneNumber|as_crispy_field }}
+                {{ restaurant_form.phoneNumber.errors }}
+                {{ restaurant_form.phoneNumber|as_crispy_field }}
 
-            {{ restaurant_form.numberOfBags.errors }}
-            {{ restaurant_form.numberOfBags|as_crispy_field }}
+                {{ restaurant_form.numberOfBags.errors }}
+                {{ restaurant_form.numberOfBags|as_crispy_field }}
 
-            {{ restaurant_form.notes.errors }}
-            {{ restaurant_form.notes|as_crispy_field }}
-            <div class="mb-4"></div>
-            <button type="submit" value="Post" class="btn btn-success">Submit data</button>
-            <!--<input type="submit" name="submit" value="Post">-->
+                {{ restaurant_form.notes.errors }}
+                {{ restaurant_form.notes|as_crispy_field }}
+                <div class="mb-4"></div>
+                <button type="submit" value="Post" class="btn btn-success">Submit data</button>
+                <!--<input type="submit" name="submit" value="Post">-->
+            </div>
         </div>
-
     </form>
-
 {% endblock %}
