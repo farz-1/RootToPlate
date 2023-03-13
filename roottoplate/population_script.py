@@ -111,7 +111,7 @@ def create_input_entries(data):
     for item in data:
         print(f'creating input entry {str(count)}...')
         input_entry = InputEntry.objects.get_or_create(entryID=count, entryTime=date(item[0] + ' 00:00:00'),
-                                                       notes='', user=user)
+                                                       notes='initial data from Lucia', user=user)
 
         if item[1]:
             input_type = 'Coffee grounds'
@@ -175,7 +175,7 @@ def create_temperature_entries(data):
                                                        probe2=item[2],
                                                        probe3=item[3],
                                                        probe4=item[4],
-                                                       notes='',
+                                                       notes='Initial data from Lucia',
                                                        user=user)[0]
         count += 1
     return entry
