@@ -3,32 +3,35 @@
 {% extends 'composter/base.html' %}
 {% block content_block %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <h1 class="container text-center mb-5">Young Enterprise Scotland</h1>
+    <h1 class="container text-center">Young Enterprise Scotland</h1>
+    <br>
+    <br>
     {% if notEnoughEnergyInfo %}
-        <h4>Not enough information to display graph. </h4>
+    <h4>Not enough information to display graph. </h4>
     {% else %}
-        <canvas id="CarbonNeutralMonth" class="card mb-2" style="width: 100% ;height: auto"></canvas>
-        <canvas id="CarbonNeutralYear" class="card mb-2" style="width: 100% ;height: auto"></canvas>
+    <canvas id="CarbonNeutralMonth" class="card" style="width: 100% ;height: auto"></canvas>
+    <canvas id="CarbonNeutralYear" class="card" style="width: 100% ;height: auto"></canvas>
     {% endif %}
-    <div class="row mt-4">
-        <div class="col-sm-6 mb-2">
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <canvas id="inputTypeChart" class="container"></canvas>
+                    <canvas id="inputTypeChart" class="container" style="width:50%;height: auto"></canvas>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 mb-2">
+        <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <canvas id="tempChart" class="container"></canvas>
+                    <canvas id="tempChart" class="container" style="width:50%;height: auto"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let graphExists = document.getElementById("CarbonNeutralMonth");
+        var graphExists = document.getElementById("CarbonNeutralMonth");
         if (graphExists) {
             new Chart("CarbonNeutralMonth", {
                 type: 'horizontalBar',
@@ -40,12 +43,12 @@
                         borderColor: "#B8BF0D",
                         backgroundColor: "#B8BF0D"
                     },
-                        {
-                            label: 'Carbon footprint of energy consumption',
-                            data: {{ cMonth.positive|safe }},
-                            borderColor: "#E01F1D",
-                            backgroundColor: "#E01F1D"
-                        }]
+                    {
+                        label: 'Carbon footprint of energy consumption',
+                        data: {{ cMonth.positive|safe }},
+                        borderColor: "#E01F1D",
+                        backgroundColor: "#E01F1D"
+                    }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -55,10 +58,10 @@
                         text: "Carbon offset of energy consumption"
                     },
                     scales: {
-                        yAxes: [{stacked: true}],
+                        yAxes: [{ stacked: true }],
                         xAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero:true
                             },
                             stacked: false
                         }]
@@ -68,19 +71,19 @@
             new Chart("CarbonNeutralYear", {
                 type: 'horizontalBar',
                 data: {
-                    labels: {{ yMonth.label|safe }},
+                    labels: {{ cYear.label|safe }},
                     datasets: [{
                         label: 'Carbon saved by composting',
-                        data: {{ yMonth.negative|safe }},
+                        data: {{ cYear.negative|safe }},
                         borderColor: "#B8BF0D",
                         backgroundColor: "#B8BF0D"
                     },
-                        {
-                            label: 'Carbon footprint of energy consumption',
-                            data: {{ yMonth.positive|safe }},
-                            borderColor: "#E01F1D",
-                            backgroundColor: "#E01F1D"
-                        }]
+                    {
+                        label: 'Carbon footprint of energy consumption',
+                        data: {{ cYear.positive|safe }},
+                        borderColor: "#E01F1D",
+                        backgroundColor: "#E01F1D"
+                    }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -90,10 +93,10 @@
                         text: "Carbon offset of energy consumption for the year"
                     },
                     scales: {
-                        yAxes: [{stacked: true}],
+                        yAxes: [{ stacked: true }],
                         xAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero:true
                             },
                             stacked: false
                         }]
@@ -101,14 +104,13 @@
                 }
             });
         }
-
         new Chart("inputTypeChart", {
             type: "doughnut",
             data: {
                 labels: {{ typeNames|safe }},
                 datasets: [{
                     backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
-                    data: {{ percentages|safe }}
+                    data: {{ typePercentages|safe }}
                 }]
             },
             options: {
@@ -120,25 +122,20 @@
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            let value = data.datasets[0].data[tooltipItem.index];
+                            var value = data.datasets[0].data[tooltipItem.index];
                             return value.toFixed(1) + " %";
                         }
                     }
                 }
             }
         });
-        let tempTimes = {{ tempTimesInt|safe }};
-        let temps = [[{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}], [
-            {% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}], [
-            {% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}], [
-            {% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}]];
+        var tempTimes = {{ tempTimesInt|safe }};
+        var temps = [[{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}], [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}], [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}], [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}]];
         for (let i = 0; i < temps.length; i++) {
             for (let j = 0; j < tempTimes.length; j++) {
                 temps[i][j] = {x: tempTimes[j], y: temps[i][j]};
-            }
-
-        }
-
+            };
+        };
         const data = {
             labels: {{ tempTimes|safe }},
             datasets: [
@@ -209,8 +206,8 @@
                 },
                 tooltips: {
                     callbacks: {
-                        label: function (tooltipItem, data) {
-                            let label = data.labels[tooltipItem.index];
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
                             return label + ': ' + tooltipItem.yLabel;
                         }
                     }
@@ -218,4 +215,7 @@
             }
         });
     </script>
+
+
+
 {% endblock %}

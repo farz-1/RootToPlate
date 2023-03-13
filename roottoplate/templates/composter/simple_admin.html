@@ -65,7 +65,11 @@
                                 {{ input_type_form.name|as_crispy_field }}
                                 {{ input_type_form.CNRatio.errors }}
                                 {{ input_type_form.CNRatio|as_crispy_field }}
-                                <button type="submit" value="Post" class="btn btn-success">Add Input</button>
+                                {{ input_type_form.nitrogenPercent.errors }}
+                                {{ input_type_form.nitrogenPercent|as_crispy_field }}
+                                {{ input_type_form.moisturePercent.errors }}
+                                {{ input_type_form.moisturePercent|as_crispy_field }}
+                                <button type="submit" value="Post" class="btn btn-success">Add Input Type</button>
                             </div>
                         </form>
                     </div>

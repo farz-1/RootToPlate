@@ -4,17 +4,46 @@
 {% load crispy_forms_tags %}
 <title>Composter Input Form</title>
 {% block content_block %}
-    <h1 class="container text-center mb-4">Composter Input Form</h1>
-    <form id="form-container" class="container justify-content-center"
-          method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="card w-50">
-            {{ entry_form.entryTime.errors }}
-            {{ entry_form.entryTime|as_crispy_field }}
-            <div id="input-form-container">
-                {{ input_formset.management_form }}
-                {% for input in input_formset %}
-                    <div class="input-form">
+    <h1 class="container text-center">Composter Input Form</h1>
+    <br>
+<form id="form-container" class="container justify-content-center"
+      method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+    <div class="col-md-6 mb-3">
+    <div class="card">
+    <div class="card-body p-5 text-left">
+        <div>
+            Composting works best with the right mixture of 'green' materials such as food waste, coffee, plant material, and 'brown' material such as twigs, brown leaves, woodchip.
+            What makes a material green or brown is not the colour of that material, but the carbon:nitrogen ratio of it.
+            High carbon materials are brown, and high nitrogen ones are green.
+            Compost needs a balance of green and brown materials to work, with an ideal carbon:nitrogen ratio between 25:1 and 30:1.
+            <br>
+            New materials have to be introduced slowly to allow the bacteria that eats it become present and multiply.
+            So you can't just switch its diet suddenly eg in summer when grass and garden waste becomes available.
+            <br>
+            Try out different combinations of materials below, and click 'get advice' to see whether they are balanced.
+            Once you are happy with the combination, add it to the composter and click 'submit' to record it.
+        </div>
+        {% if advice %}
+        <div class="help-text">
+            <p>{{ advice }}</p>
+        </div>
+        {% endif %}
+        <button type="submit" value="Post" name="get_advice" class="btn btn-success">Get advice</button>
+    </div>
+    </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+    <div class="card">
+    <div class="card-body p-5 text-left">
+        {{ entry_form.entryTime.errors }}
+        {{ entry_form.entryTime|as_crispy_field }}
+        <div id="input-form-container">
+            {{ input_formset.management_form }}
+            {% for input in input_formset %}
+                <div class="input-form">
 
                         {{ input.inputType.errors }}
                         {{ input.inputType|as_crispy_field }}
@@ -28,10 +57,15 @@
             </div>
 
 
-            {{ entry_form.notes.errors }}
-            {{ entry_form.notes|as_crispy_field }}
-            <button type="submit" value="Post" class="btn btn-success">Submit Input</button>
-        </div>
+
+
+        {{ entry_form.notes.errors}}
+        {{ entry_form.notes|as_crispy_field }}
+    <button type="submit" value="Post" class="btn btn-success">Submit Input</button>
+    </div>
+    </div>
+    </div>
+</div>
 
     </form>
     <script>

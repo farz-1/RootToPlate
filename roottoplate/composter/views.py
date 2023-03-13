@@ -10,103 +10,17 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView
 from composter.forms import InputEntryForm, InputFormSet, TempEntryForm, OutputForm, EnergyForm
 from composter.forms import RestaurantForm, UserForm, InputTypeForm, ChangePasswordForm
-from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest, EnergyUsage
+from composter.models import InputType, Input, InputEntry, TemperatureEntry, RestaurantRequest
 from django.utils import timezone
-import datetime
+from composter.signals import GraphState
 
 
 def index(request):
-    typeNames = [x.name for x in InputType.objects.all()]
-    typeCounts = [float(sum(y.inputAmount for y in Input.objects.filter(inputType=x))) for x in typeNames]
-    total = float(sum(typeCounts))
-    percentages = [(count / total * 100)for count in typeCounts]
-    n = len(typeNames) - 1
-    for i in range(n + 1):
-        if typeCounts[n-i] == 0:
-            del typeCounts[n-i]
-            del typeNames[n-i]
-
-    tempEntries = TemperatureEntry.objects.all().order_by('entryTime').values()
-    if len(tempEntries) > 30:
-        tempEntries = tempEntries[-30:]
-
-    tempTimes = [x.get('entryTime').strftime("%d-%m-%Y") for x in tempEntries]
-    tempTimesInt = [int(x.get('entryTime').timestamp()) for x in tempEntries]
-
-    context = {'typeNames': typeNames, 'typeCounts': typeCounts, 'tempEntries': tempEntries,
-               'tempTimes': tempTimes, 'tempTimesInt': tempTimesInt, 'percentages': percentages}
-
-    mLabels, mPositive, mNegative = [], [], []
-    yLabels, yPositive, yNegative = [], [], []
-    carbon = calculate_carbon_neutrality()
-    if carbon is None:
-        context['notEnoughEnergyInfo'] = 'true'
-    else:
-        for label, value in carbon.items():
-            if label == 'This Year':
-                yLabels, yPositive, yNegative = [label], [value['cPositive']], [value['cNegative']]
-            else:
-                mLabels.append(label)
-                mPositive.append(value['cPositive'])
-                mNegative.append(value['cNegative'])
-
-    context['cMonth'] = {'label': mLabels, 'positive': mPositive, 'negative': mNegative}
-    context['yMonth'] = {'label': yLabels, 'positive': yPositive, 'negative': yNegative}
-
+    state = GraphState()
+    context = {'typeNames': state.typeNames, 'typePercentages': state.typePercentages,
+               'tempEntries': state.tempEntries, 'tempTimes': state.tempTimes, 'tempTimesInt': state.tempTimesInt,
+               'cMonth': state.cMonth, 'cYear': state.cYear, 'notEnoughEnergyInfo': state.notEnoughEnergyInfo}
     return render(request, "composter/index.html", context)
-
-
-def get_inputs_from_entry(entryid):
-    return Input.objects.filter(inputEntry=entryid)
-
-
-def sum_amounts_from_entries(entry_set):
-    return sum([sum([y.inputAmount for y in get_inputs_from_entry(x.entryID)]) for x in entry_set])
-
-
-def calculate_carbon_neutrality():
-    cubic_m_to_co2 = 1.9  # kg / m^3
-    kwh_to_co2 = 0.082  # edf co2 kg/kwh as taken from their website
-    compost_to_co2_saved = 1.495  # kg/kg, assuming food waste would be landfilled otherwise
-    labels = ['This Month', 'Last Month', 'This Year']
-    carbon = {label: {'cPositive': None, 'cNegative': None} for label in labels}
-
-    this_month = datetime.date.today().replace(day=1)
-    last_month = this_month - datetime.timedelta(days=1)
-    start_of_this_year = datetime.date.today() - datetime.timedelta(days=365)
-
-    meter_readings = EnergyUsage.objects.filter(date__gte=start_of_this_year).order_by('-date').values()
-    if len(meter_readings) > 1:
-        dates = [x.get('date') for x in meter_readings]
-        elec = [x.get('electricity') for x in meter_readings]
-        gas = [x.get('gas') for x in meter_readings]
-
-        lm_factor = 30 / (dates[0] - dates[1]).days
-        lm_elec = (elec[0] - elec[1]) * lm_factor
-        lm_gas = (gas[0] - gas[1]) * lm_factor
-
-        carbon[labels[0]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)
-        # this is the same as the last month
-        carbon[labels[1]]['cPositive'] = int(lm_elec * kwh_to_co2 + lm_gas * cubic_m_to_co2)
-
-        ty_factor = 365 / (dates[0] - dates[-1]).days
-        ty_elec = (elec[0] - elec[-1]) * ty_factor
-        ty_gas = (gas[0] - gas[-1]) * ty_factor
-
-        carbon[labels[2]]['cPositive'] = int(ty_elec * kwh_to_co2 + ty_gas * cubic_m_to_co2)
-
-        # and le composting
-        tm_compost = InputEntry.objects.filter(entryTime__month=this_month.month,
-                                               entryTime__year=this_month.year)
-        lm_compost = InputEntry.objects.filter(entryTime__month=last_month.month,
-                                               entryTime__year=last_month.year)
-        ty_compost = InputEntry.objects.filter(entryTime__year=this_month.year)
-        for label, entry_set in {'This Month': tm_compost, 'Last Month': lm_compost, 'This Year': ty_compost}.items():
-            compost_total = sum_amounts_from_entries(entry_set)
-            carbon[label]['cNegative'] = int(float(compost_total) * compost_to_co2_saved)
-        return carbon
-    else:
-        return None
 
 
 def about(request):
@@ -160,6 +74,21 @@ def user_logout(request):
     return redirect(reverse('index'))
 
 
+def calculate_mixture_sums(cur_inputs):
+    sumN = sum([i['amount']*i['nitrogen']*i['moisture'] for i in cur_inputs])
+    for i in cur_inputs:
+        i['carbon'] = i['nitrogen']*i['CNRatio']
+    sumC = sum([i['amount']*i['carbon']*i['moisture'] for i in cur_inputs])
+    return sumC, sumN
+
+
+def calculate_recommended_addition(rec_input, sumC, sumN):
+    cn = 27  # ideal carbon nitrogen ratio
+    nitrogen, moisture = float(rec_input.nitrogenPercent), 100 - float(rec_input.moisturePercent)
+    carbon = float(rec_input.nitrogenPercent*rec_input.CNRatio)
+    return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
+
+
 class InputFormView(TemplateView):
     template_name = "composter/compost_form.html"
 
@@ -174,8 +103,43 @@ class InputFormView(TemplateView):
 
         entry_form = InputEntryForm(self.request.POST)
         input_formset = InputFormSet(self.request.POST)
+        context = {}
 
-        if entry_form.is_valid() and input_formset.is_valid():
+        if 'get_advice' in self.request.POST and input_formset.is_valid():
+            cur_inputs = []
+            # get the inputs without saving the form
+            for input in input_formset:
+                input = input.save(commit=False)
+                cur_inputs.append({'amount': float(input.inputAmount),
+                                   'nitrogen': float(input.inputType.nitrogenPercent),
+                                   'moisture': 100 - float(input.inputType.moisturePercent),
+                                   'CNRatio': float(input.inputType.CNRatio)})
+            # get the total carbon and nitrogen in the mixture
+            sumC, sumN = calculate_mixture_sums(cur_inputs)
+
+            # if the ratio is too big then add more green
+            if sumC/sumN > 35:
+                rec_input = InputType.objects.get(name='Food waste')
+                rec_input_amount = round(calculate_recommended_addition(rec_input, sumC, sumN), 1)
+                advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material. "  # noqa:E501
+            # if the ratio is too small then add more brown
+            elif sumC/sumN < 20:
+                rec_input = InputType.objects.get(name='Wood')
+                rec_input_amount = round(calculate_recommended_addition(rec_input, sumC, sumN), 1)
+                advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material. "  # noqa:E501
+            # the ratio is ready to submit
+            else:
+                advice = "The carbon-nitrogen ratio is within the recommended range. "
+            tempEntries = TemperatureEntry.objects.all().order_by('-entryTime').values()
+            tempAvg = sum([tempEntries[0].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
+            if tempAvg > 55:
+                advice += "The temperature of the composter is above 55, add more brown material than normally recommended"  # noqa:E501
+            if tempAvg < 45:
+                advice += "The temperature of the composter is below 45, add more green material than normally recommended"  # noqa:E501
+            context['advice'] = advice
+
+        # form is submitted, process as normal
+        elif entry_form.is_valid() and input_formset.is_valid():
             entry = entry_form.save(commit=False)
             entry.user = user
             entry.save()
@@ -184,11 +148,14 @@ class InputFormView(TemplateView):
                 input.inputEntry = entry
                 input.save()
             return redirect(reverse('composter:composter'))
+        # otherwise, show errors
         else:
             print(entry_form.errors)
             for inputs in input_formset:
                 print(inputs.errors)
-        context = {'input_formset': input_formset, 'entry_form': entry_form}
+
+        context['input_formset'] = input_formset
+        context['entry_form'] = entry_form
         return render(request, self.template_name, context)
 
 

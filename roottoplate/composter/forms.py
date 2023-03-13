@@ -75,9 +75,12 @@ class ChangePasswordForm(forms.ModelForm):
 class InputTypeForm(forms.ModelForm):
     # accessible by admin only
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Required Field'}), required=True)
-    woodChipRatio = forms.DecimalField(required=False)
     CNRatio = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
                                  required=True, label='Carbon : Nitrogen ratio')
+    nitrogenPercent = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
+                                         required=True, label='Nitrogen percentage')
+    moisturePercent = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
+                                         required=True, label='Moisture percentage')
     add_input_type = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
     def __init__(self, *args, **kwargs):
@@ -88,7 +91,7 @@ class InputTypeForm(forms.ModelForm):
 
     class Meta:
         model = InputType
-        fields = {'name', 'CNRatio'}  # is the wood_chip calculated or input?
+        fields = {'name', 'CNRatio', 'nitrogenPercent', 'moisturePercent'}
 
 
 class InputEntryForm(forms.ModelForm):
@@ -119,7 +122,7 @@ class InputForm(forms.ModelForm):
         super(InputForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['inputType'].help_text = "Type of material added"
-        self.fields['inputAmount'].help_text = "Amount of material added"
+        self.fields['inputAmount'].help_text = "Amount of material added in litres/kg"
 
     class Meta:
         model = Input
@@ -208,7 +211,7 @@ class OutputForm(forms.ModelForm):
 
 
 class EnergyForm(forms.ModelForm):
-    date = forms.DateField(initial=date.today, widget=forms.widgets.DateInput(attrs={'type': 'datetime-local'}),
+    date = forms.DateField(initial=date.today, widget=forms.DateInput(attrs={'type': 'date'}),
                            required=True)
     gas = forms.IntegerField(required=True)
     electricity = forms.IntegerField(required=True)

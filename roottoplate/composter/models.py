@@ -7,13 +7,19 @@ class InputType(models.Model):
     NAME_MAX_LENGTH = 128
     RATIO_DECIMAL_PLACES = 2
     RATIO_MAX_DIGITS = 5
+    NITROGEN_DECIMAL_PLACES = 2
+    NITROGEN_MAX_DIGITS = 5
+    MOISTURE_DECIMAL_PLACES = 2
+    MOISTURE_MAX_DIGITS = 5
 
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, validators=[MinLengthValidator(2)],
                             primary_key=True)
-    woodChipRatio = models.DecimalField(decimal_places=RATIO_DECIMAL_PLACES, max_digits=RATIO_MAX_DIGITS,
-                                        validators=[MinValueValidator(1)], null=True)
     CNRatio = models.DecimalField(decimal_places=RATIO_DECIMAL_PLACES, max_digits=RATIO_MAX_DIGITS,
                                   validators=[MinValueValidator(1)])
+    nitrogenPercent = models.DecimalField(decimal_places=NITROGEN_DECIMAL_PLACES, max_digits=NITROGEN_MAX_DIGITS,
+                                          validators=[MinValueValidator(1)])
+    moisturePercent = models.DecimalField(decimal_places=MOISTURE_DECIMAL_PLACES, max_digits=MOISTURE_MAX_DIGITS,
+                                          validators=[MinValueValidator(1)])
 
     def __str__(self):
         return self.name
