@@ -130,10 +130,8 @@ dmypy.json
 .pyre/
 
 # Migrations
-migrations/
-/roottoplate/composter/migrations/
 
-# Python cache files
+
+# Python cache fils
 *.pyc
-/roottoplate/composter/migrations/
-/roottoplate/composter/migrations/
+
