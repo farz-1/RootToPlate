@@ -75,7 +75,7 @@ DATABASES = {
 }
 
 # Use Postgres on Heroku
-if os.environ.get('DATABASE_URL'):  # noqa:E501
+if os.environ.get('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.config()
 
 # Password validation
