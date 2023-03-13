@@ -164,7 +164,7 @@ def populate():
          'dateRequested': '2023-01-02 22:01:40',
          'deadline': '2023-01-30 23:00:00',
          'email': 'kapao@kapao.com',
-         'phone': 44800829839,
+         'phone': '44800829839',
          'notes': 'quick',
          'bags': 2,
          'collected': False},

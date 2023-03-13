@@ -81,7 +81,7 @@ class RestaurantRequest(models.Model):
     dateRequested = models.DateTimeField()
     deadlineDate = models.DateTimeField()
     email = models.CharField(max_length=EMAIL_MAX_LENGTH)
-    phoneNumber = models.IntegerField(null=True)
+    phoneNumber = models.CharField(null=True, max_length=13)
     notes = models.CharField(max_length=NOTES_MAX_LENGTH, null=True, blank=True)
     numberOfBags = models.IntegerField(null=True)
     collected = models.BooleanField(default=False)
