@@ -105,7 +105,7 @@ class InputFormView(TemplateView):
         input_formset = InputFormSet(self.request.POST)
         context = {}
 
-        if 'get_advice' in self.request.POST:
+        if 'get_advice' in self.request.POST and input_formset.is_valid():
             cur_inputs = []
             # get the inputs without saving the form
             for input in input_formset:
