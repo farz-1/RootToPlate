@@ -136,3 +136,4 @@ migrations/
 # Python cache files
 *.pyc
 /roottoplate/composter/migrations/
+/roottoplate/composter/migrations/
