@@ -15,7 +15,6 @@ DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 INPUT_TYPES_FILEPATH = 'roottoplate/static/db-data/default_input_types.csv'
 TEMPERATURES_FILEPATH = 'static/db-data/temperatures.csv'
 INPUTS_FILEPATH = 'static/db-data/inputs.csv'
-print(os.path.getsize('static/db-data/default_input_types.csv'))
 
 
 def populate():
