@@ -11,10 +11,16 @@ from composter.models import InputType, Input, InputEntry, TemperatureEntry, \
 from datetime import datetime  # noqa:E402
 from django.utils import timezone  # noqa:E402
 
+if 'DYNO' in os.environ:
+    print('Running on Heroku')
+else:
+    print('Running locally')
+
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 INPUT_TYPES_FILEPATH = 'roottoplate/static/db-data/default_input_types.csv'
 TEMPERATURES_FILEPATH = 'roottoplate/static/db-data/temperatures.csv'
 INPUTS_FILEPATH = 'roottoplate/static/db-data/inputs.csv'
+
 
 
 def populate():
