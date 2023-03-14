@@ -2,11 +2,11 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content_block %}
-    <h1 class="container text-center">Administrative Dashboard</h1>
-    <br>
+    <h1 class="container text-center mb-3">Administrative Dashboard</h1>
     {% if success_message %}
         <h3>{{ success_message }}</h3>
     {% endif %}
+    <a href="{% url 'admin:index' %}" class="btn btn-primary">Full admin site</a>
     <div class="accordion" id="Adminaccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -65,7 +65,11 @@
                                 {{ input_type_form.name|as_crispy_field }}
                                 {{ input_type_form.CNRatio.errors }}
                                 {{ input_type_form.CNRatio|as_crispy_field }}
-                                <button type="submit" value="Post" class="btn btn-success">Add Input</button>
+                                {{ input_type_form.nitrogenPercent.errors }}
+                                {{ input_type_form.nitrogenPercent|as_crispy_field }}
+                                {{ input_type_form.moisturePercent.errors }}
+                                {{ input_type_form.moisturePercent|as_crispy_field }}
+                                <button type="submit" value="Post" class="btn btn-success">Add Input Type</button>
                             </div>
                         </form>
                     </div>

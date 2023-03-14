@@ -222,29 +222,29 @@ class PopulationScriptTests(TestCase):
 
     def test_input_types(self):
         """
-        6 input types should be created
+        14 input types should be created
         """
         input_types = InputType.objects.filter()
         length = len(input_types)
         strs = map(str, input_types)
 
-        self.assertEqual(length, 6, f'6 input types expected from population script, {len(input_types)} created.')
-        self.assertTrue('Weeds' in strs, 'Population script did not create expected input type data.')
+        self.assertEqual(length, 14, f'14 input types expected from population script, {len(input_types)} created.')
+        self.assertTrue('Grass clippings' in strs, 'Population script did not create expected input type data.')
 
     def test_input_entries(self):
         """
         3 input entries should be created
         """
         input_entries = InputEntry.objects.filter()
-        self.assertEqual(len(input_entries), 3, f'4 input entries expected from population script, '
-                                                f'{len(input_entries)} created.')
+        self.assertEqual(len(input_entries), 48, f'48 input entries expected from population script, '
+                                                 f'{len(input_entries)} created.')
 
     def test_inputs(self):
         """
-        4 inputs should be created
+        117 inputs should be created
         """
         inputs = Input.objects.filter()
-        self.assertEqual(len(inputs), 4, f'4 inputs expected from population script, {len(inputs)} created.')
+        self.assertEqual(len(inputs), 117, f'117 inputs expected from population script, {len(inputs)} created.')
 
     def test_temp_entries(self):
         """
@@ -252,9 +252,9 @@ class PopulationScriptTests(TestCase):
         """
         temp_entries = TemperatureEntry.objects.filter()
         strs = map(str, temp_entries)
-        self.assertEqual(len(temp_entries), 4, f'4 temperature entries expected from population script, '
-                                               f'{len(temp_entries)} created.')
-        self.assertTrue(str(10002) in strs)
+        self.assertEqual(len(temp_entries), 45, f'45 temperature entries expected from population script, '
+                                                f'{len(temp_entries)} created.')
+        self.assertTrue((str(44) in strs) & (str(45) not in strs))
 
     def test_users(self):
         """
@@ -275,30 +275,16 @@ class PopulationScriptTests(TestCase):
                                            f'created.')
         self.assertTrue("20002" in strs, 'Restaurant requests incorrectly created from population script.')
 
-    def test_outputs(self):
-        """
-        5 output entries should be created
-        """
-        outputs = Output.objects.filter()
-        strs = map(str, outputs)
-        self.assertEqual(len(outputs), 5, f'5 output entries expected from population script, {len(outputs)} created.')
-        self.assertTrue("1009" in strs, 'Output entries incorrectly created from population script.')
-
     #  Test that the relationships have been created.
     def test_input_has_user(self):
-        input_entry = InputEntry.objects.get(entryID=10001)
-        user = User.objects.get(username="ag23")
+        input_entry = InputEntry.objects.get(entryID=0)
+        user = User.objects.get(username="kw01")
         self.assertEqual(input_entry.user, user, 'Input entry from population script has no user.')
 
     def test_temp_entry_has_user(self):
-        input_entry = TemperatureEntry.objects.get(entryID=34264)
+        input_entry = TemperatureEntry.objects.get(entryID=0)
         user = User.objects.get(username="kw01")
         self.assertEqual(input_entry.user, user, 'Temperature entry from population script has no user.')
-
-    def test_output_entry_has_user(self):
-        input_entry = Output.objects.get(outputID=1002)
-        user = User.objects.get(username="lb212")
-        self.assertEqual(input_entry.user, user, 'Output entry from population script has no user.')
 
 
 class FormTests(TestCase):
@@ -343,7 +329,7 @@ class FormTests(TestCase):
     def test_input_form(self):
         expected_entries = 1
         expected_inputs = 1
-        InputType.objects.get_or_create(name='test_type', woodChipRatio=1, CNRatio=1)
+        InputType.objects.get_or_create(name='test_type', moisturePercent=1, CNRatio=1, nitrogenPercent=1)
         type_pk = InputType.objects.get(pk='test_type').pk
         self.client.login(username='ab88', password='45dirt')
         self.client.post(reverse('composter:input_entry'),
@@ -379,7 +365,8 @@ class AdminTests(TestCase):
 
     def test_add_input_type(self):
         expected = len(InputType.objects.filter()) + 1
-        type_data = {'add_input_type': True, 'name': 'test', 'woodChipRatio': 2, 'CNRatio': 2}
+        type_data = {'add_input_type': True, 'name': 'test', 'CNRatio': 2, 'nitrogenPercent': 2,
+                     'moisturePercent': 2}
         self.client.login(username='kw01', password='grass99')
         self.client.post(reverse('composter:simple_admin'), type_data, follow=True)
         self.assertEqual(expected, len(InputType.objects.filter()), 'Could not create new input type with admin form.')

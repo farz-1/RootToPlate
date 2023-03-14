@@ -4,36 +4,37 @@
 {% load crispy_forms_tags %}
 <title>Temperature Form</title>
 {% block content_block %}
-<h1 class="card-title container text-center">Temperature Form</h1>
-<form method="post" class="container justify-content-center"
-      enctype="multipart/form-data" action="{% url 'composter:temp_entry' %}">
-    {% csrf_token %}
-    {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-    <div class="card w-50">
+    <h1 class="card-title container text-center mb-4">Temperature Form</h1>
+    <form method="post" class="container justify-content-center"
+          enctype="multipart/form-data" action="{% url 'composter:temp_entry' %}">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        <div class="card w-50">
+            <div class="card-body">
+                {{ temperature_form.entryTime.errors }}
+                {{ temperature_form.entryTime|as_crispy_field }}
 
-        {{ temperature_form.entryTime.errors }}
-        {{ temperature_form.entryTime|as_crispy_field }}
+                {{ temperature_form.probe1.errors }}
+                {{ temperature_form.probe1|as_crispy_field }}
 
-        {{ temperature_form.probe1.errors }}
-        {{ temperature_form.probe1|as_crispy_field }}
+                {{ temperature_form.probe2.errors }}
+                {{ temperature_form.probe2|as_crispy_field }}
 
-        {{ temperature_form.probe2.errors }}
-        {{ temperature_form.probe2|as_crispy_field }}
+                {{ temperature_form.probe3.errors }}
+                {{ temperature_form.probe3|as_crispy_field }}
 
-        {{ temperature_form.probe3.errors }}
-        {{ temperature_form.probe3|as_crispy_field }}
+                {{ temperature_form.probe4.errors }}
+                {{ temperature_form.probe4|as_crispy_field }}
 
-        {{ temperature_form.probe4.errors }}
-        {{ temperature_form.probe4|as_crispy_field }}
+                {{ temperature_form.notes.errors }}
+                {{ temperature_form.notes|as_crispy_field }}
+                <div class="mb-4"></div>
+                <button type="submit" value="Post" class="btn btn-success">Submit Data</button>
+                <!--<input type="submit" name="submit" value="Post">-->
+            </div>
+        </div>
 
-        {{ temperature_form.notes.errors }}
-        {{ temperature_form.notes|as_crispy_field }}
-        <br>
-        <button type="submit" value="Post" class="btn btn-success">Submit Data</button>
-        <!--<input type="submit" name="submit" value="Post">-->
-    </div>
-
-</form>
+    </form>
 {% endblock %}

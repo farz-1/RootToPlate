@@ -4,39 +4,38 @@
 {% load crispy_forms_tags %}
 <title>Food Collection</title>
 {% block content_block %}
-<h1 class="container text-center">Food Collection Form</h1>
-    <br>
+    <h1 class="container text-center mb-4">Food Collection Form</h1>
     <form method="post" class="container justify-content-center"
           enctype="multipart/form-data" action="{% url 'composter:restaurant_form' %}">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
-        {{ hidden }}
+            {{ hidden }}
         {% endfor %}
         <div class="card w-50">
-            {{ restaurant_form.name.errors }}
-            {{ restaurant_form.name|as_crispy_field }}
+            <div class="card-body">
+                {{ restaurant_form.name.errors }}
+                {{ restaurant_form.name|as_crispy_field }}
 
-            {{ restaurant_form.address.errors }}
-            {{ restaurant_form.address|as_crispy_field }}
+                {{ restaurant_form.address.errors }}
+                {{ restaurant_form.address|as_crispy_field }}
 
-            {{ restaurant_form.deadlineDate.errors }}
-            {{ restaurant_form.deadlineDate|as_crispy_field }}
-            {{ restaurant_form.email.errors }}
-            {{ restaurant_form.email|as_crispy_field }}
+                {{ restaurant_form.deadlineDate.errors }}
+                {{ restaurant_form.deadlineDate|as_crispy_field }}
+                {{ restaurant_form.email.errors }}
+                {{ restaurant_form.email|as_crispy_field }}
 
-            {{ restaurant_form.phoneNumber.errors }}
-            {{ restaurant_form.phoneNumber|as_crispy_field }}
+                {{ restaurant_form.phoneNumber.errors }}
+                {{ restaurant_form.phoneNumber|as_crispy_field }}
 
-            {{ restaurant_form.numberOfBags.errors }}
-            {{ restaurant_form.numberOfBags|as_crispy_field }}
+                {{ restaurant_form.numberOfBags.errors }}
+                {{ restaurant_form.numberOfBags|as_crispy_field }}
 
-            {{ restaurant_form.notes.errors }}
-            {{ restaurant_form.notes|as_crispy_field }}
-            <br>
-            <button type="submit" value="Post" class="btn btn-success">Submit data</button>
-            <!--<input type="submit" name="submit" value="Post">-->
+                {{ restaurant_form.notes.errors }}
+                {{ restaurant_form.notes|as_crispy_field }}
+                <div class="mb-4"></div>
+                <button type="submit" value="Post" class="btn btn-success">Submit data</button>
+                <!--<input type="submit" name="submit" value="Post">-->
+            </div>
         </div>
-
     </form>
-
 {% endblock %}

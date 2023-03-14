@@ -71,16 +71,16 @@
             new Chart("CarbonNeutralYear", {
                 type: 'horizontalBar',
                 data: {
-                    labels: {{ yMonth.label|safe }},
+                    labels: {{ cYear.label|safe }},
                     datasets: [{
                         label: 'Carbon saved by composting',
-                        data: {{ yMonth.negative|safe }},
+                        data: {{ cYear.negative|safe }},
                         borderColor: "#B8BF0D",
                         backgroundColor: "#B8BF0D"
                     },
                     {
                         label: 'Carbon footprint of energy consumption',
-                        data: {{ yMonth.positive|safe }},
+                        data: {{ cYear.positive|safe }},
                         borderColor: "#E01F1D",
                         backgroundColor: "#E01F1D"
                     }]
@@ -110,7 +110,7 @@
                 labels: {{ typeNames|safe }},
                 datasets: [{
                     backgroundColor: ["#B8BF0D", "#E60088", "#87319A", "#E01F1D", "#00AEEF", "#03783D", "#0032A0", "#1E8986"],
-                    data: {{ percentages|safe }}
+                    data: {{ typePercentages|safe }}
                 }]
             },
             options: {
