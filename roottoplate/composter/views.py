@@ -131,11 +131,15 @@ class InputFormView(TemplateView):
             else:
                 advice = "The carbon-nitrogen ratio is within the recommended range. "
             tempEntries = TemperatureEntry.objects.all().order_by('-entryTime').values()
-            tempAvg = sum([tempEntries[0].get(x) for x in ['probe1', 'probe2', 'probe3', 'probe4']])/4
-            if tempAvg > 55:
-                advice += "The temperature of the composter is above 55, add more brown material than normally recommended"  # noqa:E501
-            if tempAvg < 45:
-                advice += "The temperature of the composter is below 45, add more green material than normally recommended"  # noqa:E501
+            tempMin = min(tempEntries[0].get('probe2'), tempEntries[-1].get('probe3'))
+            tempMax = max(tempEntries[0].get('probe2'), tempEntries[-1].get('probe3'))
+
+        if tempMax > 65:
+                advice += "The temperature of the composter is above 65 during probe 2 or 3: bacterial digestion process may be destroyed. " \
+                          "\nPlease add more brown material than normally recommended"  # noqa:E501
+        if tempMin < 55:
+            advice += "The temperature of the composter is below 55 during probe 2 or 3: more heat is needed to cook out pathogens" \
+                      "\nPlease add more green material than normally recommended"  # noqa:E501
             context['advice'] = advice
 
         # form is submitted, process as normal
