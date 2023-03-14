@@ -13,8 +13,8 @@ from django.utils import timezone  # noqa:E402
 
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 INPUT_TYPES_FILEPATH = 'roottoplate/static/db-data/default_input_types.csv'
-TEMPERATURES_FILEPATH = 'static/db-data/temperatures.csv'
-INPUTS_FILEPATH = 'static/db-data/inputs.csv'
+TEMPERATURES_FILEPATH = 'roottoplate/static/db-data/temperatures.csv'
+INPUTS_FILEPATH = 'roottoplate/static/db-data/inputs.csv'
 
 
 def populate():
