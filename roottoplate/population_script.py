@@ -17,11 +17,14 @@ TEMPERATURES_FILEPATH = 'temperatures.csv'
 INPUTS_FILEPATH = 'inputs.csv'
 
 print(os.path.abspath('inputtypes.csv'))
+print(os.getcwd())
+print(os.path.getsize('inputtypes.csv'))
+
 ABSOLUTE_PATH = '/path/to/your/file/static/db-data/inputtypes.csv'
 
 
 def populate():
-    populate_input_types(INPUT_TYPES_FILEPATH)
+    populate_input_types()
 
     with open(TEMPERATURES_FILEPATH) as csvfile:
         reader = csv.reader(csvfile)
