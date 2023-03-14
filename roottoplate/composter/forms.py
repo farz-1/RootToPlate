@@ -114,7 +114,7 @@ class InputEntryForm(forms.ModelForm):
 # appears on the same page as the InputEntryForm and then is dealt with in the view
 class InputForm(forms.ModelForm):
     inputType = forms.ModelChoiceField(widget=forms.Select(attrs={'placeholder': 'Required Field'}),
-                                       queryset=InputType.objects.all(), required=True, label='Input type')
+                                       queryset=InputType.objects.all(), initial=0, required=True, label='Input type')
     inputAmount = forms.DecimalField(widget=forms.NumberInput(attrs={'placeholder': 'Required Field'}),
                                      required=True, label='Input amount')
 
