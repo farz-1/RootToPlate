@@ -7,9 +7,8 @@ django.setup()
 from composter.models import InputType  # noqa:E402
 
 
-def populate_input_types():
-    filepath='inputtypes.csv'
-    with open(filepath) as csvfile:
+def populate_input_types(file_path):
+    with open(file_path) as csvfile:
         reader = csv.reader(csvfile)
         input_list = list(reader)
 

@@ -12,19 +12,14 @@ from datetime import datetime  # noqa:E402
 from django.utils import timezone  # noqa:E402
 
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-INPUT_TYPES_FILEPATH = 'inputtypes.csv'
-TEMPERATURES_FILEPATH = 'temperatures.csv'
-INPUTS_FILEPATH = 'inputs.csv'
-
-print(os.path.abspath('inputtypes.csv'))
-print(os.getcwd())
-print(os.path.getsize('inputtypes.csv'))
-
-ABSOLUTE_PATH = '/path/to/your/file/static/db-data/inputtypes.csv'
+INPUT_TYPES_FILEPATH = 'roottoplate/static/db-data/default_input_types.csv'
+TEMPERATURES_FILEPATH = 'static/db-data/temperatures.csv'
+INPUTS_FILEPATH = 'static/db-data/inputs.csv'
+print(os.path.getsize('static/db-data/default_input_types.csv'))
 
 
 def populate():
-    populate_input_types()
+    populate_input_types(INPUT_TYPES_FILEPATH)
 
     with open(TEMPERATURES_FILEPATH) as csvfile:
         reader = csv.reader(csvfile)
