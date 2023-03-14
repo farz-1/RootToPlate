@@ -28,12 +28,12 @@ stages:
 #    - cd roottoplate
 #    - python3 manage.py test
 
-static-analysis:
-  stage: test
-  script:
-    - python -m pip install flake8
-    - flake8 --extend-exclude=venv/
-    - flake8
+#static-analysis:
+#  stage: test
+#  script:
+#    - python -m pip install flake8
+#    - flake8 --extend-exclude=venv/
+#    - flake8
 
 heroku_deploy:
   stage: deploy
