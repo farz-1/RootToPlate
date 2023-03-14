@@ -171,7 +171,7 @@ class RestaurantForm(forms.ModelForm):
                                        label='Last date to be picked up')
     email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'Required Field'}), required=True)
     phoneNumber = forms.CharField(required=False, label='Phone number',
-                                     widget=forms.TextInput(attrs={'placeholder': 'Enter 0 to leave empty'}))
+                                  widget=forms.TextInput(attrs={'placeholder': 'Enter 0 to leave empty'}))
     notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': '2'}))
     numberOfBags = forms.IntegerField(required=False, label='Number of bags of food waste',
                                       widget=forms.NumberInput(attrs={'placeholder': 'Enter 0 if unknown'}))

@@ -35,10 +35,10 @@ static-analysis:
     - flake8 --extend-exclude=venv/
     - flake8
 
-#heroku_deploy:
- # stage: deploy
-  #script:
-   # - apt-get update -yq
-    #- apt-get install -y ruby ruby-dev rubygems-integration
-    #- gem install dpl
-    #- dpl --provider=heroku --app=roottoplate --api-key=73562996-0279-4eba-8859-3c9b0460e28a
+heroku_deploy:
+ stage: deploy
+  script:
+   - apt-get update -yq
+    - apt-get install -y ruby ruby-dev rubygems-integration
+    - gem install dpl
+    - dpl --provider=heroku --app=roottoplate --api-key=73562996-0279-4eba-8859-3c9b0460e28a
