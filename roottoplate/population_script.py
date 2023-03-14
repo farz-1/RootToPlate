@@ -16,6 +16,9 @@ INPUT_TYPES_FILEPATH = 'static/db-data/default_input_types.csv'
 TEMPERATURES_FILEPATH = 'static/db-data/temperatures.csv'
 INPUTS_FILEPATH = 'static/db-data/inputs.csv'
 
+print(os.path.abspath('static/db-data/default_input_types.csv'))
+ABSOLUTE_PATH = '/path/to/your/file/static/db-data/default_input_types.csv'
+
 
 def populate():
     populate_input_types(INPUT_TYPES_FILEPATH)
