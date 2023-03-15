@@ -2,6 +2,62 @@
 
 Web app for Young Enterprise Scotland to help calculate their carbon footprint and help control their rocket composter.
 
+## Name
+RootToPlate
+
+## Description
+#### Background
+Young Enterprise Scotland (YE Scotland) is a charity based in Rouken Glen park. YE Scotland is aiming to become carbon neutral, and one way they are working toward this is by creating their own compost from food and other waste in order to be used for growing vegetables in their garden. This is part of their 'Root to Plate' project where they seek to track the journey of their food from the ground to their plates. The project was split into two parts and the part assigned to this group involved creating a tracker for compost, displaying graphs on the home page, and creating a ticketing system where restaurants can notify the team that they have some food waste that needs collected.
+
+#### Features
+Composter:
+- Temperature input form where the user can log temperatures of the composter to ensure it is working properly.
+- Output form the composter can be logged. 
+- Inputs to the composter can be logged and the user can request advice. This calculates a recommended input if the proposed inputs result in an unsatisfactory carbon-nitrogen ratio for composting. It also informs the user if the most recently recorded temperature input was unsatisfactory and recommends inputs to alleviate this.
+- Users can see information about recent logs.
+- Once the composter has received an input, it will count down until it needs 'fed' again.
+
+Restaurant request form:
+- Restaurants can request food waste collection, specifying a deadline for collection.
+- Staff can see these requests alongside restaurant contact details and mark the requests as collected.
+
+Home page:
+- Displays data in the form of graphs to show YE Scotland's progress toward carbon neutrality. These are generated based on calculations based on the data stored in the database, and changes dynamically as more data is entered through the various input forms on the web app.
+
+Admin dashboard:
+- Staff can add new input types, add users, change user passwords and add meter readings (used for graph calculations on the home page).
+- Superusers can access the Django admin interface where they can see individual database entries in detail, as well as being able to create more super users.
+
+The web app also contains various other smaller features such as links to YE Scotland social media and contact details.
+
+The web app is mobile compatible. 
+
+
+## Badges
+On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded , a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled. 
+
+## Visuals
+Included below is a screenshot of the homepage of the deployed website. The whole page is accessible through https://roottoplate.herokuapp.com/composter/
+
+## Installation
+All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided above.
+
+## Testing and Deployment
+
+The project was tested and depoloyed using the built-in continuous integration in GitLab.
+
+- Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional. These can be run locally by the command:
+```
+python manage.py test
+```
+- Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling. These can be run locally by the command:
+```
+flake8 [filename (optional)]
+```
+- Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests.
+
+If you would like to replicate this in a CI/CD pipeline tool of your own, the pipeline code can be found in .gitlab-ci.yml which can be found in the base project directory.
+
 ## Instructions to run locally
 ```
 pip install virtualenv
@@ -37,54 +93,9 @@ heroku run python roottoplate/manage.py population_script.py -a roottoplate
 ```
 
 ##Useful commands
-conda info --envs 
-
-## Add your files
-
-- [x] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [x] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
 ```
-cd existing_repo
-git remote add origin https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh31/sh31-main.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [x] [Set up project integrations](https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh31/sh31-main/-/settings/integrations)
-
-## Collaborate with your team
-
-- [x] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [x] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [x] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [x] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [x] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Using the built-in continuous integration in GitLab.
-
-- [x] [Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional]
-- [x] [Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling ]
-- [x] [Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests]
-## Name
-RootToPlate
-
-## Description
-[TO DO]Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded , a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled. 
-
-## Visuals
-Included below is a screenshot of the homepage of the deployed website. The whole page is accessible through https://roottoplate.herokuapp.com/composter/
-
-
-## Installation
-All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided above.
+conda info --envs
+``` 
 
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
@@ -99,10 +110,20 @@ The current implementation of the website is to be our final one but changes and
 Since the ownership has been transferred to the the customer , any contributions would have to be contracted through them to us. The acceptance of this contract is highly dependant on the availability of our developers. 
 
 ## Authors and acknowledgment
-[TO DO] Show your appreciation to those who have contributed to the project.
+Authors:
+Abi Hossell
+Andrew Wyllie
+Daniel Tudose
+Farzwan Mohamed
+Sandy Millar
+Siqi Wu
+
+Special thanks to the team at YE Scotland, specifically Lynn Kelly, Lucy McOuat and Lucia Nimmo. 
+
+Special thanks to our coach Rishabh Mathur.
 
 ## License
-[TO DO] For open source projects, say how it is licensed.
+The project is licensed under the Eclipse Public License 2.0. This license is a commercially friendly open source license that allows YE Scotland to edit, modify, distribute and create derivatives of this software. The intellectual property of this project belongs to YE Scotland. 
 
 ## Project status
 As the project currently exists , it has sufficiently fulfilled all our the customers initial needs and requirements. The customer is free to build further on this project and contract us or look elsewhere as the code is made available to them.
