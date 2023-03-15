@@ -26,6 +26,7 @@ heroku login
 heroku pg:reset DATABASE -a roottoplate
 roottoplate
 heroku run bash -a roottoplate
+cd roottoplate
 python manage.py makemigrations composter
 python manage.py makemigrations
 python manage.py migrate
