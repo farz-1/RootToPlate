@@ -28,9 +28,10 @@ Admin dashboard:
 - Staff can add new input types, add users, change user passwords and add meter readings (used for graph calculations on the home page).
 - Superusers can access the Django admin interface where they can see individual database entries in detail, as well as being able to create more super users.
 
-The web app also contains various other smaller features such as links to YE Scotland social media and contact details.
+About page:
+- Includes information about YE Scotland as a charity for users interested in volunteering.
 
-The web app is mobile compatible. 
+The web app also contains various other smaller features such as links to YE Scotland social media and contact details. Users can log in and log out. Users must be signed up by an admin as the only intended users are volunteers at YE Scotland. The web app is mobile compatible. 
  
 
 ## Visuals
@@ -96,11 +97,11 @@ conda info --envs
 ``` 
 
 ## Badges
-On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded , a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled.
+On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded, a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled.
 
 
 ## Support
-For deployment and heroku related issues , Farzwan can be contacted at 2553017M@student.gla.ac.uk and for issues relating to minor changes such as fields or adding features Abi can be contacted at 2560822H@student.gla.ac.uk
+For deployment and heroku related issues, Farzwan can be contacted at 2553017M@student.gla.ac.uk and for issues relating to minor changes such as fields or adding features Abi can be contacted at 2560822H@student.gla.ac.uk
 
 ## Roadmap
 The current implementation of the website is to be our final one but changes and modifications can be implemented along with new features if the customer requires so.
