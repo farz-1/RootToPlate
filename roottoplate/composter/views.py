@@ -75,18 +75,18 @@ def user_logout(request):
 
 
 def calculate_mixture_sums(cur_inputs):
-    sumN = sum([i['amount']*i['nitrogen']*i['moisture'] for i in cur_inputs])
+    sumN = sum([i['amount'] * i['nitrogen'] * i['moisture'] for i in cur_inputs])
     for i in cur_inputs:
-        i['carbon'] = i['nitrogen']*i['CNRatio']
-    sumC = sum([i['amount']*i['carbon']*i['moisture'] for i in cur_inputs])
+        i['carbon'] = i['nitrogen'] * i['CNRatio']
+    sumC = sum([i['amount'] * i['carbon'] * i['moisture'] for i in cur_inputs])
     return sumC, sumN
 
 
 def calculate_recommended_addition(rec_input, sumC, sumN):
     cn = 27  # ideal carbon nitrogen ratio
     nitrogen, moisture = float(rec_input.nitrogenPercent), 100 - float(rec_input.moisturePercent)
-    carbon = float(rec_input.nitrogenPercent*rec_input.CNRatio)
-    return (cn*sumN - sumC) / (carbon*moisture - nitrogen*moisture*cn)
+    carbon = float(rec_input.nitrogenPercent * rec_input.CNRatio)
+    return (cn * sumN - sumC) / (carbon * moisture - nitrogen * moisture * cn)
 
 
 class InputFormView(TemplateView):
@@ -118,12 +118,12 @@ class InputFormView(TemplateView):
             sumC, sumN = calculate_mixture_sums(cur_inputs)
 
             # if the ratio is too big then add more green
-            if sumC/sumN > 35:
+            if sumC / sumN > 35:
                 rec_input = InputType.objects.get(name='Food waste')
                 rec_input_amount = round(calculate_recommended_addition(rec_input, sumC, sumN), 1)
                 advice = f"The carbon-nitrogen ratio of this mixture is too high. Recommended addition: roughly {rec_input_amount} of green material. "  # noqa:E501
             # if the ratio is too small then add more brown
-            elif sumC/sumN < 20:
+            elif sumC / sumN < 20:
                 rec_input = InputType.objects.get(name='Wood')
                 rec_input_amount = round(calculate_recommended_addition(rec_input, sumC, sumN), 1)
                 advice = f"The carbon-nitrogen ratio of this mixture is too low. Recommended addition: roughly {rec_input_amount} of brown material. "  # noqa:E501

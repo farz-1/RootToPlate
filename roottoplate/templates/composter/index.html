@@ -7,10 +7,10 @@
     <br>
     <br>
     {% if notEnoughEnergyInfo %}
-    <h4>Not enough information to display graph. </h4>
+        <h4>Not enough information to display graph. </h4>
     {% else %}
-    <canvas id="CarbonNeutralMonth" class="card" style="width: 100% ;height: auto"></canvas>
-    <canvas id="CarbonNeutralYear" class="card" style="width: 100% ;height: auto"></canvas>
+        <canvas id="CarbonNeutralMonth" class="card" style="width: 100% ;height: auto"></canvas>
+        <canvas id="CarbonNeutralYear" class="card" style="width: 100% ;height: auto"></canvas>
     {% endif %}
     <br>
     <div class="row">
@@ -43,12 +43,12 @@
                         borderColor: "#B8BF0D",
                         backgroundColor: "#B8BF0D"
                     },
-                    {
-                        label: 'Carbon footprint of energy consumption',
-                        data: {{ cMonth.positive|safe }},
-                        borderColor: "#E01F1D",
-                        backgroundColor: "#E01F1D"
-                    }]
+                        {
+                            label: 'Carbon footprint of energy consumption',
+                            data: {{ cMonth.positive|safe }},
+                            borderColor: "#E01F1D",
+                            backgroundColor: "#E01F1D"
+                        }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -58,10 +58,10 @@
                         text: "Carbon offset of energy consumption"
                     },
                     scales: {
-                        yAxes: [{ stacked: true }],
+                        yAxes: [{stacked: true}],
                         xAxes: [{
                             ticks: {
-                                beginAtZero:true
+                                beginAtZero: true
                             },
                             stacked: false
                         }]
@@ -78,12 +78,12 @@
                         borderColor: "#B8BF0D",
                         backgroundColor: "#B8BF0D"
                     },
-                    {
-                        label: 'Carbon footprint of energy consumption',
-                        data: {{ cYear.positive|safe }},
-                        borderColor: "#E01F1D",
-                        backgroundColor: "#E01F1D"
-                    }]
+                        {
+                            label: 'Carbon footprint of energy consumption',
+                            data: {{ cYear.positive|safe }},
+                            borderColor: "#E01F1D",
+                            backgroundColor: "#E01F1D"
+                        }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -93,10 +93,10 @@
                         text: "Carbon offset of energy consumption for the year"
                     },
                     scales: {
-                        yAxes: [{ stacked: true }],
+                        yAxes: [{stacked: true}],
                         xAxes: [{
                             ticks: {
-                                beginAtZero:true
+                                beginAtZero: true
                             },
                             stacked: false
                         }]
@@ -130,12 +130,17 @@
             }
         });
         var tempTimes = {{ tempTimesInt|safe }};
-        var temps = [[{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}], [{% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}], [{% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}], [{% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}]];
+        var temps = [[{% for x in tempEntries %} {{ x.probe1|safe }}, {% endfor %}], [
+            {% for x in tempEntries %} {{ x.probe2|safe }}, {% endfor %}], [
+            {% for x in tempEntries %} {{ x.probe3|safe }}, {% endfor %}], [
+            {% for x in tempEntries %} {{ x.probe4|safe }}, {% endfor %}]];
         for (let i = 0; i < temps.length; i++) {
             for (let j = 0; j < tempTimes.length; j++) {
                 temps[i][j] = {x: tempTimes[j], y: temps[i][j]};
-            };
-        };
+            }
+
+        }
+
         const data = {
             labels: {{ tempTimes|safe }},
             datasets: [
@@ -206,7 +211,7 @@
                 },
                 tooltips: {
                     callbacks: {
-                        label: function(tooltipItem, data) {
+                        label: function (tooltipItem, data) {
                             var label = data.labels[tooltipItem.index];
                             return label + ': ' + tooltipItem.yLabel;
                         }
