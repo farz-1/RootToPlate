@@ -2,16 +2,39 @@
 
 Web app for Young Enterprise Scotland to help calculate their carbon footprint and help control their rocket composter.
 
-## Instructions to run
+## Instructions to run locally
 ```
-conda activate {env_name}
+pip install virtualenv
+virtualenv {env_name}
+conda activate {env_name} 
 git pull 
 pip install -r requirements.txt
+python manage.py makemigrations composter
+python manage.py makemigrations
+python manage.py migrate
 python manage.py runserver
 
 If you're missing pip just install it with: 
 conda install pip
+
+Replace {env_name} with a name of your choice to create and activate the virtual environment.
 ```
+
+## Instructions to delete current database and re-run on Heroku
+```
+heroku login
+heroku pg:reset DATABASE -a roottoplate
+roottoplate
+heroku run bash -a roottoplate
+python manage.py makemigrations composter
+python manage.py makemigrations
+python manage.py migrate
+exit
+heroku run python roottoplate/manage.py makemigrations composter -a roottoplate
+heroku run python roottoplate/manage.py migrate -a roottoplate
+heroku run python roottoplate/manage.py population_script.py -a roottoplate
+```
+
 ##Useful commands
 conda info --envs 
 
@@ -41,59 +64,43 @@ git push -uf origin main
 
 ## Test and Deploy
 
-Use the built-in continuous integration in GitLab.
+Using the built-in continuous integration in GitLab.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
+- [ ] [Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional]
+- [ ] [Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling ]
+- [ ] [Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests]
 ## Name
-Choose a self-explaining name for your project.
+RootToPlate
 
 ## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+[TO DO]Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
 ## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded , a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled. 
 
 ## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Included below is a screenshot of the homepage of the deployed website. The whole page is accessible through https://roottoplate.herokuapp.com/composter/
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided above.
 
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
 ## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+For deployment and heroku related issues , Farzwan can be contacted at 2553017M@student.gla.ac.uk and for issues relating to minor changes such as fields or adding features Abi can be contacted at 2560822H@student.gla.ac.uk
 
 ## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The current implementation of the website is to be our final one but changes and modifications can be implemented along with new features if the customer requires so.
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Since the ownership has been transferred to the the customer , any contributions would have to be contracted through them to us. The acceptance of this contract is highly dependant on the availability of our developers. 
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+[TO DO] Show your appreciation to those who have contributed to the project.
 
 ## License
-For open source projects, say how it is licensed.
+[TO DO] For open source projects, say how it is licensed.
 
 ## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+As the project currently exists , it has sufficiently fulfilled all our the customers initial needs and requirements. The customer is free to build further on this project and contract us or look elsewhere as the code is made available to them.
