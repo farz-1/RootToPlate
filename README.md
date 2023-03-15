@@ -31,16 +31,13 @@ Admin dashboard:
 The web app also contains various other smaller features such as links to YE Scotland social media and contact details.
 
 The web app is mobile compatible. 
-
-
-## Badges
-On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded , a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled. 
+ 
 
 ## Visuals
-Included below is a screenshot of the homepage of the deployed website. The whole page is accessible through https://roottoplate.herokuapp.com/composter/
+Included below is a screenshot of the homepage of the deployed website. The whole site is accessible through https://roottoplate.herokuapp.com/composter/
 
 ## Installation
-All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided above.
+All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided below.
 
 ## Testing and Deployment
 
@@ -56,7 +53,7 @@ flake8 [filename (optional)]
 ```
 - Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests.
 
-If you would like to replicate this in a CI/CD pipeline tool of your own, the pipeline code can be found in .gitlab-ci.yml which can be found in the base project directory.
+If you would like to replicate this in a CI/CD pipeline tool of your own, the pipeline code can be found in the .gitlab-ci.yml file which can be found in the base project directory.
 
 ## Instructions to run locally
 ```
@@ -68,6 +65,7 @@ pip install -r requirements.txt
 python manage.py makemigrations composter
 python manage.py makemigrations
 python manage.py migrate
+python population_script.py (if you wish to populate the database)
 python manage.py runserver
 
 If you're missing pip just install it with: 
@@ -97,8 +95,9 @@ heroku run python roottoplate/manage.py population_script.py -a roottoplate
 conda info --envs
 ``` 
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Badges
+On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded , a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled.
+
 
 ## Support
 For deployment and heroku related issues , Farzwan can be contacted at 2553017M@student.gla.ac.uk and for issues relating to minor changes such as fields or adding features Abi can be contacted at 2560822H@student.gla.ac.uk
@@ -107,7 +106,7 @@ For deployment and heroku related issues , Farzwan can be contacted at 2553017M@
 The current implementation of the website is to be our final one but changes and modifications can be implemented along with new features if the customer requires so.
 
 ## Contributing
-Since the ownership has been transferred to the the customer , any contributions would have to be contracted through them to us. The acceptance of this contract is highly dependant on the availability of our developers. 
+Since the ownership has been transferred to the the customer, any contributions would have to be contracted through them to us. The acceptance of this contract is highly dependant on the availability of our developers. 
 
 ## Authors and acknowledgment
 Authors:
@@ -126,4 +125,4 @@ Special thanks to our coach Rishabh Mathur.
 The project is licensed under the Eclipse Public License 2.0. This license is a commercially friendly open source license that allows YE Scotland to edit, modify, distribute and create derivatives of this software. The intellectual property of this project belongs to YE Scotland. 
 
 ## Project status
-As the project currently exists , it has sufficiently fulfilled all our the customers initial needs and requirements. The customer is free to build further on this project and contract us or look elsewhere as the code is made available to them.
+As the project currently exists, it has sufficiently fulfilled all our the customers initial needs and requirements. The customer is free to build further on this project and contract us or look elsewhere as the code is made available to them.
