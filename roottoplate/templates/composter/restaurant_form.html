@@ -11,7 +11,7 @@
         {% for hidden in form.hidden_fields %}
             {{ hidden }}
         {% endfor %}
-        <div class="card w-50">
+        <div class="card w-75">
             <div class="card-body">
                 {{ restaurant_form.name.errors }}
                 {{ restaurant_form.name|as_crispy_field }}
