@@ -1,6 +1,6 @@
 # SH31 main
 
-Web app for Young Enterprise Scotland to help calculate their carbon footprint and help control their rocket composter.
+Web app for Young Enterprise Scotland to help calculate their carbon footprint and help log data related to their rocket composter.
 
 ## Name
 RootToPlate
