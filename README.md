@@ -40,8 +40,8 @@ conda info --envs
 
 ## Add your files
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- [x] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
+- [x] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
 
 ```
 cd existing_repo
@@ -52,23 +52,23 @@ git push -uf origin main
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh31/sh31-main/-/settings/integrations)
+- [x] [Set up project integrations](https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh31/sh31-main/-/settings/integrations)
 
 ## Collaborate with your team
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- [x] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
+- [x] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
+- [x] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
+- [x] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
+- [x] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
 
 ## Test and Deploy
 
 Using the built-in continuous integration in GitLab.
 
-- [ ] [Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional]
-- [ ] [Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling ]
-- [ ] [Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests]
+- [x] [Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional]
+- [x] [Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling ]
+- [x] [Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests]
 ## Name
 RootToPlate
 
@@ -80,6 +80,7 @@ On analyzing the CI/CD page , badges convey the status of two stages testing and
 
 ## Visuals
 Included below is a screenshot of the homepage of the deployed website. The whole page is accessible through https://roottoplate.herokuapp.com/composter/
+
 
 ## Installation
 All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided above.
