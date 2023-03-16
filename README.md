@@ -40,23 +40,8 @@ Included below is a screenshot of the homepage of the deployed website. The whol
 ## Installation
 All the dependencies required to be installed are provided in the requirements.txt file in the root of the folder. Instructions on how to run these have been provided below.
 
-## Testing and Deployment
 
-The project was tested and depoloyed using the built-in continuous integration in GitLab.
-
-- Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional. These can be run locally by the command:
-```
-python manage.py test
-```
-- Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling. These can be run locally by the command:
-```
-flake8 [filename (optional)]
-```
-- Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests.
-
-If you would like to replicate this in a CI/CD pipeline tool of your own, the pipeline code can be found in the .gitlab-ci.yml file which can be found in the base project directory.
-
-## Instructions to run locally
+### Instructions to run locally
 ```
 pip install virtualenv
 virtualenv {env_name}
@@ -75,7 +60,7 @@ conda install pip
 Replace {env_name} with a name of your choice to create and activate the virtual environment.
 ```
 
-## Instructions to delete current database and re-run on Heroku
+### Instructions to delete current database and re-run on Heroku
 ```
 heroku login
 heroku pg:reset DATABASE -a roottoplate
@@ -91,10 +76,26 @@ heroku run python roottoplate/manage.py migrate -a roottoplate
 heroku run python roottoplate/manage.py population_script.py -a roottoplate
 ```
 
-##Useful commands
+### Useful commands
 ```
 conda info --envs
 ``` 
+
+## Testing and Deployment
+
+The project was tested and depoloyed using the built-in continuous integration in GitLab.
+
+- Django tests run through Gitlab CI/CD Pipelines to test aspects of the website to see if it is functional. These can be run locally by the command:
+```
+python manage.py test
+```
+- Static analysis tests run using flake8 on the pipeline as well to prevent things like syntax errors, typos, bad formatting, incorrect styling. These can be run locally by the command:
+```
+flake8 [filename (optional)]
+```
+- Deployment takes place to Heroku using the pipeline every time a commit on any branch has passed the previous two tests.
+
+If you would like to replicate this in a CI/CD pipeline tool of your own, the pipeline code can be found in the .gitlab-ci.yml file which can be found in the base project directory.
 
 ## Badges
 On analyzing the CI/CD page , badges convey the status of two stages testing and deployment. A green tick means it has succeeded, a red cross means one or both of the stages have failed and a grey slash means that the testing and (or) deployment was cancelled.
