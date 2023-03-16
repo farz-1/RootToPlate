@@ -41,6 +41,7 @@ class InputEntry(models.Model):
 
 
 class Input(models.Model):
+    #  Facilitates the many to many relationship between input entries and input types
     INPUT_DECIMAL_PLACES = 2
     INPUT_MAX_DIGITS = 5
 
@@ -112,6 +113,7 @@ class Output(models.Model):
 
 
 class EnergyUsage(models.Model):
+    #  Model for meter readings, used for homepage graph calculations
     entryID = models.AutoField(primary_key=True)
     date = models.DateField()
     gas = models.IntegerField()

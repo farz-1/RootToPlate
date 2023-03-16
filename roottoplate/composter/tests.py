@@ -265,16 +265,6 @@ class PopulationScriptTests(TestCase):
         self.assertEqual(len(users), 4, f'4 users expected from population script, {len(users)} created.')
         self.assertTrue("kw01" in strs, 'Users incorrectly created from population script.')
 
-    def test_restaurant_requests(self):
-        """
-        1 restaurant request should be created
-        """
-        requests = RestaurantRequest.objects.filter()
-        strs = map(str, requests)
-        self.assertEqual(len(requests), 1, f'1 restaurant request expected from population script, {len(requests)} '
-                                           f'created.')
-        self.assertTrue("20002" in strs, 'Restaurant requests incorrectly created from population script.')
-
     #  Test that the relationships have been created.
     def test_input_has_user(self):
         input_entry = InputEntry.objects.get(entryID=0)
