@@ -4,7 +4,7 @@
 {% block content_block %}
     <h1 class="container text-center mb-3">Administrative Dashboard</h1>
     {% if success_message %}
-        <h3>{{ success_message }}</h3>
+        <h3 class="text-center text-success">{{ success_message }}</h3>
     {% endif %}
     <a href="{% url 'admin:index' %}" class="btn btn-primary">Full admin site</a>
     <div class="accordion" id="Adminaccordion">
