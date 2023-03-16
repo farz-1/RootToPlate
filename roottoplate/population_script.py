@@ -24,7 +24,6 @@ DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 def populate():
-    #  Adds the input types
     populate_input_types(INPUT_TYPES_FILEPATH)
 
     with open(TEMPERATURES_FILEPATH) as csvfile:
@@ -59,6 +58,20 @@ def populate():
          'isAdmin': False},
     ]
 
+    restaurant_requests = [
+        # restaurant requests, stored as list of dictionaries
+        {'id': '20002',
+         'name': 'TEST_RESTAURANT',
+         'address': '26 Vinicombe Street',
+         'dateRequested': '2023-01-02 22:01:40',
+         'deadline': '2023-01-30 23:00:00',
+         'email': 'test@kapao.com',
+         'phone': 44800829839,
+         'notes': 'quick',
+         'bags': 2,
+         'collected': False},
+    ]
+
     energies = [
         #  energy entries, stored as a list of dictionaries
         {'date': '2023-01-02',
@@ -75,6 +88,9 @@ def populate():
 
     create_temperature_entries(temperature_entries)
     create_input_entries(input_entries)
+
+    for r in restaurant_requests:
+        create_restaurant_request(r)
 
     for e in energies:
         create_energy(e)
@@ -97,57 +113,53 @@ def create_user(data):
 def create_input_entries(data):
     # creates input entry
     user = User.objects.get(username='kw01')
-    count = 0
     for item in data:
-        print(f'creating input entry {str(count)}...')
-        input_entry = InputEntry.objects.get_or_create(entryID=count, entryTime=date(item[0] + ' 00:00:00'),
+        print('creating input entry...')
+        input_entry = InputEntry.objects.get_or_create(entryTime=date(item[0] + ' 00:00:00'),
                                                        notes='initial data from Lucia', user=user)
 
         if item[1]:
             input_type = 'Coffee grounds'
             amount = item[1]
-            create_input(count, input_type, amount)
+            create_input(input_entry, input_type, amount)
 
         if item[2]:
             input_type = 'Food waste'
             amount = item[2]
-            create_input(count, input_type, amount)
+            create_input(input_entry, input_type, amount)
 
         if item[3]:
             input_type = 'Grass clippings'
             amount = item[3]
-            create_input(count, input_type, amount)
+            create_input(input_entry, input_type, amount)
 
         if item[4]:
             input_type = 'Leaves'
             amount = item[4]
-            create_input(count, input_type, amount)
+            create_input(input_entry, input_type, amount)
 
         if item[5]:
             input_type = 'Shrub trimmings'
             amount = item[5]
-            create_input(count, input_type, amount)
+            create_input(input_entry, input_type, amount)
 
         if item[6]:
             input_type = 'Wood'
             amount = item[6]
-            create_input(count, input_type, amount)
+            create_input(input_entry, input_type, amount)
 
         if item[7]:
             input_type = 'Hay'
             amount = item[7]
-            create_input(count, input_type, amount)
-
-        count += 1
+            create_input(input_entry, input_type, amount)
 
     return input_entry
 
 
-def create_input(count, input_type, amount):
+def create_input(input_entry, input_type, amount):
     # creates input
-    entry = InputEntry.objects.get(entryID=count)
     input_type = InputType.objects.get(name=input_type)
-    new_input = Input.objects.get_or_create(inputEntry=entry,
+    new_input = Input.objects.get_or_create(inputEntry=input_entry[0],
                                             inputType=input_type,
                                             inputAmount=amount)
     return new_input
@@ -159,8 +171,7 @@ def create_temperature_entries(data):
     count = 0
     for item in data:
         print(f'creating temp entry {str(count)}...')
-        entry = TemperatureEntry.objects.get_or_create(entryID=count,
-                                                       entryTime=date(item[0] + ' 00:00:00'),
+        entry = TemperatureEntry.objects.get_or_create(entryTime=date(item[0] + ' 00:00:00'),
                                                        probe1=item[1],
                                                        probe2=item[2],
                                                        probe3=item[3],
@@ -171,7 +182,6 @@ def create_temperature_entries(data):
     return entry
 
 
-#  for debug purposes, not currently used
 def create_restaurant_request(data):
     # creates restaurant request
     print(f'creating restaurant request {str(data["id"])}...')
@@ -198,7 +208,6 @@ def create_energy(data):
     return entry
 
 
-#  Fixes timezone errors with dates
 def date(date):
     return timezone.make_aware(datetime.strptime(date, DATE_FORMAT))
 

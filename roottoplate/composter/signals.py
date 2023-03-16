@@ -39,14 +39,15 @@ class GraphState:
 
             this_month = datetime.date.today().replace(day=1)
             last_month = this_month - datetime.timedelta(days=1)
-            start_of_this_year = datetime.date.today() - datetime.timedelta(days=365)
 
-            meter_readings = EnergyUsage.objects.filter(date__gte=start_of_this_year).order_by('-date').values()
+            meter_readings = EnergyUsage.objects.filter().order_by('-date').values()
             if len(meter_readings) > 1:
                 dates = [x.get('date') for x in meter_readings]
                 elec = [x.get('electricity') for x in meter_readings]
                 gas = [x.get('gas') for x in meter_readings]
 
+                if (dates[0] - dates[1]).days == 0 or (dates[0] - dates[-1]).days == 0:
+                    return None
                 lm_factor = 30 / (dates[0] - dates[1]).days
                 lm_elec = (elec[0] - elec[1]) * lm_factor
                 lm_gas = (gas[0] - gas[1]) * lm_factor
