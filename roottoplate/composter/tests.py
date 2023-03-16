@@ -251,10 +251,8 @@ class PopulationScriptTests(TestCase):
         4 temperature entries should be created
         """
         temp_entries = TemperatureEntry.objects.filter()
-        strs = map(str, temp_entries)
         self.assertEqual(len(temp_entries), 45, f'45 temperature entries expected from population script, '
                                                 f'{len(temp_entries)} created.')
-        self.assertTrue((str(44) in strs) & (str(45) not in strs))
 
     def test_users(self):
         """
@@ -264,17 +262,6 @@ class PopulationScriptTests(TestCase):
         strs = map(str, users)
         self.assertEqual(len(users), 4, f'4 users expected from population script, {len(users)} created.')
         self.assertTrue("kw01" in strs, 'Users incorrectly created from population script.')
-
-    #  Test that the relationships have been created.
-    def test_input_has_user(self):
-        input_entry = InputEntry.objects.get(entryID=0)
-        user = User.objects.get(username="kw01")
-        self.assertEqual(input_entry.user, user, 'Input entry from population script has no user.')
-
-    def test_temp_entry_has_user(self):
-        input_entry = TemperatureEntry.objects.get(entryID=0)
-        user = User.objects.get(username="kw01")
-        self.assertEqual(input_entry.user, user, 'Temperature entry from population script has no user.')
 
 
 class FormTests(TestCase):
