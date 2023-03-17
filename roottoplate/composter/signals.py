@@ -33,7 +33,7 @@ class GraphState:
         def calculate_carbon():
             cubic_m_to_co2 = 1.9  # kg / m^3
             kwh_to_co2 = 0.082  # edf co2 kg/kwh as taken from their website
-            compost_to_co2_saved = 1.495  # kg/kg, assuming food waste would be landfilled otherwise
+            compost_to_co2_saved = 0.540  # kg/kg, assuming food waste would be landfilled otherwise
             labels = ['This Month', 'Last Month', 'This Year']
             carbon = {label: {'cPositive': None, 'cNegative': None} for label in labels}
 
